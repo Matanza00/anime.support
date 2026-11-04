@@ -1,13 +1,20 @@
-// Cloudflare Workers static-assets site. Deployed by .github/workflows/deploy.yml.
+// Cloudflare Worker: static site (web/out) + tiny /api for view counts, with the D1 database.
+// Deployed by .github/workflows/deploy.yml. database_id is filled in at deploy time by database/setup.mjs.
 {
   "name": "anime-support",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./web/out",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "force-trailing-slash"
+    "html_handling": "force-trailing-slash",
+    "run_worker_first": ["/api/*"]
   },
-  // Requires anime.support to be added to the same Cloudflare account (free plan is fine).
+  "d1_databases": [
+    { "binding": "DB", "database_name": "anime-support", "database_id": "00000000-0000-0000-0000-000000000000" }
+  ],
+  // Requires anime.support to be in the same Cloudflare account (it is).
   "routes": [
     { "pattern": "anime.support", "custom_domain": true },
     { "pattern": "www.anime.support", "custom_domain": true }
