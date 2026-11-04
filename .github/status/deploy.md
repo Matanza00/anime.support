@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-04T22:17:42Z
-- Commit: a58df3c
-- Run: https://github.com/Matanza00/anime.support/actions/runs/41923841614
+- When: 2026-11-04T22:18:48Z
+- Commit: 34f7814
+- Run: https://github.com/Matanza00/anime.support/actions/runs/41924075825
 
 ```
 + /news/how-to-follow-anime-news-without-falling-for-fake-leaks/__next.news.$d$slug.__PAGE__.txt
@@ -49,20 +49,20 @@
 Uploaded 32 of 96 assets
 Uploaded 64 of 96 assets
 Uploaded 96 of 96 assets
-✨ Success! Uploaded 96 files (86 already uploaded) (1.51 sec)
+✨ Success! Uploaded 96 files (86 already uploaded) (1.33 sec)
 
 Total Upload: 1.25 KiB / gzip: 0.62 KiB
-Worker Startup Time: 1 ms
+Worker Startup Time: 2 ms
 Your Worker has access to the following bindings:
 Binding                         Resource         
 env.DB (anime-support)          D1 Database      
 env.ASSETS                      Assets           
 
-Uploaded anime-support (4.35 sec)
-Deployed anime-support triggers (1.23 sec)
+Uploaded anime-support (4.12 sec)
+Deployed anime-support triggers (1.29 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
-Current Version ID: c9826e7b-9a8b-4d62-9236-55dbdeddb99d
+Current Version ID: 6117b0dd-a16c-44d1-99b5-da63b1d6c483
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 ```
