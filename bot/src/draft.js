@@ -60,7 +60,7 @@ export async function draft() {
   );
   if (!items.length) return log('Draft: no new headlines'), 0;
 
-  const recentArticles = await sql('SELECT title, cluster_key FROM articles WHERE created_at >= ?', [
+  const recentArticles = await sql("SELECT title, cluster_key FROM articles WHERE created_at >= ? AND status != 'rejected'", [
     new Date(Date.now() - 4 * 864e5).toISOString(),
   ]);
   const focus = await sql('SELECT name, weight FROM anime_focus');
@@ -94,7 +94,8 @@ export async function draft() {
 
     let out;
     try {
-      out = await chatJSON(SYSTEM_PROMPT, buildUserPrompt(material));
+      // The AI also sees recent titles, so the same story under another name (EN vs JP title) is skipped.
+      out = await chatJSON(SYSTEM_PROMPT, buildUserPrompt(material, recentArticles.slice(-60).map((a) => a.title)));
     } catch (err) {
       warn(`Draft failed for "${lead.title}": ${err.message}`);
       continue; // stays 'new', retried next run

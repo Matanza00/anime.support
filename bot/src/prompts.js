@@ -28,7 +28,8 @@ HEADLINE FORMULA
 - Good: "Frieren Season 2 Gets a January Premiere and a New Key Visual"
 - Banned: ALL CAPS, "You won't believe", "SHOCKING", question-bait, or any promise the article does not deliver.
 
-SKIP when: not about anime/manga/light novels, mainly merchandise/ads, too little factual detail, or a pure opinion piece.
+SKIP when: the story is already covered in ALREADY COVERED below (same announcement, even if the anime
+is named differently, e.g. its Japanese vs English title) — set skip_reason "duplicate"; or it is not about anime/manga/light novels, mainly merchandise/ads, too little factual detail, or a pure opinion piece.
 
 Return ONLY a JSON object:
 {
@@ -47,7 +48,7 @@ Return ONLY a JSON object:
 Categories: "upcoming" = future season/film/date announcements; "release" = something out now (episode, film, volume); "feature" = explainers/roundups; otherwise "news".
 "confidence" = how sure you are every claim is supported by the sources (0–1).`;
 
-export function buildUserPrompt(cluster) {
+export function buildUserPrompt(cluster, covered = []) {
   const blocks = cluster
     .map(
       (it, i) => `--- SOURCE ${i + 1}: ${it.source_name}
@@ -59,5 +60,6 @@ Page text:
 ${it.page_text || '(could not fetch page; rely on headline and summary only, and keep the article shorter)'}`,
     )
     .join('\n\n');
-  return `Today is ${new Date().toDateString()}.\n\nSOURCE MATERIAL\n\n${blocks}\n\nWrite the article now.`;
+  const already = covered.length ? covered.map((t) => `- ${t}`).join('\n') : '(nothing yet)';
+  return `Today is ${new Date().toDateString()}.\n\nALREADY COVERED (last 3 days)\n${already}\n\nSOURCE MATERIAL\n\n${blocks}\n\nWrite the article now.`;
 }
