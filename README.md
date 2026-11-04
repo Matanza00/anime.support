@@ -9,7 +9,7 @@ the next run deploys them to Cloudflare and posts them to your Facebook Page wit
 Each week it learns which anime readers want and prioritises them.
 
 ```
-GitHub Actions (every 2 h) ─► Supabase (drafts + images) ─► you approve (laptop dashboard)
+GitHub Actions (every 2 h) ─► Cloudflare D1 (drafts + images) ─► you approve (laptop dashboard)
         │                                                          │
         └─► next run: deploy to Cloudflare ─► Facebook post ◄───────┘
 weekly: AniList trending + your view counts ─► what the bot writes about next
@@ -20,7 +20,8 @@ weekly: AniList trending + your view counts ─► what the bot writes about nex
 | Website `web/` (Next.js 16) | Cloudflare Workers static assets | Free, ads allowed |
 | Bot `bot/` | GitHub Actions (`.github/workflows/bot.yml`) | Free (public repo) or ~1,100 of 2,000 free min/month (private) |
 | Review dashboard | Your laptop: `npm run review` | Free |
-| Database + images | Supabase free tier | Free |
+| Database + images | Cloudflare D1 (5 GB, never pauses) | Free |
+| View counter | Cloudflare Worker `worker/index.js` (`/api/view`) | Free |
 | AI text + images | OpenRouter / OpenAI | A few cents per article |
 
 ---
@@ -36,20 +37,22 @@ for `anime.support` and `www.anime.support` itself, so you add none by hand.
 `contact@anime.support` to your Gmail (free). The site's Contact page uses that address, and
 AdSense reviewers check it.
 
-### 2. Supabase
-Create a free project, then in **SQL Editor** run `supabase/schema.sql`, then `supabase/seed/launch.sql`
-(six original launch articles). Put the project URL and **anon** key in `web/.env.production` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
-and commit it. Both are public by design; row-level security protects the data.
+### 2. Database (automatic)
+Nothing to do by hand. Every deploy runs `database/setup.mjs`, which creates the Cloudflare D1
+database `anime-support` the first time, applies `database/schema.sql` (existing data is kept) and
+publishes the six launch articles if the database is empty. Browse or edit data any time in
+Cloudflare → **Storage & databases → D1 → anime-support → Console**.
+
+Images (bot artwork and your uploads) are stored in D1's `media` table and copied into the site as
+plain files at every deploy, so serving them costs nothing.
 
 ### 3. GitHub secrets
 Repo → **Settings → Secrets and variables → Actions**:
 
 | Secret | Where to get it |
 | --- | --- |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → template **Edit Cloudflare Workers** |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → template **Edit Cloudflare Workers**, then **add Account · D1 · Edit** |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages → right sidebar |
-| `SUPABASE_URL` | Supabase → Project Settings → API |
-| `SUPABASE_SERVICE_KEY` | Same page, **service_role** key (secret) |
 | `LLM_API_KEY` | Your OpenRouter (or OpenAI) key |
 | `FB_PAGE_ID`, `FB_PAGE_TOKEN` | Optional, see Facebook below |
 
@@ -57,14 +60,16 @@ Optional **variables** (same page, Variables tab): `LLM_MODEL`, `LLM_BASE_URL`, 
 `IMAGE_PROVIDER` (`openrouter`, `openai` or `none`), `MAX_DRAFTS_PER_RUN`.
 
 ### 4. First deploy
-Actions tab → **Deploy site** → Run workflow. Then **News bot** → Run workflow → `collect-and-publish`.
+Pushing to `main` deploys automatically (or Actions tab → **Deploy site** → Run workflow). The result
+of the last deploy, with its log, is saved to `.github/status/deploy.md`. Then **News bot** → Run
+workflow → `collect-and-publish` for the first drafts.
 
 ### 5. Review dashboard on your laptop
 ```bash
 git clone https://github.com/Matanza00/anime.support.git
 cd anime.support/bot
 npm install
-cp .env.example .env     # Supabase URL + service key, REVIEW_PASSWORD
+cp .env.example .env     # Cloudflare account ID + API token, REVIEW_PASSWORD
 npm run review           # http://localhost:4000 (phone: http://<laptop-ip>:4000)
 ```
 Use `npm run review`, not `npm start`: GitHub already runs the schedules, and running both would
@@ -112,7 +117,7 @@ For every draft the bot creates, with no input from you:
 - No image API key, or the API fails? It falls back to **procedural art**: unique night scenes (mountains, torii gates, city skylines, seas, sakura) generated from the article's slug, free and instant.
 - The headline card is rebuilt when you approve, so headline edits are always reflected.
 - In the dashboard: edit the scene text and tap **Create new artwork**, or pick AniList art or a source image instead.
-- Files go to the Supabase Storage bucket `media` with a new filename each time, so caches never show an old image.
+- Files go to the D1 `media` table with a new filename each time, so caches never show an old image. Uploads over 1.4 MB are shrunk to WebP automatically; for video, paste a YouTube link.
 
 Image cost: roughly a few US cents per image with `google/gemini-2.5-flash-image`. Set `IMAGE_PROVIDER=none` for free procedural art only.
 

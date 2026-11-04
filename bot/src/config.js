@@ -7,8 +7,13 @@ const botDir = path.resolve(here, '..');
 const e = process.env;
 
 export const CONFIG = {
-  supabaseUrl: e.SUPABASE_URL,
-  supabaseKey: e.SUPABASE_SERVICE_KEY,
+  // Cloudflare D1 database (articles, sources, stats, images)
+  d1: {
+    accountId: e.CLOUDFLARE_ACCOUNT_ID || '',
+    token: e.CLOUDFLARE_API_TOKEN || '',
+    name: e.D1_DATABASE_NAME || 'anime-support',
+    databaseId: e.D1_DATABASE_ID || '', // optional; looked up by name when empty
+  },
 
   llm: {
     baseURL: e.LLM_BASE_URL || 'https://openrouter.ai/api/v1',

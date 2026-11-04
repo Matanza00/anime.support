@@ -3,20 +3,24 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { db, q } from './db.js';
+import { sql, one, now } from './d1.js';
+import { absolute } from './storage.js';
 import { CONFIG } from './config.js';
 import { facebookEnabled, postToPage } from './facebook.js';
 import { log, warn } from './log.js';
 
 const run = promisify(execFile);
 
-// Deploy state lives in Supabase (bot_state), so your laptop and GitHub Actions share it.
+// Deploy state lives in D1 (bot_state), so your laptop and GitHub Actions share it.
 async function readState() {
-  const rows = await q(db().from('bot_state').select('value').eq('key', 'deploy'));
-  return rows[0]?.value ?? { lastDeployAt: null };
+  const row = await one("SELECT value FROM bot_state WHERE key = 'deploy'");
+  return row ? JSON.parse(row.value) : { lastDeployAt: null };
 }
 const writeState = (value) =>
-  q(db().from('bot_state').upsert({ key: 'deploy', value, updated_at: new Date().toISOString() }, { onConflict: 'key' }));
+  sql(
+    "INSERT INTO bot_state (key, value, updated_at) VALUES ('deploy', ?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at",
+    [JSON.stringify(value), now()],
+  );
 
 async function git(...args) {
   const { stdout } = await run('git', args, { cwd: CONFIG.deploy.repoDir });
@@ -63,10 +67,9 @@ async function deployViaHook() {
 
 export async function deployIfNeeded() {
   const state = await readState();
-  let query = db().from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published');
-  if (state.lastDeployAt) query = query.gt('published_at', state.lastDeployAt);
-  const { count, error } = await query;
-  if (error) throw new Error(error.message);
+  const { count } = await one("SELECT COUNT(*) AS count FROM articles WHERE status = 'published' AND published_at > ?", [
+    state.lastDeployAt || '',
+  ]);
   if (!count) return log('Publish: nothing new to deploy'), false;
 
   const startedAt = new Date().toISOString();
@@ -87,28 +90,24 @@ export async function shareToFacebook() {
   if (!state.lastDeployAt) return 0;
   // Wait until the latest build has had time to finish, then share only articles it included.
   if (Date.now() - new Date(state.lastDeployAt).getTime() < CONFIG.fb.delayMinutes * 60e3) return 0;
-  const due = await q(
-    db()
-      .from('articles')
-      .select('id, slug, title, excerpt, fb_caption, social_card_url')
-      .eq('status', 'published')
-      .eq('fb_posted', false)
-      .lte('published_at', state.lastDeployAt)
-      .order('published_at', { ascending: true })
-      .limit(5),
+  const due = await sql(
+    `SELECT id, slug, title, excerpt, fb_caption, social_card_url FROM articles
+      WHERE status = 'published' AND fb_posted = 0 AND published_at <= ?
+      ORDER BY published_at ASC LIMIT 5`,
+    [state.lastDeployAt],
   );
 
   let posted = 0;
   for (const a of due) {
-    const link = `${CONFIG.siteUrl}/news/${a.slug}`;
+    const link = `${CONFIG.siteUrl}/news/${a.slug}/`;
     try {
       const live = await fetch(link, { method: 'HEAD' });
       if (!live.ok) {
         warn(`Not live yet, will retry: ${link}`);
         continue;
       }
-      const id = await postToPage({ message: a.fb_caption || `${a.title}\n\n${a.excerpt}`, link, imageUrl: a.social_card_url });
-      await q(db().from('articles').update({ fb_posted: true, fb_post_id: id }).eq('id', a.id));
+      const id = await postToPage({ message: a.fb_caption || `${a.title}\n\n${a.excerpt}`, link, imageUrl: absolute(a.social_card_url) });
+      await sql('UPDATE articles SET fb_posted = 1, fb_post_id = ? WHERE id = ?', [id, a.id]);
       posted++;
       log(`Shared to Facebook: ${a.title}`);
     } catch (err) {

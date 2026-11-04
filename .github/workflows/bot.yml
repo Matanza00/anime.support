@@ -30,8 +30,8 @@ jobs:
     outputs:
       deploy: ${{ steps.publish.outputs.deploy }}
     env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
       LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
       LLM_MODEL: ${{ vars.LLM_MODEL || 'openai/gpt-4o-mini' }}

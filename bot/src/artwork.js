@@ -2,14 +2,14 @@
 //   1. hero image  (1600×900, no text) – AI illustration, or procedural art when AI is off/fails.
 //      Used as the cover, og:image and Google Discover image (Google advises no text on these).
 //   2. social card (1200×630, with headline) – for the Facebook post.
-// Both are uploaded to Supabase Storage. Nothing copies studio artwork, so there is no rights risk.
+// Both are saved in the D1 media table and published as static files at each deploy. Nothing copies studio artwork, so there is no rights risk.
 import sharp from 'sharp';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { CONFIG } from './config.js';
-import { uploadBuffer } from './storage.js';
+import { uploadBuffer, fetchImage } from './storage.js';
 import { warn, log } from './log.js';
 
 const require = createRequire(import.meta.url);
@@ -263,8 +263,7 @@ export async function refreshSocialCard({ slug, title, anime = [], category, cov
   let hero = null;
   if (coverUrl) {
     try {
-      const res = await fetch(coverUrl, { signal: AbortSignal.timeout(20000) });
-      if (res.ok) hero = Buffer.from(await res.arrayBuffer());
+      hero = await fetchImage(coverUrl);
     } catch {
       /* fall back below */
     }

@@ -3,11 +3,11 @@
 import express from 'express';
 import multer from 'multer';
 import { classifyUrl, parseMediaLines, mediaToLines } from './media.js';
-import { uploadBuffer } from './storage.js';
+import { uploadBuffer, getMedia } from './storage.js';
 import { createArtwork, refreshSocialCard } from './artwork.js';
 import { marked } from 'marked';
 import { pathToFileURL } from 'node:url';
-import { db, q } from './db.js';
+import { sql, one, parseRow, setClause, now } from './d1.js';
 import { CONFIG } from './config.js';
 import { publish } from './publish.js';
 import { log, fail } from './log.js';
@@ -62,16 +62,21 @@ export function createApp() {
     res.set('WWW-Authenticate', 'Basic realm="anime.support review"').status(401).send('Password required');
   });
 
+  // Images saved by the bot live in D1 until the next deploy publishes them; show them here.
+  app.get('/media/*key', async (req, res) => {
+    const key = [].concat(req.params.key).join('/');
+    const m = await getMedia(key);
+    if (!m) return res.status(404).end();
+    res.set('Content-Type', m.type).set('Cache-Control', 'public, max-age=86400').send(m.buffer);
+  });
+
   app.get('/', async (req, res) => {
-    const drafts = await q(
-      db()
-        .from('articles')
-        .select('id, title, excerpt, category, anime, priority, confidence, created_at, source_names')
-        .eq('status', 'draft')
-        .order('priority', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(100),
-    );
+    const drafts = (
+      await sql(
+        `SELECT id, title, excerpt, category, anime, priority, confidence, created_at, source_names
+           FROM articles WHERE status = 'draft' ORDER BY priority DESC, created_at DESC LIMIT 100`,
+      )
+    ).map(parseRow);
     const flash = req.query.msg ? `<div class="flash">${esc(req.query.msg)}</div>` : '';
     const list = drafts.length
       ? drafts
@@ -94,7 +99,7 @@ export function createApp() {
   });
 
   app.get('/a/:id', async (req, res) => {
-    const [a] = await q(db().from('articles').select('*').eq('id', req.params.id).limit(1));
+    const a = parseRow(await one('SELECT * FROM articles WHERE id = ?', [Number(req.params.id)]));
     if (!a) return res.status(404).send(page('Not found', '<p>Article not found.</p>'));
     const sources = (a.source_urls || [])
       .map((u, i) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(a.source_names?.[i] || u)}</a>`)
@@ -148,7 +153,7 @@ export function createApp() {
           <p class="meta">One per line: <code>URL | caption | credit</code>. Works with YouTube, X, Instagram, TikTok, .mp4/.webm videos and image links.
           You can also paste any of these URLs on its own line inside the article to embed it right there.</p>
           <textarea id="media_lines" name="media_lines" style="min-height:110px">${esc(mediaToLines(media))}</textarea>
-          <label>Upload images or videos</label><input type="file" name="upload_media" accept="image/*,video/mp4,video/webm" multiple>
+          <label>Upload images (large photos are shrunk automatically; for videos, paste a YouTube link above)</label><input type="file" name="upload_media" accept="image/*" multiple>
           <label>Custom embed code (HTML, e.g. a Spotify player or poll)</label>
           <textarea name="custom_html" style="min-height:80px;font:13px ui-monospace,monospace">${esc(customHtml)}</textarea>
           ${media.length ? `<div class="cands">${media.map(mediaThumb).join('')}</div>` : ''}
@@ -203,7 +208,7 @@ export function createApp() {
     const customHtml = String(b.custom_html || '').trim();
     if (customHtml) media.push({ type: 'html', html: customHtml });
 
-    const [current] = await q(db().from('articles').select('slug').eq('id', id));
+    const current = await one('SELECT slug FROM articles WHERE id = ?', [id]);
     const imagePrompt = String(b.image_prompt || '').trim() || null;
     const animeList = String(b.anime || '').split(',').map((s) => s.trim()).filter(Boolean).slice(0, 3);
     const extra = {};
@@ -238,10 +243,11 @@ export function createApp() {
       release_date: /^\d{4}-\d{2}-\d{2}$/.test(b.release_date || '') ? b.release_date : null,
       updated_at: new Date().toISOString(),
     };
-    if (b.action === 'approve') Object.assign(edits, { status: 'published', published_at: new Date().toISOString() });
+    if (b.action === 'approve') Object.assign(edits, { status: 'published', published_at: now() });
     if (b.action === 'reject') edits.status = 'rejected';
 
-    const [a] = await q(db().from('articles').update(edits).eq('id', id).select('cluster_key'));
+    const { clause, params } = setClause(edits);
+    const a = await one(`UPDATE articles SET ${clause} WHERE id = ? RETURNING cluster_key`, [...params, id]);
     if (b.action === 'approve' && a?.cluster_key) await creditSources(a.cluster_key);
 
     const skipped = rejected.length ? ` Not recognised as media (ignored): ${rejected.join(', ')}` : '';
@@ -267,17 +273,12 @@ export function createApp() {
   });
 
   app.get('/published', async (req, res) => {
-    const rows = await q(
-      db()
-        .from('articles')
-        .select('id, slug, title, views, published_at, fb_posted')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false })
-        .limit(50),
+    const rows = await sql(
+      "SELECT id, slug, title, views, published_at, fb_posted FROM articles WHERE status = 'published' ORDER BY published_at DESC LIMIT 50",
     );
     const trs = rows
       .map(
-        (r) => `<tr><td><a href="${esc(CONFIG.siteUrl)}/news/${esc(r.slug)}" target="_blank">${esc(r.title)}</a>
+        (r) => `<tr><td><a href="${esc(CONFIG.siteUrl)}/news/${esc(r.slug)}/" target="_blank">${esc(r.title)}</a>
         <div class="meta"><a href="/a/${r.id}">edit</a></div></td><td>${r.views}</td><td>${r.fb_posted ? '✓' : '–'}</td><td>${ago(r.published_at)}</td></tr>`,
       )
       .join('');
@@ -285,7 +286,7 @@ export function createApp() {
   });
 
   app.get('/sources', async (req, res) => {
-    const rows = await q(db().from('sources').select('*').order('tier').order('items_used', { ascending: false }));
+    const rows = await sql('SELECT * FROM sources ORDER BY tier, items_used DESC');
     const trs = rows
       .map(
         (s) => `<tr><td>${esc(s.name)}<div class="meta">${s.last_error ? `<span class="err">${esc(s.last_error)}</span>` : s.last_ok_at ? 'OK ' + ago(s.last_ok_at) : 'not run yet'}</div></td>
@@ -295,7 +296,7 @@ export function createApp() {
     res.send(
       page(
         'Sources',
-        `<p class="meta">Add or edit sources in Supabase → Table Editor → sources. "Used" counts headlines that became published articles.</p>
+        `<p class="meta">Add or edit sources in Cloudflare → D1 → anime-support → sources (or with SQL in its Console). "Used" counts headlines that became published articles.</p>
         <table><tr><th>Source</th><th>Tier</th><th>Used/seen</th><th>On</th></tr>${trs}</table>`,
       ),
     );
@@ -308,7 +309,7 @@ export function createApp() {
   return app;
 }
 
-/** Saves an uploaded file to Supabase Storage and returns its public URL. */
+/** Saves an uploaded file in the D1 media table and returns its site path. */
 async function uploadToStorage(file, articleId) {
   const ext = (file.originalname.match(/\.(\w{2,5})$/)?.[1] || file.mimetype.split('/')[1] || 'bin').toLowerCase();
   const path = `articles/${articleId}/upload-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
@@ -328,12 +329,10 @@ function mediaThumb(m) {
 
 /** Each source whose headline fed a published article earns +1 "used" (feeds the source ranking). */
 async function creditSources(clusterKey) {
-  const items = await q(db().from('raw_items').select('source_id').eq('cluster_key', clusterKey));
-  const ids = [...new Set(items.map((i) => i.source_id))];
-  for (const id of ids) {
-    const [s] = await q(db().from('sources').select('items_used').eq('id', id));
-    if (s) await q(db().from('sources').update({ items_used: s.items_used + 1 }).eq('id', id));
-  }
+  await sql(
+    'UPDATE sources SET items_used = items_used + 1 WHERE id IN (SELECT DISTINCT source_id FROM raw_items WHERE cluster_key = ?)',
+    [clusterKey],
+  );
 }
 
 export function startReviewServer() {

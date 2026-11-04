@@ -1,14 +1,9 @@
 // Build-time data access. Runs during `next build` only; pages are then plain HTML.
-import { createClient } from '@supabase/supabase-js';
-import { SITE, slugify } from './site.js';
+import { slugify } from './site.js';
+import { d1Configured, query, parseRow } from './d1.js';
 
 const FIELDS =
   'id, slug, title, excerpt, body_md, category, anime, source_urls, source_names, published_at, updated_at, views, cover_url, cover_credit, media, release_date';
-
-const client =
-  SITE.supabaseUrl && SITE.supabaseAnon
-    ? createClient(SITE.supabaseUrl, SITE.supabaseAnon, { auth: { persistSession: false } })
-    : null;
 
 let articlesCache;
 let trendingCache;
@@ -18,21 +13,15 @@ export async function allArticles() {
   if (articlesCache) return articlesCache;
   // SAMPLE_DATA=1 npm run dev → preview the design with made-up stories
   if (process.env.SAMPLE_DATA === '1') return (articlesCache = (await import('./sample.js')).SAMPLE);
-  if (!client) {
-    console.warn('[db] NEXT_PUBLIC_SUPABASE_URL / ANON_KEY missing: building with no articles.');
+  if (!d1Configured()) {
+    console.warn('[db] CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN missing: building with no articles.');
     return (articlesCache = []);
   }
   const rows = [];
-  for (let from = 0; ; from += 1000) {
-    const { data, error } = await client
-      .from('articles')
-      .select(FIELDS)
-      .eq('status', 'published')
-      .order('published_at', { ascending: false })
-      .range(from, from + 999);
-    if (error) throw new Error(`[db] ${error.message}`);
-    rows.push(...data);
-    if (data.length < 1000) break;
+  for (let offset = 0; ; offset += 500) {
+    const page = await query(`SELECT ${FIELDS} FROM articles WHERE status = 'published' ORDER BY published_at DESC LIMIT 500 OFFSET ?`, [offset]);
+    rows.push(...page.map(parseRow));
+    if (page.length < 500) break;
   }
   return (articlesCache = rows);
 }
@@ -103,9 +92,8 @@ export async function related(article, limit = 4) {
 export async function trendingAnime(limit = 10) {
   if (trendingCache) return trendingCache.slice(0, limit);
   let rows = [];
-  if (client) {
-    const { data } = await client.from('anime_focus').select('name, weight, views_7d').order('weight', { ascending: false }).limit(30);
-    rows = data ?? [];
+  if (d1Configured() && process.env.SAMPLE_DATA !== '1') {
+    rows = await query('SELECT name, weight, views_7d FROM anime_focus ORDER BY weight DESC LIMIT 30').catch(() => []);
   }
   const hubs = await animeHubs();
   const bySlug = new Map(hubs.map((h) => [h.slug, h]));

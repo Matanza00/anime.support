@@ -2,7 +2,6 @@
 // Article-page behaviour: reading progress bar, YouTube tap-to-play, social embed scripts,
 // and one anonymous view count per browser session (feeds the bot's optimizer).
 import { useEffect, useRef } from 'react';
-import { SITE } from '@/lib/site';
 
 export default function ArticleClient({ slug, scripts = [] }) {
   const bar = useRef(null);
@@ -41,14 +40,9 @@ export default function ArticleClient({ slug, scripts = [] }) {
 
     try {
       const k = `v:${slug}`;
-      if (SITE.supabaseUrl && SITE.supabaseAnon && !sessionStorage.getItem(k)) {
+      if (!sessionStorage.getItem(k) && location.hostname !== 'localhost') {
         sessionStorage.setItem(k, '1');
-        fetch(`${SITE.supabaseUrl}/rest/v1/rpc/increment_view`, {
-          method: 'POST',
-          headers: { apikey: SITE.supabaseAnon, Authorization: `Bearer ${SITE.supabaseAnon}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ p_slug: slug }),
-          keepalive: true,
-        }).catch(() => {});
+        fetch('/api/view', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug }), keepalive: true }).catch(() => {});
       }
     } catch {}
 

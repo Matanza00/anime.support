@@ -12,8 +12,6 @@ export const SITE = {
     bottom: e.NEXT_PUBLIC_ADSENSE_SLOT_BOTTOM || '',
   },
   ga4: e.NEXT_PUBLIC_GA4_ID || '',
-  supabaseUrl: e.NEXT_PUBLIC_SUPABASE_URL || '',
-  supabaseAnon: e.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
 };
 
 /** The four sections, their labels and their URLs. */

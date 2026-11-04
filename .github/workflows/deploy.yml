@@ -1,16 +1,19 @@
-# Builds the Next.js site (static export) and deploys it to Cloudflare (anime.support).
+# Sets up the D1 database (first run), builds the Next.js site from it, and deploys to Cloudflare.
 # Runs when site code changes, when the bot publishes, or by hand from the Actions tab.
 name: Deploy site
 
 on:
   push:
     branches: [main]
-    paths: ['web/**', 'wrangler.jsonc', '.github/workflows/deploy.yml']
+    paths: ['web/**', 'worker/**', 'database/**', 'wrangler.jsonc', '.github/workflows/deploy.yml']
   workflow_dispatch:
   workflow_call:
     secrets:
       CLOUDFLARE_API_TOKEN: { required: true }
       CLOUDFLARE_ACCOUNT_ID: { required: true }
+
+permissions:
+  contents: write # to save the deploy report (.github/status/deploy.md)
 
 concurrency:
   group: deploy
@@ -19,23 +22,49 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main # always build the latest commit, including the bot's publish marker
+          ref: main # always the latest commit
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
+
+      - name: Database (create if missing, apply schema, launch articles)
+        run: node database/setup.mjs 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+
       - run: npm ci
         working-directory: web
-      - name: Build (Next.js static export → web/out)
-        run: npm run build
+      - name: Build site (Next.js static export + images from D1)
         working-directory: web
+        run: npm run build 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+
       - name: Deploy to Cloudflare
-        run: npx --yes wrangler@4 deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+
+      - name: Save deploy report
+        if: always()
+        run: |
+          mkdir -p .github/status
+          {
+            echo "# Last deploy: ${{ job.status }}"
+            echo
+            echo "- When: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- Commit: ${GITHUB_SHA::7}"
+            echo "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo '```'
+            tail -n 80 "$RUNNER_TEMP/report.txt" 2>/dev/null | sed -E 's/(token|Bearer)[^ ]*/\1 ***/Ig'
+            echo '```'
+          } > .github/status/deploy.md
+          git config user.name "anime.support bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/status/deploy.md
+          git commit -m "status: deploy ${{ job.status }}" || exit 0
+          git pull --rebase --autostash -q origin main && git push -q origin HEAD:main || true
