@@ -13,6 +13,13 @@ import { allowedByRobots } from './robots.js';
 
 const VALID_CATEGORIES = new Set(['news', 'upcoming', 'release', 'feature']);
 
+/** Accepts only a real YYYY-MM-DD date, else null (the calendar must never show a guessed date). */
+export function validDate(v) {
+  if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
+  const d = new Date(`${v}T00:00:00Z`);
+  return Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v ? null : v;
+}
+
 /** Returns the page's readable text plus any images/videos/posts it embeds. */
 async function fetchPage(url) {
   try {
@@ -126,6 +133,7 @@ export async function draft() {
           body_md: out.body_markdown,
           category,
           social_card_url: art.social_card_url,
+          release_date: validDate(out.release_date),
           image_prompt: out.image_prompt || null,
           anime,
           ...mediaInfo,

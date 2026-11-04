@@ -1,5 +1,6 @@
 node_modules
 .env
-dist
-.astro
+.env.local
 .state.json
+web/.next
+web/out

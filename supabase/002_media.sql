@@ -20,3 +20,7 @@ create table if not exists bot_state (
   updated_at timestamptz not null default now()
 );
 alter table bot_state enable row level security;
+
+alter table articles add column if not exists release_date date;
+drop policy if exists "public reads focus" on anime_focus;
+create policy "public reads focus" on anime_focus for select to anon using (true);

@@ -2,7 +2,7 @@
 
 Live at **https://anime.support**
 
-A static anime news site (Astro) on Cloudflare, plus a news bot that runs on GitHub Actions. Every
+A Next.js anime news site (static export, dark glass design) on Cloudflare, plus a news bot that runs on GitHub Actions. Every
 2 hours the bot reads anime news feeds, groups duplicate headlines, writes an **original** draft
 with AI and creates **original artwork** for it. You approve drafts in a dashboard on your laptop;
 the next run deploys them to Cloudflare and posts them to your Facebook Page with a headline card.
@@ -17,7 +17,7 @@ weekly: AniList trending + your view counts ─► what the bot writes about nex
 
 | Part | Runs on | Cost |
 | --- | --- | --- |
-| Website `site/` | Cloudflare Workers static assets | Free, ads allowed |
+| Website `web/` (Next.js 16) | Cloudflare Workers static assets | Free, ads allowed |
 | Bot `bot/` | GitHub Actions (`.github/workflows/bot.yml`) | Free (public repo) or ~1,100 of 2,000 free min/month (private) |
 | Review dashboard | Your laptop: `npm run review` | Free |
 | Database + images | Supabase free tier | Free |
@@ -38,7 +38,7 @@ AdSense reviewers check it.
 
 ### 2. Supabase
 Create a free project, then in **SQL Editor** run `supabase/schema.sql`, then `supabase/seed/launch.sql`
-(six original launch articles). Put the project URL and **anon** key in `site/.env.production`
+(six original launch articles). Put the project URL and **anon** key in `web/.env.production` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
 and commit it. Both are public by design; row-level security protects the data.
 
 ### 3. GitHub secrets
@@ -81,6 +81,24 @@ meta tag and `/ads.txt` are on every build.
 4. After approval, turn on **Auto ads**. Optional manual units go in `PUBLIC_ADSENSE_SLOT_*`.
 
 ---
+
+## The website (`web/`)
+Next.js 16 App Router with `output: 'export'`: every page is pre-rendered to plain HTML at build
+time, so Cloudflare serves it from the edge with no server and no cold starts. Pages:
+
+| Page | What it is |
+| --- | --- |
+| `/` | Featured story, top stories, most read, coming-soon countdowns, latest news, section rails, trending chart |
+| `/news/`, `/upcoming/`, `/releases/`, `/features/` | Sections, 24 stories per page with numbered pages |
+| `/news/<slug>/` | Article: breadcrumbs, share buttons, reading progress, table of contents, embeds, sources, related |
+| `/calendar/` | Release calendar of officially confirmed dates, grouped by month, with live countdowns |
+| `/anime/`, `/anime/<name>/` | A–Z of shows and an evergreen hub per anime |
+| `/search/` | Instant search (built-in index, no server) |
+| `/sitemap.xml`, `/news-sitemap.xml`, `/rss.xml`, `/robots.txt`, `/ads.txt` | Generated on every build |
+
+SEO built in: per-page titles, descriptions and canonical URLs (Next.js Metadata API), Open Graph
+and Twitter cards, `NewsArticle`, `BreadcrumbList`, `WebSite` + search and `Organization` structured
+data, `max-image-preview:large`, Google News sitemap, image sitemap entries and self-hosted fonts.
 
 ## Original media, fully automatic
 For every draft the bot creates, with no input from you:
@@ -146,7 +164,7 @@ auto-generated or rewritten content, so this review step is what keeps the accou
 | `npm run seed` | Publish the launch articles (if not already in the database) |
 | `npm test` | Unit tests |
 
-Preview the design locally with demo stories: `cd site && npm install && SAMPLE_DATA=1 npm run dev`.
+Preview the design locally with demo stories: `cd web && npm install && SAMPLE_DATA=1 npm run dev`.
 
 ## Facebook Page auto-posting (optional)
 1. Create an app at developers.facebook.com (type **Business**).

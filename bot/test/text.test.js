@@ -48,3 +48,11 @@ test('long official titles still match short headlines', () => {
   const other = [{ title: 'Some Other Show Visual', source_id: 1, published_at: now }];
   assert.ok(scoreCluster(c, focus) > scoreCluster(other, focus));
 });
+
+test('release dates must be real, exact dates', async () => {
+  const { validDate } = await import('../src/draft.js');
+  assert.equal(validDate('2027-01-09'), '2027-01-09');
+  assert.equal(validDate('2027-02-30'), null);
+  assert.equal(validDate('Spring 2027'), null);
+  assert.equal(validDate(null), null);
+});

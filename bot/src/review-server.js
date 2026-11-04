@@ -129,6 +129,8 @@ export function createApp() {
         <label>Excerpt / meta description</label><textarea name="excerpt" style="min-height:70px">${esc(a.excerpt)}</textarea>
         <label>Category</label><select name="category">${cats}</select>
         <label>Anime (comma separated)</label><input name="anime" value="${esc((a.anime || []).join(', '))}">
+        <label>Confirmed release date (only if official; shows in the calendar and countdowns)</label>
+        <input type="date" name="release_date" value="${esc(a.release_date || '')}">
 
         <fieldset><legend>Cover image</legend>
           ${a.cover_url ? `<img class="cover-prev" id="coverPrev" src="${esc(a.cover_url)}" alt="">` : '<img class="cover-prev" id="coverPrev" alt="" hidden>'}
@@ -233,6 +235,7 @@ export function createApp() {
       anime: String(b.anime || '').split(',').map((s) => s.trim()).filter(Boolean).slice(0, 3),
       body_md: String(b.body_md || ''),
       fb_caption: String(b.fb_caption || '').trim() || null,
+      release_date: /^\d{4}-\d{2}-\d{2}$/.test(b.release_date || '') ? b.release_date : null,
       updated_at: new Date().toISOString(),
     };
     if (b.action === 'approve') Object.assign(edits, { status: 'published', published_at: new Date().toISOString() });

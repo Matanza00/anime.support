@@ -40,6 +40,7 @@ Return ONLY a JSON object:
   "anime": ["Official English title", "max 3 titles"],
   "body_markdown": "article",
   "facebook_caption": "1-2 punchy sentences + 2-3 relevant hashtags, no link, no false claims",
+  "release_date": "YYYY-MM-DD ONLY if the sources state an exact, officially confirmed premiere/release date for what this story is about; otherwise null. Never guess, never use a month or season alone.",
   "image_prompt": "one or two sentences describing an ORIGINAL illustration that captures the story's mood, genre and setting (e.g. 'a lone swordsman silhouetted on a rainy neon rooftop at night'). Never name or describe existing characters, logos or title lettering.",
   "confidence": 0.0
 }

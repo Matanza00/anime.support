@@ -23,14 +23,14 @@ async function git(...args) {
   return stdout.trim();
 }
 
-/** Commits site/src/data/last-publish.json and pushes; your host rebuilds on push. */
+/** Commits web/data/last-publish.json and pushes; your host rebuilds on push. */
 async function deployViaGit(count) {
-  const marker = path.join(CONFIG.deploy.repoDir, 'site', 'src', 'data', 'last-publish.json');
+  const marker = path.join(CONFIG.deploy.repoDir, 'web', 'data', 'last-publish.json');
   await fs.writeFile(marker, JSON.stringify({ lastPublish: new Date().toISOString(), count }, null, 2) + '\n');
   await git('pull', '--rebase', '--autostash', 'origin', CONFIG.deploy.branch).catch((e) =>
     warn(`git pull failed (continuing): ${e.message.split('\n')[0]}`),
   );
-  await git('add', 'site/src/data/last-publish.json');
+  await git('add', 'web/data/last-publish.json');
   await git('commit', '-m', `content: publish ${count} article(s)`);
   await git('push', 'origin', CONFIG.deploy.branch);
 }

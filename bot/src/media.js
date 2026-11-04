@@ -6,7 +6,7 @@
 import { CONFIG } from './config.js';
 import { warn } from './log.js';
 
-/** Recognises a URL as an embeddable item. Kept in sync with site/src/lib/embeds.js. */
+/** Recognises a URL as an embeddable item. Kept in sync with web/lib/embeds.js. */
 export function classifyUrl(raw) {
   let u;
   try {

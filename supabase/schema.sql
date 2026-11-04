@@ -59,7 +59,8 @@ create table if not exists articles (
   fb_caption    text,
   fb_posted     boolean not null default false,
   fb_post_id    text,
-  views         int not null default 0
+  views         int not null default 0,
+  release_date  date                          -- officially confirmed premiere/release date (calendar + countdowns)
 );
 create index if not exists articles_status_idx on articles(status, published_at desc);
 create index if not exists articles_anime_idx on articles using gin(anime);
@@ -112,6 +113,10 @@ alter table article_views_daily  enable row level security;
 drop policy if exists "public reads published" on articles;
 create policy "public reads published" on articles
   for select to anon using (status = 'published');
+
+-- The "Trending anime this week" chart on the site reads these weights (not sensitive).
+drop policy if exists "public reads focus" on anime_focus;
+create policy "public reads focus" on anime_focus for select to anon using (true);
 
 revoke all on function increment_view(text) from public;
 grant execute on function increment_view(text) to anon;

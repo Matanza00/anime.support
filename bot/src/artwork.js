@@ -168,12 +168,12 @@ async function loadFonts() {
   return fonts;
 }
 
-// Uses the light-wordmark brand logo (site/public/brand/logo-dark.png) on cards, else the text logo.
+// Uses the light-wordmark brand logo (web/public/brand/logo-dark.png) on cards, else the text logo.
 let logoUri;
 async function brandLogo() {
   if (logoUri !== undefined) return logoUri;
   try {
-    const file = new URL('../../site/public/brand/logo-dark.png', import.meta.url);
+    const file = new URL('../../web/public/brand/logo-dark.png', import.meta.url);
     const png = await sharp(await fs.readFile(file)).resize({ height: 80 }).png().toBuffer();
     const { width } = await sharp(png).metadata();
     logoUri = { src: `data:image/png;base64,${png.toString('base64')}`, width, height: 80 };
