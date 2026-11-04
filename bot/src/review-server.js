@@ -22,7 +22,7 @@ const ago = (iso) => {
 const page = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · Review</title>
 <style>
-:root{--bg:#0c0c12;--s:#15151f;--l:#2a2a3b;--t:#ecebf3;--m:#a3a1b5;--a:#ff4d8d;--ok:#3ddc97;--warn:#ffb84d}
+:root{--bg:#110d22;--s:#15151f;--l:#2a2a3b;--t:#ecebf3;--m:#a3a1b5;--a:#ff5a72;--ok:#3ddc97;--warn:#ffb84d}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:16px/1.55 system-ui,sans-serif}
 a{color:inherit}.w{max-width:860px;margin:0 auto;padding:16px}
 header{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--l);padding-bottom:12px;margin-bottom:16px}

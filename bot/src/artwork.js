@@ -168,15 +168,15 @@ async function loadFonts() {
   return fonts;
 }
 
-// Uses the brand PNG (site/public/brand/logo.png) on cards when it exists, else the text logo.
+// Uses the light-wordmark brand logo (site/public/brand/logo-dark.png) on cards, else the text logo.
 let logoUri;
 async function brandLogo() {
   if (logoUri !== undefined) return logoUri;
   try {
-    const file = new URL('../../site/public/brand/logo.png', import.meta.url);
-    const png = await sharp(await fs.readFile(file)).resize({ height: 56 }).png().toBuffer();
+    const file = new URL('../../site/public/brand/logo-dark.png', import.meta.url);
+    const png = await sharp(await fs.readFile(file)).resize({ height: 80 }).png().toBuffer();
     const { width } = await sharp(png).metadata();
-    logoUri = { src: `data:image/png;base64,${png.toString('base64')}`, width, height: 56 };
+    logoUri = { src: `data:image/png;base64,${png.toString('base64')}`, width, height: 80 };
   } catch {
     logoUri = null;
   }
@@ -196,18 +196,18 @@ export async function socialCard({ title, anime, category, heroBuffer }) {
     { width: 1200, height: 630, display: 'flex', position: 'relative', fontFamily: 'Body', color: '#fff' },
     [
       { type: 'img', props: { src: bgUri, width: 1200, height: 630, style: { position: 'absolute', top: 0, left: 0 } } },
-      el('div', { position: 'absolute', top: 0, left: 0, width: 1200, height: 630, display: 'flex', backgroundImage: 'linear-gradient(180deg, rgba(8,8,14,0.15) 0%, rgba(8,8,14,0.55) 45%, rgba(8,8,14,0.95) 100%)' }, []),
+      el('div', { position: 'absolute', top: 0, left: 0, width: 1200, height: 630, display: 'flex', backgroundImage: 'linear-gradient(180deg, rgba(22,17,42,0.15) 0%, rgba(22,17,42,0.6) 45%, rgba(22,17,42,0.96) 100%)' }, []),
       el('div', { position: 'absolute', left: 64, right: 64, bottom: 56, display: 'flex', flexDirection: 'column', gap: 18 }, [
         el('div', { display: 'flex', gap: 12, alignItems: 'center' }, [
-          el('div', { display: 'flex', background: '#ff4d8d', color: '#1a0610', fontWeight: 700, fontSize: 22, padding: '6px 14px', borderRadius: 999, letterSpacing: 2 }, CATEGORY[category] || 'NEWS'),
-          anime ? el('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: '#ffd1e2' }, anime) : null,
+          el('div', { display: 'flex', background: '#FF3D5A', color: '#16112A', fontWeight: 700, fontSize: 22, padding: '6px 14px', borderRadius: 999, letterSpacing: 2 }, CATEGORY[category] || 'NEWS'),
+          anime ? el('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: '#FFC93C' }, anime) : null,
         ].filter(Boolean)),
         el('div', { display: 'flex', fontFamily: 'Display', fontSize: size, lineHeight: 1.05, letterSpacing: -1.5 }, title),
         logo
           ? { type: 'img', props: { src: logo.src, width: logo.width, height: logo.height } }
           : el('div', { display: 'flex', fontSize: 24, color: '#cfcde0' }, [
               el('span', { color: '#fff', fontWeight: 700 }, 'anime'),
-              el('span', { color: '#ff4d8d', fontWeight: 700 }, '.support'),
+              el('span', { color: '#FF3D5A', fontWeight: 700 }, '.support'),
             ]),
       ]),
     ],

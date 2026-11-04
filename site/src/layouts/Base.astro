@@ -1,16 +1,6 @@
 ---
 import '../styles/global.css';
 import { SITE } from '../lib/site.js';
-import fs from 'node:fs';
-
-// Brand files in site/public/brand/ (optional). Falls back to the text logo when absent.
-const brand = (f) => fs.existsSync(new URL(`../../public/brand/${f}`, import.meta.url));
-const LOGO = {
-  png: brand('logo.png'),
-  mp4: brand('logo.mp4'),
-  gif: brand('logo.gif'),
-};
-
 const {
   title,
   description = SITE.tagline,
@@ -50,14 +40,11 @@ const nav = [
     <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
     <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    {LOGO.png ? (
-      <>
-        <link rel="icon" href="/brand/favicon-32.png" sizes="32x32" type="image/png" />
-        <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
-      </>
-    ) : (
-      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    )}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/brand/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#16112A" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -90,21 +77,7 @@ const nav = [
     <header class="site-header">
       <div class="wrap">
         <a class="logo" href="/" aria-label="anime.support home">
-          {LOGO.mp4 ? (
-            <>
-              <video class="logo-media logo-anim" src="/brand/logo.mp4" poster={LOGO.png ? '/brand/logo.png' : undefined} autoplay muted loop playsinline aria-hidden="true"></video>
-              {LOGO.png && <img class="logo-media logo-still" src="/brand/logo.png" alt="" />}
-            </>
-          ) : LOGO.gif ? (
-            <picture>
-              {LOGO.png && <source srcset="/brand/logo.png" media="(prefers-reduced-motion: reduce)" />}
-              <img class="logo-media" src="/brand/logo.gif" alt="" />
-            </picture>
-          ) : LOGO.png ? (
-            <img class="logo-media" src="/brand/logo.png" alt="" />
-          ) : (
-            <>anime<span>.support</span></>
-          )}
+          <img id="site-logo" class="logo-media" src="/brand/logo-dark.svg" alt="anime.support" width="138" height="56" />
         </a>
         <nav class="nav" aria-label="Main">
           {nav.map(([href, label]) => (
@@ -132,5 +105,15 @@ const nav = [
         </nav>
       </div>
     </footer>
+    <script is:inline>
+      (function () {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        addEventListener('load', function () {
+          var a = new Image();
+          a.onload = function () { var l = document.getElementById('site-logo'); if (l) l.src = a.src; };
+          a.src = '/brand/logo-anim.webp';
+        });
+      })();
+    </script>
   </body>
 </html>
