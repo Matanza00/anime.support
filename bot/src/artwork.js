@@ -168,12 +168,28 @@ async function loadFonts() {
   return fonts;
 }
 
+// Uses the brand PNG (site/public/brand/logo.png) on cards when it exists, else the text logo.
+let logoUri;
+async function brandLogo() {
+  if (logoUri !== undefined) return logoUri;
+  try {
+    const file = new URL('../../site/public/brand/logo.png', import.meta.url);
+    const png = await sharp(await fs.readFile(file)).resize({ height: 56 }).png().toBuffer();
+    const { width } = await sharp(png).metadata();
+    logoUri = { src: `data:image/png;base64,${png.toString('base64')}`, width, height: 56 };
+  } catch {
+    logoUri = null;
+  }
+  return logoUri;
+}
+
 const CATEGORY = { news: 'NEWS', upcoming: 'UPCOMING', release: 'OUT NOW', feature: 'FEATURE' };
 
 export async function socialCard({ title, anime, category, heroBuffer }) {
   const bg = await sharp(heroBuffer).resize(1200, 630, { fit: 'cover' }).jpeg({ quality: 80 }).toBuffer();
   const bgUri = `data:image/jpeg;base64,${bg.toString('base64')}`;
   const size = title.length > 80 ? 52 : title.length > 55 ? 60 : 68;
+  const logo = await brandLogo();
   const el = (type, style, children) => ({ type, props: { style, children } });
   const tree = el(
     'div',
@@ -187,10 +203,12 @@ export async function socialCard({ title, anime, category, heroBuffer }) {
           anime ? el('div', { display: 'flex', fontSize: 24, fontWeight: 700, color: '#ffd1e2' }, anime) : null,
         ].filter(Boolean)),
         el('div', { display: 'flex', fontFamily: 'Display', fontSize: size, lineHeight: 1.05, letterSpacing: -1.5 }, title),
-        el('div', { display: 'flex', fontSize: 24, color: '#cfcde0' }, [
-          el('span', { color: '#fff', fontWeight: 700 }, 'anime'),
-          el('span', { color: '#ff4d8d', fontWeight: 700 }, '.support'),
-        ]),
+        logo
+          ? { type: 'img', props: { src: logo.src, width: logo.width, height: logo.height } }
+          : el('div', { display: 'flex', fontSize: 24, color: '#cfcde0' }, [
+              el('span', { color: '#fff', fontWeight: 700 }, 'anime'),
+              el('span', { color: '#ff4d8d', fontWeight: 700 }, '.support'),
+            ]),
       ]),
     ],
   );
