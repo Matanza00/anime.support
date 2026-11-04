@@ -19,6 +19,10 @@ on:
 permissions:
   contents: write # to commit the publish marker
 
+defaults:
+  run:
+    shell: bash
+
 concurrency:
   group: bot
   cancel-in-progress: false
