@@ -11,7 +11,9 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
 const NAME = process.env.D1_DATABASE_NAME || 'anime-support';
-const { CLOUDFLARE_ACCOUNT_ID: ACCOUNT, CLOUDFLARE_API_TOKEN: TOKEN } = process.env;
+const TOKEN = process.env.CLOUDFLARE_API_TOKEN?.trim();
+// Accept both the plain account ID and the "com.cloudflare.api.account.<id>" form from token pages.
+const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID?.trim().replace(/^com\.cloudflare\.api\.account\./, '');
 if (!ACCOUNT || !TOKEN) {
   console.error('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN (add them as GitHub repository secrets).');
   process.exit(1);
@@ -70,5 +72,5 @@ if (n === 0) {
 // 4. hand the id to wrangler and later steps
 const wranglerPath = path.join(root, 'wrangler.jsonc');
 fs.writeFileSync(wranglerPath, fs.readFileSync(wranglerPath, 'utf8').replace(/"database_id": "[^"]*"/, `"database_id": "${id}"`));
-if (process.env.GITHUB_ENV) fs.appendFileSync(process.env.GITHUB_ENV, `D1_DATABASE_ID=${id}\n`);
+if (process.env.GITHUB_ENV) fs.appendFileSync(process.env.GITHUB_ENV, `D1_DATABASE_ID=${id}\nCLOUDFLARE_ACCOUNT_ID=${ACCOUNT}\n`);
 console.log('Done.');

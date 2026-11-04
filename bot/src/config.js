@@ -9,8 +9,8 @@ const e = process.env;
 export const CONFIG = {
   // Cloudflare D1 database (articles, sources, stats, images)
   d1: {
-    accountId: e.CLOUDFLARE_ACCOUNT_ID || '',
-    token: e.CLOUDFLARE_API_TOKEN || '',
+    accountId: (e.CLOUDFLARE_ACCOUNT_ID || '').trim().replace(/^com\.cloudflare\.api\.account\./, ''),
+    token: (e.CLOUDFLARE_API_TOKEN || '').trim(),
     name: e.D1_DATABASE_NAME || 'anime-support',
     databaseId: e.D1_DATABASE_ID || '', // optional; looked up by name when empty
   },

@@ -1,7 +1,7 @@
 // Build-time D1 access over Cloudflare's REST API (server only; the token never reaches the browser).
 const API = process.env.CF_API_BASE || 'https://api.cloudflare.com/client/v4';
-const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID;
-const TOKEN = process.env.CLOUDFLARE_API_TOKEN;
+const ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID?.trim().replace(/^com\.cloudflare\.api\.account\./, '');
+const TOKEN = process.env.CLOUDFLARE_API_TOKEN?.trim();
 const NAME = process.env.D1_DATABASE_NAME || 'anime-support';
 let dbId = process.env.D1_DATABASE_ID || null;
 
