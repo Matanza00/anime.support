@@ -101,9 +101,17 @@ CREATE TABLE IF NOT EXISTS bot_state (
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
--- Starter sources. daily = breaking news, weekly = trend charts, monthly = seasonal/upcoming coverage.
+-- Starter sources. daily = breaking news, weekly = trends and features, monthly = seasonal/upcoming coverage.
 INSERT OR IGNORE INTO sources (name, homepage, feed_url, tier) VALUES
   ('Anime News Network', 'https://www.animenewsnetwork.com/', 'https://www.animenewsnetwork.com/all/rss.xml?ann-edition=w', 'daily'),
-  ('Crunchyroll News',   'https://www.crunchyroll.com/news', NULL, 'daily'),
+  ('Crunchyroll News',   'https://www.crunchyroll.com/news', 'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss', 'daily'),
+  ('MyAnimeList News',   'https://myanimelist.net/news', 'https://myanimelist.net/rss/news.xml', 'daily'),
+  ('Anime Corner',       'https://animecorner.me/', 'https://animecorner.me/feed/', 'weekly'),
+  ('Anime UK News',      'https://animeuknews.net/', 'https://animeuknews.net/feed/', 'weekly'),
+  ('Otaku News',         'https://www.otakunews.com/', 'https://www.otakunews.com/rss/rss.xml', 'monthly'),
   ('AniTrendz',          'https://anitrendz.net/news/', 'https://anitrendz.net/news/feed/', 'weekly'),
   ('Otaku USA',          'https://otakuusamagazine.com/', 'https://otakuusamagazine.com/feed/', 'monthly');
+
+-- One-time fixes, safe to repeat: Crunchyroll's feed address; sources that block feed readers start switched off
+UPDATE sources SET feed_url = 'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss' WHERE name = 'Crunchyroll News' AND feed_url IS NULL;
+UPDATE sources SET enabled = 0 WHERE name IN ('AniTrendz', 'Otaku USA') AND items_seen = 0 AND last_error IS NOT NULL;

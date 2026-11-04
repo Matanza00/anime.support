@@ -18,11 +18,11 @@ export async function discoverFeed(homepage) {
   return new URL(href, homepage).toString();
 }
 
-/** Inserts headlines 20 at a time (D1 allows 100 parameters per query); duplicates are skipped. */
+/** Inserts headlines 15 at a time (6 values each; D1 allows 100 bound values per query). Duplicates are skipped. */
 async function insertItems(rows) {
   let n = 0;
-  for (let i = 0; i < rows.length; i += 20) {
-    const chunk = rows.slice(i, i + 20);
+  for (let i = 0; i < rows.length; i += 15) {
+    const chunk = rows.slice(i, i + 15);
     const values = chunk.map(() => '(?, ?, ?, ?, ?, ?)').join(', ');
     const params = chunk.flatMap((r) => [r.source_id, r.url, r.title, r.summary, r.published_at, now()]);
     const ids = await sql(
