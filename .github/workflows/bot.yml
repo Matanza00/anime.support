@@ -30,6 +30,7 @@ concurrency:
 jobs:
   bot:
     runs-on: ubuntu-latest
+    environment: Env # your secrets live in the "Env" environment
     timeout-minutes: 30
     outputs:
       deploy: ${{ steps.publish.outputs.deploy }}

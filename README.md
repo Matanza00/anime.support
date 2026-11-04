@@ -47,7 +47,7 @@ Images (bot artwork and your uploads) are stored in D1's `media` table and copie
 plain files at every deploy, so serving them costs nothing.
 
 ### 3. GitHub secrets
-Repo → **Settings → Secrets and variables → Actions**:
+Repo → **Settings → Environments → Env → Environment secrets** (the workflows use the `Env` environment):
 
 | Secret | Where to get it |
 | --- | --- |

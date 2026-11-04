@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
-      CLOUDFLARE_API_TOKEN: { required: true }
-      CLOUDFLARE_ACCOUNT_ID: { required: true }
+      CLOUDFLARE_API_TOKEN: { required: false }
+      CLOUDFLARE_ACCOUNT_ID: { required: false }
 
 permissions:
   contents: write # to save the deploy report (.github/status/deploy.md)
@@ -27,6 +27,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    environment: Env # your secrets live in the "Env" environment
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -43,7 +44,7 @@ jobs:
       - name: Check secrets (names only, never values)
         run: |
           for n in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID; do
-            if [ -n "${!n}" ]; then echo "$n: set"; else echo "$n: MISSING (add it under Settings → Secrets and variables → Actions → Repository secrets)"; fi
+            if [ -n "${!n}" ]; then echo "$n: set"; else echo "$n: MISSING (add it under Settings → Secrets and variables → Actions → the Env environment)"; fi
           done | tee -a "$RUNNER_TEMP/report.txt"
           [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]
 
