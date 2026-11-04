@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: '17 */2 * * *'
     - cron: '41 22 * * 0'
+  push: # editing .github/run-bot.txt starts a collect-and-publish run right away
+    branches: [main]
+    paths: ['.github/run-bot.txt']
   workflow_dispatch:
     inputs:
       task:
@@ -64,24 +67,43 @@ jobs:
 
       - name: Weekly optimise
         if: github.event.schedule == '41 22 * * 0' || inputs.task == 'optimize'
-        run: node src/index.js optimize
+        run: node src/index.js optimize 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
 
       - name: Publish launch articles
         if: inputs.task == 'seed'
-        run: node src/index.js seed
+        run: node src/index.js seed 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
 
       - name: Collect news and write drafts
-        if: github.event.schedule == '17 */2 * * *' || inputs.task == 'collect-and-publish' || inputs.task == 'collect'
-        run: node src/index.js collect
+        if: github.event.schedule == '17 */2 * * *' || github.event_name == 'push' || inputs.task == 'collect-and-publish' || inputs.task == 'collect'
+        run: node src/index.js collect 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
 
       - name: Deploy approved articles + share to Facebook
         id: publish
-        if: github.event.schedule == '17 */2 * * *' || inputs.task == 'collect-and-publish' || inputs.task == 'publish'
-        run: node src/index.js publish
+        if: github.event.schedule == '17 */2 * * *' || github.event_name == 'push' || inputs.task == 'collect-and-publish' || inputs.task == 'publish'
+        run: node src/index.js publish 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
+
+      - name: Save bot report
+        if: always()
+        run: |
+          mkdir -p .github/status
+          {
+            echo "# Last bot run: ${{ job.status }}"
+            echo
+            echo "- When: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- Trigger: ${{ github.event_name }}"
+            echo "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo '```'
+            tail -n 80 "$RUNNER_TEMP/report.txt" 2>/dev/null
+            echo '```'
+          } > .github/status/bot.md
+          git add .github/status/bot.md
+          git commit -m "status: bot ${{ job.status }}" || exit 0
+          git pull --rebase --autostash -q origin main && git push -q origin HEAD:main || true
 
   deploy:
     needs: bot
