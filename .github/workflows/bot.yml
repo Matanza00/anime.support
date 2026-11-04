@@ -1,0 +1,85 @@
+# The news bot, running in the cloud (no laptop needed).
+#   every 2 hours: fetch feeds → AI drafts + original artwork → deploy approved articles → Facebook
+#   weekly (Sunday):  AniList trending + learn from views + rank sources
+# Times are UTC. Run any task by hand: Actions tab → "News bot" → Run workflow.
+name: News bot
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+    - cron: '41 22 * * 0'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task to run'
+        type: choice
+        options: [collect-and-publish, collect, publish, optimize, seed]
+        default: collect-and-publish
+
+permissions:
+  contents: write # to commit the publish marker
+
+concurrency:
+  group: bot
+  cancel-in-progress: false
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      deploy: ${{ steps.publish.outputs.deploy }}
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
+      LLM_MODEL: ${{ vars.LLM_MODEL || 'openai/gpt-4o-mini' }}
+      IMAGE_PROVIDER: ${{ vars.IMAGE_PROVIDER || 'openrouter' }}
+      IMAGE_MODEL: ${{ vars.IMAGE_MODEL || 'google/gemini-2.5-flash-image' }}
+      IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
+      FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+      FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+      SITE_URL: https://anime.support
+      DEPLOY_MODE: actions
+      MAX_DRAFTS_PER_RUN: ${{ vars.MAX_DRAFTS_PER_RUN || '6' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: bot/package-lock.json
+      - run: npm ci
+        working-directory: bot
+      - name: Git identity for the publish marker
+        run: |
+          git config user.name "anime.support bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Weekly optimise
+        if: github.event.schedule == '41 22 * * 0' || inputs.task == 'optimize'
+        run: node src/index.js optimize
+        working-directory: bot
+
+      - name: Publish launch articles
+        if: inputs.task == 'seed'
+        run: node src/index.js seed
+        working-directory: bot
+
+      - name: Collect news and write drafts
+        if: github.event.schedule == '17 */2 * * *' || inputs.task == 'collect-and-publish' || inputs.task == 'collect'
+        run: node src/index.js collect
+        working-directory: bot
+
+      - name: Deploy approved articles + share to Facebook
+        id: publish
+        if: github.event.schedule == '17 */2 * * *' || inputs.task == 'collect-and-publish' || inputs.task == 'publish'
+        run: node src/index.js publish
+        working-directory: bot
+
+  deploy:
+    needs: bot
+    if: needs.bot.outputs.deploy == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

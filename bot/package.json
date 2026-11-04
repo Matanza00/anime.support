@@ -1,0 +1,32 @@
+{
+  "name": "anime-support-bot",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node src/index.js",
+    "collect": "node src/index.js collect",
+    "draft": "node src/index.js draft",
+    "publish": "node src/index.js publish",
+    "optimize": "node src/index.js optimize",
+    "review": "node src/review-server.js",
+    "test": "node --test",
+    "seed": "node src/index.js seed"
+  },
+  "dependencies": {
+    "@fontsource/bricolage-grotesque": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@supabase/supabase-js": "^2.118.0",
+    "cheerio": "^1.2.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "marked": "^18.1.3",
+    "multer": "^2.5.0",
+    "node-cron": "^4.6.0",
+    "openai": "^7.47.0",
+    "rss-parser": "^3.13.0",
+    "satori": "^0.63.2",
+    "sharp": "^0.35.5"
+  },
+  "type": "module",
+  "private": true
+}

@@ -1,0 +1,15 @@
+// Cloudflare Workers static-assets site. Deployed by .github/workflows/deploy.yml.
+{
+  "name": "anime-support",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./site/dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Requires anime.support to be added to the same Cloudflare account (free plan is fine).
+  "routes": [
+    { "pattern": "anime.support", "custom_domain": true },
+    { "pattern": "www.anime.support", "custom_domain": true }
+  ]
+}

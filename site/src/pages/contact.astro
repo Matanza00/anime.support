@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site.js';
+---
+<Base title="Contact" description={`Contact the ${SITE.name} team for tips, corrections or partnerships.`}>
+  <div class="page prose">
+    <h1>Contact us</h1>
+    <p>We read every message. Email us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a> for:</p>
+    <ul>
+      <li><strong>News tips:</strong> announcements we may have missed.</li>
+      <li><strong>Corrections:</strong> include the article link and what needs fixing.</li>
+      <li><strong>Copyright or removal requests:</strong> include the URL and proof of ownership; we respond within 48 hours.</li>
+      <li><strong>Partnerships and advertising.</strong></li>
+    </ul>
+  </div>
+</Base>

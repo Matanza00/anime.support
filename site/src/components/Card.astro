@@ -1,0 +1,13 @@
+---
+import Cover from './Cover.astro';
+import { CATEGORY_LABEL, formatDate } from '../lib/site.js';
+const { article: a } = Astro.props;
+const label = a.anime?.[0] ?? CATEGORY_LABEL[a.category];
+---
+<a class="card" href={`/news/${a.slug}`}>
+  <Cover label={label} image={a.cover_url} />
+  <span class:list={['kicker', a.category]}>{CATEGORY_LABEL[a.category]}</span>
+  <h3>{a.title}</h3>
+  <p>{a.excerpt}</p>
+  <div class="meta"><time datetime={a.published_at}>{formatDate(a.published_at)}</time></div>
+</a>

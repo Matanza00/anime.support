@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { allArticles } from '../../lib/db.js';
+const articles = await allArticles();
+---
+<Base title="All anime news" description="Every anime news story we have covered, newest first.">
+  <div class="wrap section">
+    <div class="section-head"><h1 style="font-size:40px">All anime news</h1></div>
+    <AdSlot slot="top" />
+    {articles.length ? (
+      <div class="grid">{articles.map((a) => <Card article={a} />)}</div>
+    ) : (
+      <div class="empty">No stories published yet.</div>
+    )}
+  </div>
+</Base>

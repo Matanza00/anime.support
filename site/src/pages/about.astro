@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site.js';
+---
+<Base title="About us" description={`What ${SITE.name} is, how we report, and how we correct mistakes.`}>
+  <div class="page prose">
+    <h1>About {SITE.name}</h1>
+    <p>
+      {SITE.name} is an independent anime news site. We track official announcements from studios, publishers and
+      streaming services, plus reporting from established anime news outlets, and turn them into clear, quick reads:
+      what was announced, why it matters, and what happens next.
+    </p>
+    <h2>How we report</h2>
+    <ul>
+      <li>Every story is based on an official announcement or a named, established source, linked at the end of the article.</li>
+      <li>We write every article in our own words and add context, such as where a show sits in its story or what a new season adapts.</li>
+      <li>Rumours and leaks are always labelled as unconfirmed. We never present speculation as fact.</li>
+      <li>Major spoilers are hidden behind spoiler tags.</li>
+    </ul>
+    <h2>How we use AI</h2>
+    <p>
+      We use AI tools to help monitor sources and prepare first drafts. A human editor reviews, fact-checks and approves
+      every article before it is published.
+    </p>
+    <h2>Corrections</h2>
+    <p>If we get something wrong, we fix it. Send corrections to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    <h2>Independence</h2>
+    <p>{SITE.name} is a fan-run publication and is not affiliated with any studio, publisher or streaming platform. All trademarks belong to their owners.</p>
+  </div>
+</Base>

@@ -1,0 +1,23 @@
+---
+// A manual AdSense unit. Renders nothing until you set PUBLIC_ADSENSE_CLIENT
+// and the matching slot ID; Auto Ads (enabled in the AdSense dashboard) still work without it.
+import { SITE } from '../lib/site.js';
+const { slot = 'top' } = Astro.props;
+const slotId = SITE.adSlots[slot];
+const show = SITE.adsClient && slotId;
+---
+{show && (
+  <div class="ad">
+    <div class="label">Advertisement</div>
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={SITE.adsClient}
+      data-ad-slot={slotId}
+      data-ad-format={slot === 'inArticle' ? 'fluid' : 'auto'}
+      data-ad-layout={slot === 'inArticle' ? 'in-article' : undefined}
+      data-full-width-responsive="true"
+    ></ins>
+    <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}

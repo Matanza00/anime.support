@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { animeHubs } from '../../lib/db.js';
+const hubs = [...(await animeHubs())].sort((a, b) => a.name.localeCompare(b.name));
+---
+<Base title="Anime A–Z" description="Every anime we cover, with all confirmed news in one place.">
+  <div class="wrap section">
+    <div class="section-head"><h1 style="font-size:40px">Anime A–Z</h1></div>
+    {hubs.length ? (
+      <div class="chips">
+        {hubs.map((h) => <a class="chip" href={`/anime/${h.slug}`}>{h.name} · {h.count}</a>)}
+      </div>
+    ) : (
+      <div class="empty">No anime covered yet.</div>
+    )}
+  </div>
+</Base>
