@@ -8,7 +8,7 @@ const REPO = 'Matanza00/anime.support';
 const CRON_TASKS = {
   '17 */2 * * *': 'collect-and-publish',
   '41 1 * * *': 'catalog',
-  '23 22 * * 0': 'optimize',
+  '23 22 * * SUN': 'optimize',
 };
 
 async function dispatch(env, task) {
