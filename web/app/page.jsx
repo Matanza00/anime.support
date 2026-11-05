@@ -23,7 +23,7 @@ export default async function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebSite', name: SITE.name, url: SITE.url, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/search/?q={query}`, 'query-input': 'required name=query' } },
+      { '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, alternateName: ['Anime Support', 'animesupport', 'anime support news'], url: `${SITE.url}/`, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/search/?q={query}`, 'query-input': 'required name=query' } },
       { ...publisher, '@id': `${SITE.url}/#org` },
     ],
   };
