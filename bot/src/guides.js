@@ -307,7 +307,7 @@ export async function interleaveGuides({ hours = 10 } = {}) {
     types.some((t) => r.slug.endsWith(`-${t}`)),
   );
   if (rows.length < 2) return 0;
-  // round-robin: guide type 1 of every anime, then type 2 of every anime... with anime order rotated per type
+  // round-robin over anime, and each anime starts at a different guide type, so neighbours differ in both
   const byAnime = new Map();
   for (const r of rows) {
     if (!byAnime.has(r.anime)) byAnime.set(r.anime, []);
@@ -317,8 +317,8 @@ export async function interleaveGuides({ hours = 10 } = {}) {
   const order = [];
   for (let round = 0; order.length < rows.length; round++)
     for (let g = 0; g < groups.length; g++) {
-      const item = groups[(g + round * 3) % groups.length][round];
-      if (item) order.push(item);
+      const list = groups[g];
+      if (round < list.length) order.push(list[(round + g) % list.length]);
     }
   const end = Date.now() - 5 * 60e3;
   const start = end - hours * 3600e3;
