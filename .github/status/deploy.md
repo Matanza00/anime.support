@@ -1,10 +1,11 @@
 # Last deploy: success
 
-- When: 2026-11-05T10:45:37Z
-- Commit: ca76a70
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42013112979
+- When: 2026-11-05T11:16:44Z
+- Commit: 58c421e
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42017454985
 
 ```
++ /anime/dawang-bu-gaoxing/__next._tree.txt
 + /anime/full-time-magister/__next._tree.txt
 + /anime/jueshi-zhan-hun-2/__next._tree.txt
 + /anime/omniscient-reader/__next._tree.txt
@@ -36,14 +37,13 @@
 + /anime/ninjala-the-animation/__next._tree.txt
 + /anime/stella-sora-anime-pvs/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 5639 assets
-Uploaded 2000 of 5639 assets
-Uploaded 3000 of 5639 assets
-Uploaded 4000 of 5639 assets
-Uploaded 4005 of 5639 assets
-Uploaded 4695 of 5639 assets
-Uploaded 5639 of 5639 assets
-✨ Success! Uploaded 5639 files (1491 already uploaded) (19.99 sec)
+Uploaded 1000 of 5606 assets
+Uploaded 2000 of 5606 assets
+Uploaded 3000 of 5606 assets
+Uploaded 4000 of 5606 assets
+Uploaded 4941 of 5606 assets
+Uploaded 5606 of 5606 assets
+✨ Success! Uploaded 5606 files (1525 already uploaded) (34.79 sec)
 
 Total Upload: 2.35 KiB / gzip: 1.17 KiB
 Worker Startup Time: 1 ms
@@ -52,17 +52,17 @@ Binding                         Resource
 env.DB (anime-support)          D1 Database      
 env.ASSETS                      Assets           
 
-Uploaded anime-support (26.05 sec)
-Deployed anime-support triggers (2.31 sec)
+Uploaded anime-support (40.58 sec)
+Deployed anime-support triggers (1.16 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 14380867-701e-46fe-95b2-db985f6d86da
+Current Version ID: 17750d20-e76b-4da0-9114-26787c07b0b6
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-05T10:44:26.529Z
+Live site marked as built from content up to 2026-11-05T11:15:21.749Z
 Cloudflare timer: off (add the GH_DISPATCH_TOKEN *** secret to the Env environment)
 ```
