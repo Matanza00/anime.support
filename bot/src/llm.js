@@ -15,13 +15,14 @@ function llm() {
 }
 
 /** Asks the model for a JSON object, retrying once on malformed output. */
-export async function chatJSON(system, user, { temperature = 0.6 } = {}) {
+export async function chatJSON(system, user, { temperature = 0.6, maxTokens = Number(process.env.LLM_MAX_TOKENS || 3000) } = {}) {
   let lastErr;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const res = await llm().chat.completions.create({
         model: CONFIG.llm.model,
         temperature,
+        max_tokens: maxTokens, // a cap keeps OpenRouter from reserving 16k tokens of credit per call
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: system },

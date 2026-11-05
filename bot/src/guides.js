@@ -283,7 +283,10 @@ export async function guides({ only = process.env.GUIDES_ONLY || '' } = {}) {
       } catch (err) {
         failed++;
         warn(`${fr.name} ${type} failed: ${err.message}`);
-        if (/credit|quota|401|402/i.test(err.message)) throw err;
+        if (/credit|quota|401|402/i.test(err.message)) {
+          log(`Guides: stopped, the AI account is out of credits (${made} done before that)`);
+          return made; // the ones already written still go live
+        }
       }
     }
   }
