@@ -13,6 +13,7 @@ import { optimize } from './optimize.js';
 import { seed } from './seed.js';
 import { catalog } from './catalog.js';
 import { remediaExisting } from './official-media.js';
+import { guides } from './guides.js';
 import { sql, parseRow } from './d1.js';
 import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
@@ -55,6 +56,10 @@ const jobs = {
     log(`${rows.length} draft(s) published`);
     await publish();
   }),
+  // 5 evergreen guides per big franchise (watch order, where to watch, beginner's guide, what's next, how long)
+  guides: guarded('guides', async () => {
+    if (await guides()) requestDeploy();
+  }),
   // swap generated artwork for official images on existing drafts and articles
   media: guarded('media', async () => {
     if (await remediaExisting({ sql, parseRow })) requestDeploy();
@@ -64,7 +69,7 @@ const jobs = {
 const cmd = process.argv[2];
 if (cmd) {
   if (!jobs[cmd]) {
-    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | catalog | media | seed`);
+    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | catalog | media | guides | approve-drafts | seed`);
     process.exit(1);
   }
   const ok = await jobs[cmd]();

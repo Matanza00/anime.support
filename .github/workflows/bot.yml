@@ -21,7 +21,7 @@ on:
       task:
         description: 'Task to run'
         type: choice
-        options: [collect-and-publish, collect, publish, optimize, catalog, media, approve-drafts, seed]
+        options: [collect-and-publish, collect, publish, optimize, catalog, guides, media, approve-drafts, seed]
         default: collect-and-publish
 
 permissions:
@@ -40,9 +40,9 @@ jobs:
   bot:
     runs-on: ubuntu-latest
     environment: Env # your secrets live in the "Env" environment
-    timeout-minutes: 45
+    timeout-minutes: 75
     outputs:
-      deploy: ${{ steps.publish.outputs.deploy || steps.catalog.outputs.deploy || steps.media.outputs.deploy || steps.approve.outputs.deploy }}
+      deploy: ${{ steps.publish.outputs.deploy || steps.catalog.outputs.deploy || steps.media.outputs.deploy || steps.approve.outputs.deploy || steps.guides.outputs.deploy }}
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
         run: |
           case "${{ github.event_name }}/${{ github.event.schedule }}" in
             workflow_dispatch/*) TASK="${{ inputs.task }}" ;;
-            push/*) TASK="$(head -n1 .github/run-bot.txt | grep -oE '^(collect-and-publish|collect|publish|optimize|catalog|media|approve-drafts|seed)' || echo collect-and-publish)" ;;
+            push/*) TASK="$(head -n1 .github/run-bot.txt | grep -oE '^(collect-and-publish|collect|publish|optimize|catalog|guides|media|approve-drafts|seed)' || echo collect-and-publish)" ;;
             "schedule/41 1 * * *") TASK=catalog ;;
             "schedule/41 22 * * 0") TASK=optimize ;;
             *) TASK=collect-and-publish ;;
@@ -83,6 +83,8 @@ jobs:
             fi
           fi
           echo "TASK=$TASK" >> "$GITHUB_ENV"
+          # optional: "guides Naruto, Bleach" on the first line limits the guides task to those anime
+          if [ "${{ github.event_name }}" = push ]; then echo "GUIDES_ONLY=$(head -n1 .github/run-bot.txt | sed -E 's/^guides *//; t; s/.*//')" >> "$GITHUB_ENV"; fi
           echo "Task: $TASK" | tee "$RUNNER_TEMP/report.txt"
       - uses: actions/setup-node@v4
         with:
@@ -105,6 +107,12 @@ jobs:
         id: catalog
         if: env.TASK == 'catalog'
         run: node src/index.js catalog 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+        working-directory: bot
+
+      - name: Franchise guides (5 per big anime; refreshed weekly)
+        id: guides
+        if: env.TASK == 'guides' || env.TASK == 'optimize'
+        run: node src/index.js guides 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
 
       - name: Official images for existing articles
