@@ -49,6 +49,34 @@ export function scoreCluster(cluster, focus) {
   return weight * (1 + 0.5 * (outlets - 1)) * freshness;
 }
 
+/** Same story already covered? Compares headlines (and anime names) with the last few days. */
+export function findDuplicate({ title, anime = [] }, recent) {
+  const names = new Set(anime.map((a) => String(a).toLowerCase()));
+  for (const r of recent) {
+    const sim = similarity(title, r.title);
+    let rAnime = [];
+    try {
+      rAnime = typeof r.anime === 'string' ? JSON.parse(r.anime) : r.anime || [];
+    } catch {}
+    const sameShow = rAnime.some((a) => names.has(String(a).toLowerCase()));
+    if (sim >= 0.7 || (sameShow && sim >= 0.5)) return r.title;
+  }
+  return null;
+}
+
+/**
+ * Optional auto-publish (repo variable AUTO_PUBLISH=on). Only drafts the AI rates as well supported
+ * (confidence >= AUTO_PUBLISH_MIN_CONFIDENCE, default 0.85), and at most AUTO_PUBLISH_MAX_PER_DAY a day.
+ * Everything else still waits for you in the dashboard.
+ */
+async function shouldAutoPublish(out) {
+  if (!CONFIG.autoPublish.on) return false;
+  if (typeof out.confidence !== 'number' || out.confidence < CONFIG.autoPublish.minConfidence) return false;
+  const since = new Date(Date.now() - 864e5).toISOString();
+  const { n } = (await sql("SELECT COUNT(*) AS n FROM articles WHERE status = 'published' AND published_at >= ? AND cluster_key IS NOT NULL", [since]))[0];
+  return n < CONFIG.autoPublish.maxPerDay;
+}
+
 export async function draft() {
   const since = new Date(Date.now() - CONFIG.maxItemAgeHours * 3600e3).toISOString();
   const items = await sql(
@@ -60,7 +88,7 @@ export async function draft() {
   );
   if (!items.length) return log('Draft: no new headlines'), 0;
 
-  const recentArticles = await sql("SELECT title, cluster_key FROM articles WHERE created_at >= ? AND status != 'rejected'", [
+  const recentArticles = await sql("SELECT title, cluster_key, anime FROM articles WHERE created_at >= ? AND status != 'rejected'", [
     new Date(Date.now() - 4 * 864e5).toISOString(),
   ]);
   const focus = await sql('SELECT name, weight FROM anime_focus');
@@ -108,6 +136,15 @@ export async function draft() {
     }
 
     const anime = (Array.isArray(out.anime) ? out.anime : []).slice(0, 3).map(String);
+
+    // Hard duplicate check on the AI's own headline (catches the same story from a different source).
+    const twin = findDuplicate({ title: String(out.title), anime }, recentArticles);
+    if (twin) {
+      log(`Skipped duplicate "${out.title}" (already have "${twin}")`);
+      await mark('skipped', ids);
+      continue;
+    }
+
     const mediaInfo = await buildMedia(
       anime,
       material.map((m) => ({ ...m.page, sourceName: m.source_name || new URL(m.url).hostname })),
@@ -121,6 +158,7 @@ export async function draft() {
       if (mediaInfo.cover_url) mediaInfo.image_candidates.unshift({ kind: 'image', url: mediaInfo.cover_url, credit: mediaInfo.cover_credit, from: 'AniList' });
       Object.assign(mediaInfo, { cover_url: art.cover_url, cover_credit: art.cover_credit });
     }
+    const publishNow = await shouldAutoPublish(out);
     await insert('articles', {
           slug,
           title: String(out.title).slice(0, 140),
@@ -138,14 +176,16 @@ export async function draft() {
           priority: Number(score.toFixed(3)),
           confidence: typeof out.confidence === 'number' ? out.confidence : null,
           fb_caption: out.facebook_caption || null,
-          status: 'draft',
+          status: publishNow ? 'published' : 'draft',
+          published_at: publishNow ? now() : null,
           created_at: now(),
           updated_at: now(),
         });
     await mark('drafted', ids, key);
-    recentArticles.push({ title: out.title, cluster_key: key });
+    if (publishNow) await sql('UPDATE sources SET items_used = items_used + 1 WHERE id IN (SELECT DISTINCT source_id FROM raw_items WHERE cluster_key = ?)', [key]);
+    recentArticles.push({ title: out.title, cluster_key: key, anime: JSON.stringify(anime) });
     made++;
-    log(`Drafted: ${out.title}`);
+    log(`${publishNow ? 'Auto-published' : 'Drafted'}: ${out.title}`);
   }
   log(`Draft done: ${made} new drafts waiting for review`);
   return made;

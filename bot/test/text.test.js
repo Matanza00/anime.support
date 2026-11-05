@@ -56,3 +56,10 @@ test('release dates must be real, exact dates', async () => {
   assert.equal(validDate('Spring 2027'), null);
   assert.equal(validDate(null), null);
 });
+
+test('duplicate guard catches the same story under a new headline', async () => {
+  const { findDuplicate } = await import('../src/draft.js');
+  const recent = [{ title: 'Mashle: Magic and Muscles Live-Action Film Set for March 2027 Premiere', anime: '["Mashle"]' }];
+  assert.ok(findDuplicate({ title: 'Mashle Live-Action Film Set for March 2027 Premiere with Mackenyu as Mash', anime: ['Mashle'] }, recent));
+  assert.equal(findDuplicate({ title: 'Frieren Season 2 Gets a January Premiere', anime: ['Frieren'] }, recent), null);
+});

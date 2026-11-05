@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="wrap">
         <div className="about">
           <img src="/brand/logo-dark.svg" alt="anime.support" width={118} height={48} />
-          <p>Independent anime news: confirmed announcements, release dates and what's coming next. Not affiliated with any studio or streaming service.</p>
+          <p>Independent anime news: confirmed announcements, release dates and what's coming next. Not affiliated with any studio or streaming service. Show data from AniList.</p>
           <p style={{ marginTop: 10 }}>© {new Date().getFullYear()} {SITE.name}</p>
         </div>
         <div>
@@ -17,7 +17,10 @@ export default function Footer() {
             <a href="/releases/">Out now</a>
             <a href="/calendar/">Release calendar</a>
             <a href="/features/">Features</a>
-            <a href="/anime/">Anime A–Z</a>
+            <a href="/anime/">Anime database</a>
+            <a href="/schedule/">Airing schedule</a>
+            <a href="/season/">Seasonal chart</a>
+            <a href="/donghua/">Donghua</a>
           </nav>
         </div>
         <div>

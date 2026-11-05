@@ -1,68 +1,68 @@
 # Last deploy: success
 
-- When: 2026-11-04T22:18:48Z
-- Commit: 34f7814
-- Run: https://github.com/Matanza00/anime.support/actions/runs/41924075825
+- When: 2026-11-05T09:24:07Z
+- Commit: a45774f
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42001241336
 
 ```
-+ /news/how-to-follow-anime-news-without-falling-for-fake-leaks/__next.news.$d$slug.__PAGE__.txt
-+ /about/index.html
-+ /news/sub-vs-dub-what-simulcast-means/__next._full.txt
-+ /news/anime-seasons-explained-winter-spring-summer-fall/__next._full.txt
-+ /privacy/index.html
-+ /releases/page/2/index.html
-+ /features/index.html
-+ /news/sub-vs-dub-what-simulcast-means/index.html
-+ /news/how-manga-becomes-anime-adaptation-explained/index.html
-+ /about/__next._tree.txt
-+ /search/__next._tree.txt
-+ /calendar/__next._tree.txt
-+ /upcoming/__next._tree.txt
-+ /news/page/2/__next._tree.txt
-+ /upcoming/page/2/__next._tree.txt
-+ /news/how-manga-becomes-anime-adaptation-explained/__next._tree.txt
-+ /news/how-to-follow-anime-news-without-falling-for-fake-leaks/__next._tree.txt
-+ /_not-found/__next._not-found.__PAGE__.txt
-+ /search/__next._full.txt
-+ /_not-found/__next._full.txt
-+ /contact/__next._full.txt
-+ /calendar/__next._full.txt
-+ /privacy/__next.privacy.__PAGE__.txt
-+ /features/page/2/__next.features.page.$d$n.__PAGE__.txt
-+ /releases/__next._full.txt
-+ /news/page/2/__next._full.txt
-+ /upcoming/page/2/__next._full.txt
-+ /features/__next.features.__PAGE__.txt
-+ /search/index.html
-+ /__next.__PAGE__.txt
-+ /calendar/index.html
-+ /news/anime-spoiler-etiquette-guide/__next.news.$d$slug.__PAGE__.txt
-+ /news/how-manga-becomes-anime-adaptation-explained/__next.news.$d$slug.__PAGE__.txt
-+ /news/anime-spoiler-etiquette-guide/__next._full.txt
-+ /news/how-to-follow-anime-news-without-falling-for-fake-leaks/__next._full.txt
-+ /releases/index.html
-+ /news/page/2/index.html
-+ /upcoming/page/2/index.html
-+ /index.html
-+ /news/anime-announcement-terms-key-visual-pv-teaser/index.html
-+ /news/anime-seasons-explained-winter-spring-summer-fall/index.html
-Uploaded 32 of 96 assets
-Uploaded 64 of 96 assets
-Uploaded 96 of 96 assets
-✨ Success! Uploaded 96 files (86 already uploaded) (1.33 sec)
++ /anime/wu-lian-dianfeng/__next._tree.txt
++ /anime/yi-ren-zhi-xia-4/__next._tree.txt
++ /anime/arad-suming-zhi-men/__next._tree.txt
++ /anime/fairies-albums-s3/__next._tree.txt
++ /anime/god-troubles-me-3/__next._tree.txt
++ /anime/nitian-xie-shen-2/__next._tree.txt
++ /anime/pokemon-wild-card/__next._tree.txt
++ /anime/quanzhi-gaoshou-4/__next._tree.txt
++ /anime/teenage-mercenary/__next._tree.txt
++ /anime/tunshi-xingkong-2/__next._tree.txt
++ /anime/umayuru-full-gate/__next._tree.txt
++ /anime/xiaolu-he-xiaolan/__next._tree.txt
++ /anime/cinderella-chef-s2/__next._tree.txt
++ /anime/dou-po-cangqiong-4/__next._tree.txt
++ /anime/matsurika-kanriden/__next._tree.txt
++ /anime/pero-pero-sparkles/__next._tree.txt
++ /anime/release-that-witch/__next._tree.txt
++ /anime/the-laid-off-demon/__next._tree.txt
++ /anime/yi-nian-yongheng-4/__next._tree.txt
++ /anime/all-saints-street-4/__next._tree.txt
++ /anime/be-my-wife-season-3/__next._tree.txt
++ /anime/dungeons-television/__next._tree.txt
++ /anime/kizuguchi-to-houtai/__next._tree.txt
++ /anime/one-piece-film-baad/__next._tree.txt
++ /anime/tomica-tom-season-2/__next._tree.txt
++ /anime/a-good-day-to-ascend/__next._tree.txt
++ /anime/liar-game-2nd-season/__next._tree.txt
++ /anime/rokurou-no-daibouken/__next._tree.txt
++ /anime/the-king-s-avatar-s2/__next._tree.txt
++ /anime/asi-yu-xiao-liangdang/__next._tree.txt
++ /anime/full-time-magister-s3/__next._tree.txt
++ /anime/narumi-s-week-at-work/__next._tree.txt
++ /anime/re-monster-2nd-season/__next._tree.txt
+   (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
+Uploaded 1000 of 5606 assets
+Uploaded 2000 of 5606 assets
+Uploaded 3000 of 5606 assets
+Uploaded 4000 of 5606 assets
+Uploaded 4663 of 5606 assets
+Uploaded 5606 of 5606 assets
+✨ Success! Uploaded 5606 files (1490 already uploaded) (19.54 sec)
 
-Total Upload: 1.25 KiB / gzip: 0.62 KiB
-Worker Startup Time: 2 ms
+Total Upload: 2.35 KiB / gzip: 1.17 KiB
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                         Resource         
 env.DB (anime-support)          D1 Database      
 env.ASSETS                      Assets           
 
-Uploaded anime-support (4.12 sec)
-Deployed anime-support triggers (1.29 sec)
+Uploaded anime-support (25.71 sec)
+Deployed anime-support triggers (1.30 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
-Current Version ID: 6117b0dd-a16c-44d1-99b5-da63b1d6c483
+  schedule: 17 */2 * * *
+  schedule: 41 1 * * *
+  schedule: 23 22 * * SUN
+Current Version ID: f23e7948-f954-4593-93d3-326c10c66d8b
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+Cloudflare timer: off (add the GH_DISPATCH_TOKEN *** secret to the Env environment)
 ```

@@ -33,7 +33,8 @@ export const CONFIG = {
   siteUrl: (e.SITE_URL || 'https://anime.support').replace(/\/$/, ''),
 
   deploy: {
-    mode: e.DEPLOY_MODE || (e.GITHUB_ACTIONS === 'true' ? 'actions' : 'git'),
+    // laptop: with a GitHub token, start the cloud deploy directly (no git needed); otherwise commit + push
+    mode: e.DEPLOY_MODE || (e.GITHUB_ACTIONS === 'true' ? 'actions' : e.GITHUB_DISPATCH_TOKEN ? 'dispatch' : 'git'),
     repoDir: path.resolve(botDir, e.REPO_DIR || '..'),
     branch: e.GIT_BRANCH || 'main',
     hookUrl: e.DEPLOY_HOOK_URL || '',
@@ -63,6 +64,11 @@ export const CONFIG = {
   },
 
   maxDraftsPerRun: Number(e.MAX_DRAFTS_PER_RUN || 6),
+  autoPublish: {
+    on: /^(on|true|1|yes)$/i.test(e.AUTO_PUBLISH || ''),
+    minConfidence: Number(e.AUTO_PUBLISH_MIN_CONFIDENCE || 0.85),
+    maxPerDay: Number(e.AUTO_PUBLISH_MAX_PER_DAY || 8),
+  },
   maxItemAgeHours: Number(e.MAX_ITEM_AGE_HOURS || 48),
   autoPrune: e.SOURCES_AUTO_PRUNE === 'true',
   userAgent: 'AnimeSupportBot/1.0 (+https://anime.support/about; news aggregator; respects robots)',

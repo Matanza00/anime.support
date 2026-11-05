@@ -46,7 +46,7 @@ fieldset{border:1px solid var(--l);border-radius:12px;padding:6px 14px 14px;marg
 code{background:var(--bg);padding:1px 5px;border-radius:4px}
 .err{color:#ff6b6b}table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid var(--l);padding:8px;text-align:left}
 </style></head><body><div class="w">
-<header><b>anime<span>.support</span> review</b><nav><a href="/">Drafts</a><a href="/published">Published</a><a href="/sources">Sources</a></nav></header>
+<header><b>anime<span>.support</span> review</b>${dbBadge()}<nav><a href="/">Drafts</a><a href="/published">Published</a><a href="/sources">Sources</a></nav></header>
 ${body}</div></body></html>`;
 
 export function createApp() {
@@ -265,7 +265,7 @@ export function createApp() {
   app.post('/deploy', async (req, res) => {
     try {
       await publish();
-      res.redirect(`/?msg=${encodeURIComponent('Deploy triggered. The site updates in 1–3 minutes.')}`);
+      res.redirect(`/?msg=${encodeURIComponent('Deploy started on GitHub. The site updates in 2–3 minutes.')}`);
     } catch (err) {
       fail(err);
       res.redirect(`/?msg=${encodeURIComponent('Deploy failed: ' + err.message)}`);
@@ -314,6 +314,13 @@ async function uploadToStorage(file, articleId) {
   const ext = (file.originalname.match(/\.(\w{2,5})$/)?.[1] || file.mimetype.split('/')[1] || 'bin').toLowerCase();
   const path = `articles/${articleId}/upload-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
   return uploadBuffer(file.buffer, path, file.mimetype);
+}
+
+/** Shows which database this dashboard writes to, so approvals never land in a local file by mistake. */
+function dbBadge() {
+  if (process.env.D1_LOCAL) return '<span class="pill low" title="Approvals here will NOT reach the website">Local test database</span>';
+  if (!CONFIG.d1.accountId || !CONFIG.d1.token) return '<span class="pill low">Not connected to Cloudflare: check bot/.env</span>';
+  return '<span class="pill" title="Approvals are saved straight to the live database">Cloudflare D1 · live</span>';
 }
 
 function ytThumb(url) {

@@ -2,6 +2,7 @@
 import { mostRead, trendingAnime, upcomingReleases } from '@/lib/db';
 import { articlePath, formatDate } from '@/lib/site';
 import Countdown from './Countdown';
+import { allShows, showForName } from '@/lib/catalog';
 
 export async function MostRead({ title = 'Most read this week', limit = 5 }) {
   const list = await mostRead(limit);
@@ -27,18 +28,29 @@ export async function MostRead({ title = 'Most read this week', limit = 5 }) {
 }
 
 export async function TrendingChart({ limit = 10 }) {
-  const list = await trendingAnime(limit);
+  let list = await Promise.all(
+    (await trendingAnime(limit)).map(async (t) => {
+      const show = await showForName(t.name);
+      const href = show ? `/anime/${show.slug}/` : t.hub ? `/anime/${t.slug}/` : `/search/?q=${encodeURIComponent(t.name)}`;
+      return { key: t.slug, name: t.name, href, note: t.hub ? `${t.hub.count} ${t.hub.count === 1 ? 'story' : 'stories'}` : show?.status === 'RELEASING' ? 'airing' : '' };
+    }),
+  );
+  if (list.length < 5) {
+    // no reader data yet: AniList's trending list
+    const shows = [...(await allShows())].sort((a, b) => (b.trending || 0) - (a.trending || 0)).slice(0, limit);
+    if (shows.length >= 5) list = shows.map((s) => ({ key: s.slug, name: s.title, href: `/anime/${s.slug}/`, note: s.status === 'RELEASING' ? 'airing' : '' }));
+  }
   if (!list.length) return null;
   return (
     <section className="panel glass" aria-labelledby="trending-anime">
       <h2 id="trending-anime">Trending anime this week</h2>
       <ol className="chart">
         {list.map((t, i) => (
-          <li key={t.slug}>
-            <a href={t.hub ? `/anime/${t.slug}/` : `/search/?q=${encodeURIComponent(t.name)}`}>
+          <li key={t.key}>
+            <a href={t.href}>
               <span className="n">{i + 1}</span>
               <span className="name">{t.name}</span>
-              <span className="count">{t.hub ? `${t.hub.count} ${t.hub.count === 1 ? 'story' : 'stories'}` : ''}</span>
+              <span className="count">{t.note}</span>
             </a>
           </li>
         ))}

@@ -15,11 +15,11 @@ export default function Search() {
   const results = useMemo(() => {
     if (!items) return [];
     const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-    if (!words.length) return items.slice(0, 12);
+    if (!words.length) return items.filter((it) => !it.k).slice(0, 12);
     return items
       .map((it) => {
         const hay = `${it.t} ${it.a.join(' ')} ${it.e}`.toLowerCase();
-        const score = words.reduce((s, w) => s + (it.t.toLowerCase().includes(w) ? 3 : hay.includes(w) ? 1 : -99), 0);
+        const score = words.reduce((s, w) => s + (it.t.toLowerCase().includes(w) ? 3 : hay.includes(w) ? 1 : -99), 0) + (it.k && it.t.toLowerCase() === q.toLowerCase().trim() ? 10 : 0);
         return { it, score };
       })
       .filter((r) => r.score > 0)
@@ -33,13 +33,14 @@ export default function Search() {
       <label htmlFor="q" className="sr-only">Search anime news</label>
       <input id="q" className="search-box" type="search" placeholder="Search anime, shows, news…" value={q} onChange={(e) => setQ(e.target.value)} autoFocus />
       <p className="meta" style={{ margin: '12px 4px' }} aria-live="polite">
-        {items === null ? 'Loading…' : q ? `${results.length} result${results.length === 1 ? '' : 's'}` : 'Latest stories'}
+        {items === null ? 'Loading…' : q ? `${results.length} result${results.length === 1 ? '' : 's'}` : 'Latest stories · type a show name to find its page'}
       </p>
       <div className="stack">
         {results.map((r) => (
-          <a key={r.s} className="row-card glass" href={`/news/${r.s}/`} style={{ gridTemplateColumns: '1fr' }}>
+          <a key={(r.k || 'n') + r.s} className="row-card glass" href={r.k ? `/anime/${r.s}/` : `/news/${r.s}/`} style={{ gridTemplateColumns: r.k ? '56px 1fr' : '1fr' }}>
+            {r.k && <span className="thumb">{r.c && <img src={r.c} alt="" loading="lazy" referrerPolicy="no-referrer" />}</span>}
             <div>
-              <h3>{r.t}</h3>
+              <h3>{r.t}{r.k && <small className="tag-anime">Anime</small>}</h3>
               <p className="meta" style={{ marginTop: 6 }}>{r.e}</p>
             </div>
           </a>
