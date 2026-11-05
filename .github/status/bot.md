@@ -1,21 +1,23 @@
-# Last bot run: success
+# Last bot run: failure
 
-- When: 2026-11-05T12:50:59Z
+- When: 2026-11-05T12:56:43Z
 - Trigger: push
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42030476670
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42030948136
 
 ```
 Task: guides
-[05/11/2026, 12:50:15] Death Note: 1 entries (1 series, 0 films, 0 upcoming)
-[05/11/2026, 12:50:26] Official image (poster) used for death-note-watch-order
-[05/11/2026, 12:50:27] Published: Death Note watch order guide: the ultimate viewing experience
-[05/11/2026, 12:50:32] Official image (poster) used for death-note-where-to-watch
-[05/11/2026, 12:50:32] Published: Where to Watch Death Note: Official Streaming Services 2026
-[05/11/2026, 12:50:43] Official image (poster) used for death-note-beginners-guide
-[05/11/2026, 12:50:43] Published: Death Note: A Beginner's Guide to the Iconic Anime
-[05/11/2026, 12:50:51] Official image (poster) used for death-note-whats-next
-[05/11/2026, 12:50:52] Published: Death Note: What's Next for the Classic Series
-[05/11/2026, 12:50:58] Official image (poster) used for death-note-how-long-to-watch
-[05/11/2026, 12:50:59] Published: Death Note: How Long to Watch the Complete Series
-[05/11/2026, 12:50:59] Guides: 5 published or updated
+[05/11/2026, 12:55:02] One Piece: 40 entries (1 series, 17 films, 1 upcoming)
+[05/11/2026, 12:55:18] Official image (poster) used for one-piece-watch-order
+[05/11/2026, 12:55:18] Published: One Piece watch order guide: series, films, and specials explained
+[05/11/2026, 12:55:23] Official image (poster) used for one-piece-where-to-watch
+[05/11/2026, 12:55:23] Published: Where to Watch One Piece: Official Streaming Services 2026
+[05/11/2026, 12:55:32] Official image (poster) used for one-piece-beginners-guide
+[05/11/2026, 12:55:32] Published: One Piece: A Beginner's Guide to the Epic Adventure
+[05/11/2026, 12:55:41] Official image (poster) used for one-piece-whats-next
+[05/11/2026, 12:55:41] Published: What’s Next for One Piece: Upcoming Episodes and Future Plans
+[05/11/2026, 12:55:49] Official image (poster) used for one-piece-how-long-to-watch
+[05/11/2026, 12:55:50] Published: One Piece watching guide: How long it takes to catch up with the series
+[05/11/2026, 12:56:43] Naruto: 25 entries (3 series, 12 films, 1 upcoming)
+[05/11/2026, 12:56:43] WARN Naruto watch-order failed: LLM failed: 402 This request requires more credits, or fewer max_tokens. You requested up to 16384 tokens, but can only afford 15339. To increase, visit https://openrouter.ai/settings/credits and upgrade to a paid account
+[05/11/2026, 12:56:43] ERROR guides: LLM failed: 402 This request requires more credits, or fewer max_tokens. You requested up to 16384 tokens, but can only afford 15339. To increase, visit https://openrouter.ai/settings/credits and upgrade to a paid account
 ```
