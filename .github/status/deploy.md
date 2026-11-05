@@ -1,12 +1,10 @@
 # Last deploy: success
 
-- When: 2026-11-05T09:24:07Z
-- Commit: a45774f
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42001241336
+- When: 2026-11-05T10:31:52Z
+- Commit: 40ec8cc
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42011261949
 
 ```
-+ /anime/wu-lian-dianfeng/__next._tree.txt
-+ /anime/yi-ren-zhi-xia-4/__next._tree.txt
 + /anime/arad-suming-zhi-men/__next._tree.txt
 + /anime/fairies-albums-s3/__next._tree.txt
 + /anime/god-troubles-me-3/__next._tree.txt
@@ -39,13 +37,13 @@
 + /anime/narumi-s-week-at-work/__next._tree.txt
 + /anime/re-monster-2nd-season/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 5606 assets
-Uploaded 2000 of 5606 assets
-Uploaded 3000 of 5606 assets
-Uploaded 4000 of 5606 assets
-Uploaded 4663 of 5606 assets
-Uploaded 5606 of 5606 assets
-✨ Success! Uploaded 5606 files (1490 already uploaded) (19.54 sec)
+Uploaded 1000 of 5617 assets
+Uploaded 2000 of 5617 assets
+Uploaded 3000 of 5617 assets
+Uploaded 3947 of 5617 assets
+Uploaded 4947 of 5617 assets
+Uploaded 5617 of 5617 assets
+✨ Success! Uploaded 5617 files (1479 already uploaded) (24.20 sec)
 
 Total Upload: 2.35 KiB / gzip: 1.17 KiB
 Worker Startup Time: 1 ms
@@ -54,15 +52,17 @@ Binding                         Resource
 env.DB (anime-support)          D1 Database      
 env.ASSETS                      Assets           
 
-Uploaded anime-support (25.71 sec)
-Deployed anime-support triggers (1.30 sec)
+Uploaded anime-support (29.84 sec)
+Deployed anime-support triggers (1.10 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: f23e7948-f954-4593-93d3-326c10c66d8b
+Current Version ID: 71517730-1fc6-4c14-b6e7-87333b1eb31d
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
+Live site marked as built from content up to 2026-11-05T10:30:40.020Z
 Cloudflare timer: off (add the GH_DISPATCH_TOKEN *** secret to the Env environment)
 ```
