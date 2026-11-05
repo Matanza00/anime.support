@@ -32,6 +32,17 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       GH_DISPATCH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+      # Creator Studio sign-in and safety settings (all optional; each feature turns on when its values exist)
+      GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID || secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      APPLE_SERVICES_ID: ${{ vars.APPLE_SERVICES_ID }}
+      APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+      APPLE_KEY_ID: ${{ vars.APPLE_KEY_ID }}
+      APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
+      TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+      ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS || secrets.ADMIN_EMAILS }}
+      HASH_SALT: ${{ secrets.HASH_SALT }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -72,6 +83,18 @@ jobs:
           else
             echo "Cloudflare timer: off (add the GH_DISPATCH_TOKEN secret to the Env environment)" | tee -a "$RUNNER_TEMP/report.txt"
           fi
+
+      - name: Creator Studio settings (sign-in keys, admins)
+        run: |
+          for n in GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET APPLE_SERVICES_ID APPLE_TEAM_ID APPLE_KEY_ID APPLE_PRIVATE_KEY TURNSTILE_SECRET ADMIN_EMAILS HASH_SALT; do
+            if [ -n "${!n}" ]; then
+              printf '%s' "${!n}" | npx --yes wrangler@4 secret put "$n" >/dev/null 2>&1 && echo "$n: set" || echo "$n: FAILED to set"
+            else
+              echo "$n: not set"
+            fi
+          done | tee -a "$RUNNER_TEMP/report.txt"
+          [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && echo "Google sign-in: on" || echo "Google sign-in: off (add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)"
+          [ -n "$APPLE_SERVICES_ID" ] && [ -n "$APPLE_PRIVATE_KEY" ] && echo "Apple sign-in: on" || echo "Apple sign-in: off"
 
       - name: Save deploy report
         if: always()

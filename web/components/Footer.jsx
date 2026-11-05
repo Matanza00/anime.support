@@ -21,6 +21,7 @@ export default function Footer() {
             <a href="/schedule/">Airing schedule</a>
             <a href="/season/">Seasonal chart</a>
             <a href="/donghua/">Donghua</a>
+            <a href="/contests/">Art contests</a>
           </nav>
         </div>
         <div>

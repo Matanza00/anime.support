@@ -8,6 +8,7 @@ const LINKS = [
   ['/season/', 'Seasons'],
   ['/anime/', 'Anime'],
   ['/donghua/', 'Donghua'],
+  ['/contests/', 'Contests'],
   ['/upcoming/', 'Upcoming'],
   ['/calendar/', 'Calendar'],
   ['/features/', 'Features'],

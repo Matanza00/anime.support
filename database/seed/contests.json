@@ -1,0 +1,54 @@
+[
+  {
+    "slug": "2d-original-anime-hero-dec-2026",
+    "title": "Original Anime Hero",
+    "category": "2d-art",
+    "theme": "Design the hero of an anime that doesn't exist yet",
+    "description": "Create the key art for a brand-new anime protagonist of your own: a character sheet, a key visual or a full illustration. Show us who they are, what world they live in and what makes their story worth watching.\n\nAny 2D medium: digital painting, cel shading, line art, watercolour scans. One image per entrant.",
+    "prize": "Cash prize for 1st place (amount announced at launch) + featured on the anime.support home page",
+    "prize_usd": 0,
+    "allow_fan_art": false,
+    "submit_opens_at": "2026-11-15T00:00:00.000Z",
+    "submit_closes_at": "2026-12-10T23:59:00.000Z",
+    "vote_closes_at": "2026-12-17T23:59:00.000Z"
+  },
+  {
+    "slug": "3d-character-mecha-or-magic-dec-2026",
+    "title": "Mecha or Magic: 3D Character",
+    "category": "3d-character",
+    "theme": "An original pilot, mecha or magical fighter, modelled in 3D",
+    "description": "Sculpt or model an original anime-style character: a mecha pilot, the mecha itself, or a magical fighter in full outfit.\n\nUpload a GLB file (people can spin it in 3D right on the page), or a turntable video or rendered image. Keep it under 25 MB.",
+    "prize": "Cash prize for 1st place (amount announced at launch) + featured on the anime.support home page",
+    "prize_usd": 0,
+    "allow_fan_art": false,
+    "submit_opens_at": "2026-11-15T00:00:00.000Z",
+    "submit_closes_at": "2026-12-10T23:59:00.000Z",
+    "vote_closes_at": "2026-12-17T23:59:00.000Z"
+  },
+  {
+    "slug": "3d-environment-neon-shrine-dec-2026",
+    "title": "Neon Shrine at Night: 3D Environment",
+    "category": "3d-environment",
+    "theme": "A shrine, alley or rooftop in an anime city after dark",
+    "description": "Build an anime-style environment where old and new collide: a shrine between skyscrapers, a rainy alley, a rooftop at midnight.\n\nUpload a GLB scene, a fly-through video or your best render (under 25 MB).",
+    "prize": "Cash prize for 1st place (amount announced at launch) + featured on the anime.support home page",
+    "prize_usd": 0,
+    "allow_fan_art": false,
+    "submit_opens_at": "2026-11-15T00:00:00.000Z",
+    "submit_closes_at": "2026-12-10T23:59:00.000Z",
+    "vote_closes_at": "2026-12-17T23:59:00.000Z"
+  },
+  {
+    "slug": "motion-five-second-sakuga-dec-2026",
+    "title": "Five-Second Sakuga",
+    "category": "motion",
+    "theme": "A short original animation loop with real impact",
+    "description": "Animate up to 15 seconds of original action: a punch, a transformation, a run cycle with personality, an effects shot. 2D, 3D or mixed.\n\nUpload MP4 or WebM, under 25 MB.",
+    "prize": "Cash prize for 1st place (amount announced at launch) + featured on the anime.support home page",
+    "prize_usd": 0,
+    "allow_fan_art": false,
+    "submit_opens_at": "2026-11-15T00:00:00.000Z",
+    "submit_closes_at": "2026-12-10T23:59:00.000Z",
+    "vote_closes_at": "2026-12-17T23:59:00.000Z"
+  }
+]

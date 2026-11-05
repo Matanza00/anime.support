@@ -169,3 +169,138 @@ INSERT OR IGNORE INTO sources (name, homepage, feed_url, tier) VALUES
 -- One-time fixes, safe to repeat: Crunchyroll's feed address; sources that block feed readers start switched off
 UPDATE sources SET feed_url = 'https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss' WHERE name = 'Crunchyroll News' AND feed_url IS NULL;
 UPDATE sources SET enabled = 0 WHERE name IN ('AniTrendz', 'Otaku USA') AND items_seen = 0 AND last_error IS NOT NULL;
+
+-- ============ Creator Studio: accounts, contests, entries, votes ============
+
+-- People who sign in with Google or Apple. Emails are never shown publicly.
+CREATE TABLE IF NOT EXISTS users (
+  id             INTEGER PRIMARY KEY AUTOINCREMENT,
+  provider       TEXT NOT NULL CHECK (provider IN ('google', 'apple', 'dev')),
+  provider_sub   TEXT NOT NULL,
+  email          TEXT,
+  email_verified INTEGER NOT NULL DEFAULT 0,
+  name           TEXT NOT NULL DEFAULT '',
+  handle         TEXT NOT NULL UNIQUE,                -- /creators/?u=<handle>
+  avatar_url     TEXT,
+  bio            TEXT NOT NULL DEFAULT '',
+  links          TEXT NOT NULL DEFAULT '[]',          -- JSON [{label,url}]: portfolio, Ko-fi, Patreon...
+  role           TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'moderator', 'admin')),
+  banned         INTEGER NOT NULL DEFAULT 0,
+  created_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  last_seen_at   TEXT,
+  UNIQUE (provider, provider_sub)
+);
+
+-- Login sessions (only a hash of the cookie is stored)
+CREATE TABLE IF NOT EXISTS sessions (
+  id         TEXT PRIMARY KEY,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  expires_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions (user_id);
+
+-- Monthly competitions. Phase comes from the dates: submissions → voting → results.
+CREATE TABLE IF NOT EXISTS contests (
+  id               INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug             TEXT NOT NULL UNIQUE,
+  title            TEXT NOT NULL,
+  category         TEXT NOT NULL CHECK (category IN ('2d-art', '3d-character', '3d-environment', 'motion')),
+  theme            TEXT NOT NULL DEFAULT '',
+  description      TEXT NOT NULL DEFAULT '',
+  prize            TEXT NOT NULL DEFAULT '',            -- shown text, e.g. "US$100 + featured interview"
+  prize_usd        INTEGER NOT NULL DEFAULT 0,
+  allow_fan_art    INTEGER NOT NULL DEFAULT 0,          -- 0 = original characters and worlds only
+  submit_opens_at  TEXT NOT NULL,
+  submit_closes_at TEXT NOT NULL,
+  vote_closes_at   TEXT NOT NULL,
+  status           TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'cancelled')),
+  winner_entry_id  INTEGER,
+  winner_note      TEXT,
+  created_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  updated_at       TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- One entry per person per contest. Hidden until a moderator approves it.
+CREATE TABLE IF NOT EXISTS entries (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  contest_id    INTEGER NOT NULL REFERENCES contests(id) ON DELETE CASCADE,
+  user_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title         TEXT NOT NULL,
+  description   TEXT NOT NULL DEFAULT '',
+  tools         TEXT NOT NULL DEFAULT '',
+  kind          TEXT NOT NULL CHECK (kind IN ('image', 'model', 'video')),
+  media_key     TEXT NOT NULL,
+  media_type    TEXT NOT NULL,
+  media_bytes   INTEGER NOT NULL DEFAULT 0,
+  thumb_key     TEXT NOT NULL,
+  fan_art       INTEGER NOT NULL DEFAULT 0,
+  status        TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'withdrawn', 'disqualified')),
+  reject_reason TEXT,
+  votes         INTEGER NOT NULL DEFAULT 0,
+  created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  reviewed_at   TEXT,
+  reviewed_by   INTEGER
+);
+CREATE UNIQUE INDEX IF NOT EXISTS entries_one_per_contest ON entries (contest_id, user_id) WHERE status NOT IN ('withdrawn', 'rejected');
+CREATE INDEX IF NOT EXISTS entries_contest_idx ON entries (contest_id, status, votes);
+CREATE INDEX IF NOT EXISTS entries_user_idx ON entries (user_id, created_at);
+
+-- Public votes: up to 3 per person per contest, one per entry
+CREATE TABLE IF NOT EXISTS votes (
+  entry_id   INTEGER NOT NULL REFERENCES entries(id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  contest_id INTEGER NOT NULL,
+  ip_hash    TEXT,
+  void       INTEGER NOT NULL DEFAULT 0,             -- removed by a moderator after a fraud check
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (entry_id, user_id)
+);
+CREATE INDEX IF NOT EXISTS votes_user_contest_idx ON votes (contest_id, user_id);
+CREATE INDEX IF NOT EXISTS votes_ip_idx ON votes (contest_id, ip_hash);
+
+CREATE TABLE IF NOT EXISTS follows (
+  follower_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  followee_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  PRIMARY KEY (follower_id, followee_id)
+);
+CREATE INDEX IF NOT EXISTS follows_followee_idx ON follows (followee_id);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  entry_id   INTEGER NOT NULL REFERENCES entries(id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  body       TEXT NOT NULL,
+  status     TEXT NOT NULL DEFAULT 'visible' CHECK (status IN ('visible', 'hidden')),
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+CREATE INDEX IF NOT EXISTS comments_entry_idx ON comments (entry_id, created_at);
+
+-- Reports from the public (stolen art, AI art, abuse), handled by moderators
+CREATE TABLE IF NOT EXISTS reports (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_type TEXT NOT NULL CHECK (target_type IN ('entry', 'comment', 'user')),
+  target_id   INTEGER NOT NULL,
+  user_id     INTEGER NOT NULL,
+  reason      TEXT NOT NULL,
+  resolved    INTEGER NOT NULL DEFAULT 0,
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
+-- Simple rate limits (key = action + user or IP)
+CREATE TABLE IF NOT EXISTS rate_limits (
+  key      TEXT PRIMARY KEY,
+  count    INTEGER NOT NULL DEFAULT 0,
+  reset_at INTEGER NOT NULL
+);
+
+-- Moderator/admin actions, kept for disputes
+CREATE TABLE IF NOT EXISTS audit_log (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id    INTEGER,
+  action     TEXT NOT NULL,
+  target     TEXT,
+  detail     TEXT,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);

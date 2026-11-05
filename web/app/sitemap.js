@@ -1,4 +1,5 @@
 import { allArticles } from '@/lib/db';
+import { publishedContests } from '@/lib/contests-db';
 import { animePages, indexable, seasonWindow, seasonId, LETTERS } from '@/lib/catalog';
 import { absUrl, articlePath } from '@/lib/site';
 
@@ -7,7 +8,7 @@ export const dynamic = 'force-static';
 export default async function sitemap() {
   const all = await allArticles();
   const newest = all[0]?.published_at ?? new Date().toISOString();
-  const fixed = ['/', '/news/', '/upcoming/', '/releases/', '/features/', '/calendar/', '/anime/', '/schedule/', '/donghua/', '/about/', '/contact/', '/privacy/', '/terms/'].map((p) => ({
+  const fixed = ['/', '/news/', '/upcoming/', '/releases/', '/features/', '/calendar/', '/anime/', '/schedule/', '/donghua/', '/contests/', '/contests/rules/', '/about/', '/contact/', '/privacy/', '/terms/'].map((p) => ({
     url: absUrl(p),
     lastModified: newest,
     changeFrequency: p === '/' || p === '/news/' ? 'hourly' : p === '/schedule/' ? 'daily' : 'weekly',
@@ -31,5 +32,6 @@ export default async function sitemap() {
     }));
   const seasons = seasonWindow().map((s) => ({ url: absUrl(`/season/${seasonId(s)}/`), lastModified: newest, changeFrequency: 'daily', priority: 0.6 }));
   const letters = LETTERS.map((l) => ({ url: absUrl(`/anime/browse/${l}/`), lastModified: newest, changeFrequency: 'weekly', priority: 0.3 }));
-  return [...fixed, ...articles, ...shows, ...seasons, ...letters];
+  const contests = (await publishedContests()).map((c) => ({ url: absUrl(`/contests/${c.slug}/`), lastModified: c.updated_at || newest, changeFrequency: 'daily', priority: 0.6 }));
+  return [...fixed, ...articles, ...shows, ...seasons, ...letters, ...contests];
 }

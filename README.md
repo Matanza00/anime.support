@@ -179,6 +179,33 @@ Run it by hand: put `catalog` on the first line of `.github/run-bot.txt` and pus
 News bot → Run workflow → `catalog`. AniList's API is free for non-commercial use and for sites earning
 under its limit; check their terms as the site grows. We do not scrape streaming or piracy sites.
 
+## Creator Studio (art contests)
+Monthly contests for 2D art, 3D characters, 3D environments and animation at `/contests/`. People sign in
+with Google or Apple, upload one entry per contest (images, GLB 3D models shown in a 3D viewer, MP4/WebM),
+vote (3 votes per contest), comment, follow creators and link their own support pages (Ko-fi, Patreon...).
+
+- **Roles:** user · moderator (review entries, reports, comments, votes) · admin (+ contests, winners, roles, bans).
+  Moderation lives at `/studio-admin/`.
+- **Fair play:** every entry is reviewed before it appears; vote counts are hidden until voting closes; accounts
+  must be 24 h old with a verified email to vote; each vote stores a hashed IP so vote rings show up in "Vote
+  check"; moderators can remove votes; the top entry is verified before the admin confirms the winner.
+- **Storage:** uploads go to an R2 bucket (`anime-support-uploads`, 10 GB free) when R2 is enabled on the
+  Cloudflare account, otherwise to a KV namespace (1 GB free). The deploy creates it; the deploy report says which.
+- **Contests:** 4 draft contests are created on first deploy. In `/studio-admin/` → Contests, set the prize and
+  dates and switch them to Published; the public pages rebuild automatically.
+
+Settings (GitHub → Settings → Environments → Env):
+
+| Name | Type | What |
+| --- | --- | --- |
+| `ADMIN_EMAILS` | variable | Your Google/Apple email(s), comma-separated: these accounts become admins on sign-in |
+| `GOOGLE_CLIENT_ID` | variable | Google Cloud → APIs & Services → Credentials → OAuth client (Web). Redirect URI: `https://anime.support/api/auth/google/callback` |
+| `GOOGLE_CLIENT_SECRET` | secret | From the same OAuth client |
+| `APPLE_SERVICES_ID`, `APPLE_TEAM_ID`, `APPLE_KEY_ID` | variables | Apple Developer account (paid): Services ID with return URL `https://anime.support/api/auth/apple/callback` |
+| `APPLE_PRIVATE_KEY` | secret | The .p8 key file's contents |
+| `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET` | variable / secret | Optional: Cloudflare Turnstile "I am human" check on uploads and votes |
+| `HASH_SALT` | secret | Optional: any long random text for hashing IPs |
+
 ## Daily routine (10–20 minutes)
 1. Open the dashboard. Drafts are sorted by priority.
 2. Check each one against its sources, sharpen the headline, check the artwork, then approve or reject.

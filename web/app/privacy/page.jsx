@@ -6,10 +6,14 @@ export const metadata = { title: 'Privacy policy', description: `How ${SITE.name
 export default function Privacy() {
   return (
     <StaticPage eyebrow="Legal" title="Privacy policy">
-      <p><em>Last updated: November 5, 2026</em></p>
+      <p><em>Last updated: November 5, 2026 (added Creator Studio accounts)</em></p>
       <p>This policy explains what information {SITE.name} ({SITE.url}) collects and how it is used.</p>
       <h2>Information we collect</h2>
-      <p>We do not require accounts and do not ask for personal information. We count page views anonymously to learn which stories readers find useful. If you email us, we receive your email address and message and use them only to reply.</p>
+      <p>Reading the site needs no account. We count page views anonymously to learn which stories readers find useful. If you email us, we receive your email address and message and use them only to reply.</p>
+      <h2>Creator Studio accounts</h2>
+      <p>If you sign in with Google or Apple to enter contests, vote, comment or follow creators, we receive your name, email address and (for Google) profile picture from that service, plus an account identifier. We use them to run your account, contact contest winners and prevent fraud. Your email is never shown publicly.</p>
+      <p>We store what you add: your profile, entries (images, 3D models, videos), votes, comments and follows. Entries, comments, your display name, username, bio and links are public. To protect contests from fake votes we store a one-way hash of your IP address with each vote, which we cannot turn back into the address. A sign-in cookie keeps you logged in for up to 30 days.</p>
+      <p>You can edit your profile at any time and delete your account from your account page, which removes your profile, entries, votes, comments and follows.</p>
       <h2>Cookies and advertising</h2>
       <p>We use Google AdSense to show ads. Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this and other sites on the Internet.</p>
       <p>You may opt out of personalized advertising in <a href="https://www.google.com/settings/ads" rel="noopener" target="_blank">Google Ads Settings</a>, or opt out of some third-party vendors' use of cookies at <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info</a>. Learn more about <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses data from sites that use its services</a>.</p>

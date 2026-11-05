@@ -89,8 +89,49 @@ if (n === 0) {
   console.log(`${n} articles already in the database`);
 }
 
-// 4. hand the id to wrangler and later steps
+// 4. Creator Studio: draft contests to start from (admins edit, set the prize and publish them)
+const [{ results: [{ c }] }] = await query(id, 'SELECT COUNT(*) AS c FROM contests');
+if (c === 0) {
+  const seeds = JSON.parse(fs.readFileSync(path.join(here, 'seed/contests.json'), 'utf8'));
+  for (const k of seeds) {
+    await query(
+      id,
+      `INSERT OR IGNORE INTO contests (slug, title, category, theme, description, prize, prize_usd, allow_fan_art, submit_opens_at, submit_closes_at, vote_closes_at, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'draft')`,
+      [k.slug, k.title, k.category, k.theme, k.description, k.prize, k.prize_usd, k.allow_fan_art ? 1 : 0, k.submit_opens_at, k.submit_closes_at, k.vote_closes_at],
+    );
+  }
+  console.log(`Added ${seeds.length} draft contests`);
+}
+
+// 5. Upload storage for artwork: R2 bucket (10 GB free) if R2 is enabled on the account, else a KV namespace (1 GB free)
 const wranglerPath = path.join(root, 'wrangler.jsonc');
-fs.writeFileSync(wranglerPath, fs.readFileSync(wranglerPath, 'utf8').replace(/"database_id": "[^"]*"/, `"database_id": "${id}"`));
+let wrangler = fs.readFileSync(wranglerPath, 'utf8').replace(/"database_id": "[^"]*"/, `"database_id": "${id}"`);
+const BUCKET = 'anime-support-uploads';
+let storage = null;
+if (process.env.UPLOAD_STORAGE !== 'kv') {
+  try {
+    const list = await cf('/r2/buckets');
+    const has = (list.buckets || []).some((b) => b.name === BUCKET);
+    if (!has) await cf('/r2/buckets', { method: 'POST', body: JSON.stringify({ name: BUCKET }) });
+    storage = `"r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "${BUCKET}" }],`;
+    console.log(`Uploads: R2 bucket ${BUCKET}`);
+  } catch (err) {
+    console.log(`Uploads: R2 not available (${err.message.split('\n')[0]}); trying KV`);
+  }
+}
+if (!storage) {
+  try {
+    const list = await cf('/storage/kv/namespaces?per_page=100');
+    let ns = (list || []).find((n) => n.title === BUCKET);
+    if (!ns) ns = await cf('/storage/kv/namespaces', { method: 'POST', body: JSON.stringify({ title: BUCKET }) });
+    storage = `"kv_namespaces": [{ "binding": "UPLOADS_KV", "id": "${ns.id}" }],`;
+    console.log(`Uploads: KV namespace ${BUCKET}`);
+  } catch (err) {
+    console.log(`Uploads: OFF (${err.message.split('\n')[0]}). Give the API token "Workers R2 Storage: Edit" or "Workers KV Storage: Edit".`);
+  }
+}
+if (storage && !/"(r2_buckets|kv_namespaces)"/.test(wrangler)) wrangler = wrangler.replace(/(\n\s*)("triggers")/, `$1${storage}$1$2`);
+fs.writeFileSync(wranglerPath, wrangler);
 if (process.env.GITHUB_ENV) fs.appendFileSync(process.env.GITHUB_ENV, `D1_DATABASE_ID=${id}\nCLOUDFLARE_ACCOUNT_ID=${ACCOUNT}\n`);
 console.log('Done.');

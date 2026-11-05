@@ -1,5 +1,9 @@
 // anime.support Worker. Static pages and images are served straight from Cloudflare's asset store;
 // this code runs only for /api/* (see run_worker_first in wrangler.jsonc).
+import { handleAuth } from './auth.js';
+import { handleStudio } from './studio.js';
+import { HttpError, json } from './lib.js';
+
 const SITE = 'https://anime.support';
 const REPO = 'Matanza00/anime.support';
 
@@ -27,14 +31,33 @@ async function dispatch(env, task) {
   console.log('dispatched', task);
 }
 
+/** Rebuilds the static site (e.g. after an admin creates a contest), using the same GitHub token. */
+async function dispatchDeploy(env) {
+  if (!env.GH_DISPATCH_TOKEN) return;
+  const res = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/deploy.yml/dispatches`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.GH_DISPATCH_TOKEN}`, Accept: 'application/vnd.github+json', 'User-Agent': 'anime.support-studio', 'X-GitHub-Api-Version': '2022-11-28' },
+    body: JSON.stringify({ ref: 'main' }),
+  });
+  if (res.status !== 204) throw new Error(`deploy dispatch: HTTP ${res.status}`);
+}
+
 export default {
   async scheduled(event, env, ctx) {
     const task = CRON_TASKS[event.cron];
     if (task) ctx.waitUntil(dispatch(env, task));
   },
 
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    try {
+      if (url.pathname.startsWith('/api/auth/')) return await handleAuth(request, env, url.pathname);
+      if (url.pathname !== '/api/view' && url.pathname.startsWith('/api/')) return await handleStudio(request, env, ctx, url.pathname, dispatchDeploy);
+    } catch (err) {
+      if (err instanceof HttpError) return json({ error: err.message, code: err.code }, err.status);
+      console.log('API error', url.pathname, err.stack || err.message);
+      return json({ error: 'Something went wrong. Please try again.' }, 500);
+    }
 
     // POST /api/view {slug}: one anonymous view (the page sends it once per browser session)
     if (url.pathname === '/api/view') {
