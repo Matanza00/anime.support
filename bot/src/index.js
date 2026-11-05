@@ -11,6 +11,8 @@ import { draft } from './draft.js';
 import { publish } from './publish.js';
 import { optimize } from './optimize.js';
 import { seed } from './seed.js';
+import { catalog } from './catalog.js';
+import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
 import { log, fail } from './log.js';
 
@@ -40,12 +42,16 @@ const jobs = {
   publish: guarded('publish', publish),
   optimize: guarded('optimize', optimize),
   seed: guarded('seed', seed),
+  catalog: guarded('catalog', async () => {
+    await catalog();
+    requestDeploy(); // the site rebuilds with the fresh catalog
+  }),
 };
 
 const cmd = process.argv[2];
 if (cmd) {
   if (!jobs[cmd]) {
-    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | seed`);
+    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | catalog | seed`);
     process.exit(1);
   }
   const ok = await jobs[cmd]();

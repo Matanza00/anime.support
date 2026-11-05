@@ -14,6 +14,8 @@
   "d1_databases": [
     { "binding": "DB", "database_name": "anime-support", "database_id": "00000000-0000-0000-0000-000000000000" }
   ],
+  // Starts the GitHub bot on time: every 2 h (news), daily (anime catalog), weekly (optimizer). Times are UTC.
+  "triggers": { "crons": ["17 */2 * * *", "41 1 * * *", "23 22 * * 0"] },
   // Requires anime.support to be in the same Cloudflare account (it is).
   "routes": [
     { "pattern": "anime.support", "custom_domain": true },

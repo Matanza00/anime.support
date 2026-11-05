@@ -3,6 +3,9 @@ import Cover from '@/components/Cover';
 import AdSlot from '@/components/AdSlot';
 import { MostRead, TrendingChart, ComingSoon } from '@/components/Widgets';
 import { allArticles, animeHubs } from '@/lib/db';
+import { ShowGrid } from '@/components/ShowCard';
+import Schedule from '@/components/Schedule';
+import { scheduleData, showsInSeason, seasonOf, seasonId, seasonLabel } from '@/lib/catalog';
 import { CATEGORIES, SITE, articlePath, catLabel, formatDate } from '@/lib/site';
 import { JsonLd, publisher } from '@/lib/seo';
 
@@ -13,6 +16,9 @@ export default async function Home() {
   const latest = rest.slice(3, 15);
   const hubs = (await animeHubs()).slice(0, 16);
   const byCat = (c) => all.filter((a) => a.category === c).slice(0, 3);
+  const cur = seasonOf();
+  const seasonTop = (await showsInSeason(cur)).filter((x) => x.country !== 'CN').slice(0, 12);
+  const slots = (await scheduleData()).filter((x) => x.t > Date.now() / 1000 - 86400 && x.t < Date.now() / 1000 + 2 * 86400);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -60,6 +66,16 @@ export default async function Home() {
 
       <ComingSoon limit={4} />
 
+      {seasonTop.length > 0 && (
+        <section className="section">
+          <div className="section-head">
+            <h2>{seasonLabel(cur.season)} {cur.year}: most popular this season</h2>
+            <a href={`/season/${seasonId(cur)}/`}>Full season chart →</a>
+          </div>
+          <ShowGrid shows={seasonTop} ranked />
+        </section>
+      )}
+
       <div className="two-col section">
         <div>
           <div className="section-head">
@@ -83,6 +99,13 @@ export default async function Home() {
         </div>
 
         <aside className="sidebar" aria-label="Trending">
+          {slots.length > 0 && (
+            <section className="panel glass airing-today" aria-labelledby="airing-today">
+              <h2 id="airing-today">Airing next</h2>
+              <Schedule slots={slots} builtAt={Math.floor(Date.now() / 1000)} compact limitDays={2} maxItems={6} />
+              <a className="btn ghost" href="/schedule/" style={{ marginTop: 12, width: '100%', justifyContent: 'center' }}>Full schedule</a>
+            </section>
+          )}
           <TrendingChart limit={10} />
           {hubs.length > 0 && (
             <section className="panel glass" aria-labelledby="follow">

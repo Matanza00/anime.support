@@ -63,6 +63,11 @@ export const CONFIG = {
   },
 
   maxDraftsPerRun: Number(e.MAX_DRAFTS_PER_RUN || 6),
+  autoPublish: {
+    on: /^(on|true|1|yes)$/i.test(e.AUTO_PUBLISH || ''),
+    minConfidence: Number(e.AUTO_PUBLISH_MIN_CONFIDENCE || 0.85),
+    maxPerDay: Number(e.AUTO_PUBLISH_MAX_PER_DAY || 8),
+  },
   maxItemAgeHours: Number(e.MAX_ITEM_AGE_HOURS || 48),
   autoPrune: e.SOURCES_AUTO_PRUNE === 'true',
   userAgent: 'AnimeSupportBot/1.0 (+https://anime.support/about; news aggregator; respects robots)',

@@ -101,6 +101,56 @@ CREATE TABLE IF NOT EXISTS bot_state (
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
+-- Anime catalog from AniList (refreshed daily by the bot's "catalog" task). One row per show.
+CREATE TABLE IF NOT EXISTS anime_catalog (
+  id             INTEGER PRIMARY KEY,                -- AniList id
+  slug           TEXT NOT NULL UNIQUE,               -- /anime/<slug>/
+  title          TEXT NOT NULL,                      -- English title, else romaji
+  title_romaji   TEXT,
+  title_native   TEXT,
+  synonyms       TEXT NOT NULL DEFAULT '[]',         -- JSON
+  format         TEXT,                               -- TV, MOVIE, ONA, OVA, SPECIAL, TV_SHORT
+  status         TEXT,                               -- RELEASING, FINISHED, NOT_YET_RELEASED, ...
+  episodes       INTEGER,
+  duration       INTEGER,                            -- minutes per episode
+  source         TEXT,                               -- MANGA, LIGHT_NOVEL, ORIGINAL, ...
+  season         TEXT,                               -- WINTER, SPRING, SUMMER, FALL
+  season_year    INTEGER,
+  start_date     TEXT,                               -- YYYY-MM-DD (partial dates padded with 01)
+  end_date       TEXT,
+  country        TEXT,                               -- JP, CN (donghua), KR, ...
+  genres         TEXT NOT NULL DEFAULT '[]',
+  tags           TEXT NOT NULL DEFAULT '[]',
+  studios        TEXT NOT NULL DEFAULT '[]',
+  score          INTEGER,                            -- AniList average score (0-100)
+  popularity     INTEGER,
+  trending       INTEGER,
+  cover_url      TEXT,
+  cover_color    TEXT,
+  banner_url     TEXT,
+  trailer_youtube TEXT,
+  streaming      TEXT NOT NULL DEFAULT '[]',         -- JSON [{site,url,language}] official legal streams
+  official_site  TEXT,
+  next_episode   INTEGER,
+  next_airing_at INTEGER,                            -- unix seconds
+  anilist_url    TEXT,
+  synopsis_src   TEXT,                               -- AniList synopsis, used only as background for our own summary (never published)
+  summary        TEXT,                               -- our original overview (AI-written, shown on the page)
+  summary_at     TEXT,
+  updated_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+CREATE INDEX IF NOT EXISTS anime_catalog_season_idx ON anime_catalog (season_year, season);
+CREATE INDEX IF NOT EXISTS anime_catalog_status_idx ON anime_catalog (status, popularity);
+
+-- Upcoming and recent episode air times (next 8 days), for the weekly schedule page
+CREATE TABLE IF NOT EXISTS airing (
+  media_id  INTEGER NOT NULL,
+  episode   INTEGER NOT NULL,
+  airing_at INTEGER NOT NULL,                        -- unix seconds
+  PRIMARY KEY (media_id, episode)
+);
+CREATE INDEX IF NOT EXISTS airing_time_idx ON airing (airing_at);
+
 -- Starter sources. daily = breaking news, weekly = trends and features, monthly = seasonal/upcoming coverage.
 INSERT OR IGNORE INTO sources (name, homepage, feed_url, tier) VALUES
   ('Anime News Network', 'https://www.animenewsnetwork.com/', 'https://www.animenewsnetwork.com/all/rss.xml?ann-edition=w', 'daily'),

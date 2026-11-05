@@ -8,6 +8,7 @@ import { MostRead, TrendingChart } from '@/components/Widgets';
 import { allArticles, getArticle, related } from '@/lib/db';
 import { renderArticle } from '@/lib/markdown';
 import { renderMediaList } from '@/lib/embeds';
+import { animeHref } from '@/lib/catalog';
 import { CATEGORIES, SITE, absUrl, articlePath, catLabel, formatDate, readingTime, slugify } from '@/lib/site';
 import { JsonLd, breadcrumbs, publisher } from '@/lib/seo';
 
@@ -57,6 +58,7 @@ export default async function ArticlePage({ params }) {
   const cat = CATEGORIES[a.category] ?? CATEGORIES.news;
 
   const crumbs = [['Home', '/'], [cat.label, cat.path], [a.title, articlePath(a.slug)]];
+  const hrefs = Object.fromEntries(await Promise.all((a.anime ?? []).map(async (n) => [n, await animeHref(n)])));
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -86,7 +88,7 @@ export default async function ArticlePage({ params }) {
         <ol className="crumbs">
           <li><a href="/">Home</a></li>
           <li><a href={cat.path}>{cat.label}</a></li>
-          {a.anime?.[0] && <li><a href={`/anime/${slugify(a.anime[0])}/`}>{a.anime[0]}</a></li>}
+          {a.anime?.[0] && <li><a href={hrefs[a.anime[0]]}>{a.anime[0]}</a></li>}
         </ol>
       </nav>
 
@@ -104,7 +106,7 @@ export default async function ArticlePage({ params }) {
             </div>
             {a.anime?.length > 0 && (
               <div className="tabs" style={{ marginTop: 14, marginBottom: 0 }}>
-                {a.anime.map((n) => <a key={n} className="chip" href={`/anime/${slugify(n)}/`}>{n}</a>)}
+                {a.anime.map((n) => <a key={n} className="chip" href={hrefs[n]}>{n}</a>)}
               </div>
             )}
             <ShareBar url={url} title={a.title} />

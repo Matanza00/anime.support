@@ -29,7 +29,8 @@ HEADLINE FORMULA
 - Banned: ALL CAPS, "You won't believe", "SHOCKING", question-bait, or any promise the article does not deliver.
 
 SKIP when: the story is already covered in ALREADY COVERED below (same announcement, even if the anime
-is named differently, e.g. its Japanese vs English title) — set skip_reason "duplicate"; or it is not about anime/manga/light novels, mainly merchandise/ads, too little factual detail, or a pure opinion piece.
+is named differently, e.g. its Japanese vs English title) — set skip_reason "duplicate"; or it is not about anime/manga/light novels/donghua (video games, merchandise, toys, figures and
+live events count only when the story is mainly about an anime or manga property and is real news), mainly merchandise/ads, too little factual detail, or a pure opinion piece.
 
 Return ONLY a JSON object:
 {

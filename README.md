@@ -55,9 +55,22 @@ Repo → **Settings → Environments → Env → Environment secrets** (the work
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages → right sidebar |
 | `LLM_API_KEY` | Your OpenRouter (or OpenAI) key |
 | `FB_PAGE_ID`, `FB_PAGE_TOKEN` | Optional, see Facebook below |
+| `GH_DISPATCH_TOKEN` | Recommended. Lets the Cloudflare timer start the bot on time (see below) |
 
 Optional **variables** (same page, Variables tab): `LLM_MODEL`, `LLM_BASE_URL`, `IMAGE_MODEL`,
-`IMAGE_PROVIDER` (`openrouter`, `openai` or `none`), `MAX_DRAFTS_PER_RUN`.
+`IMAGE_PROVIDER` (`openrouter`, `openai` or `none`), `MAX_DRAFTS_PER_RUN`, `CATALOG_SUMMARIES_PER_RUN`
+(new show overviews per daily run, default 60), and the auto-publish settings below.
+
+**On-time runs (`GH_DISPATCH_TOKEN`).** GitHub's own schedule often runs late or skips runs. The site's
+Cloudflare Worker has a reliable timer (`wrangler.jsonc` → `triggers`) that starts the bot instead:
+GitHub → Settings → Developer settings → **Fine-grained tokens** → Generate. Repository access: only
+`Matanza00/anime.support`. Permissions: **Actions: Read and write**. Save it as the `GH_DISPATCH_TOKEN`
+secret in `Env`; the next deploy hands it to the Worker (the deploy report says "Cloudflare timer: on").
+
+**Auto-publish (optional).** By default every draft waits for your approval. Set the variable
+`AUTO_PUBLISH` = `on` to publish drafts the AI is very sure about without review
+(`AUTO_PUBLISH_MIN_CONFIDENCE`, default 0.85; `AUTO_PUBLISH_MAX_PER_DAY`, default 8). Faster, but AdSense
+penalises unreviewed rewritten content, so read the auto-published stories each day and fix or unpublish.
 
 ### 4. First deploy
 Pushing to `main` deploys automatically (or Actions tab → **Deploy site** → Run workflow). The result
@@ -149,6 +162,23 @@ articles. YouTube loads as a lightweight thumbnail until tapped.
 
 ---
 
+## Anime database, schedule and seasons
+Once a day the bot's `catalog` task reads [AniList](https://anilist.co)'s free public API and saves, for
+roughly 2,000 shows: titles, format, dates, studios, genres, cover art, trailers, the next episode and the
+**official** streaming links (only licensed services; piracy sites are never linked). It also saves every
+episode airing in the next 8 days, and writes an original 90–150 word overview for the most popular
+shows that don't have one yet. The site turns this into:
+
+- `/anime/<show>/`: facts, where to watch, next-episode countdown, trailer, our overview, all our news about
+  it, other seasons and similar shows. Pages without our own overview or news are `noindex` until they have one.
+- `/schedule/`: the week's episodes in the visitor's own time zone, with live countdowns.
+- `/season/<season-year>/`: last, current and next season charts. `/donghua/`: Chinese anime.
+- `/anime/browse/<letter>/`: A–Z.
+
+Run it by hand: put `catalog` on the first line of `.github/run-bot.txt` and push, or Actions →
+News bot → Run workflow → `catalog`. AniList's API is free for non-commercial use and for sites earning
+under its limit; check their terms as the site grows. We do not scrape streaming or piracy sites.
+
 ## Daily routine (10–20 minutes)
 1. Open the dashboard. Drafts are sorted by priority.
 2. Check each one against its sources, sharpen the headline, check the artwork, then approve or reject.
@@ -166,6 +196,7 @@ auto-generated or rewritten content, so this review step is what keeps the accou
 | `npm run draft` | Draft from fetched headlines |
 | `npm run publish` | Deploy approved articles + Facebook, once |
 | `npm run optimize` | Trending seed + learning + source ranking, once |
+| `node src/index.js catalog` | Refresh the anime database and schedule, once |
 | `npm run seed` | Publish the launch articles (if not already in the database) |
 | `npm test` | Unit tests |
 

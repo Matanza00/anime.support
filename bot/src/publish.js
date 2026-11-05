@@ -65,6 +65,11 @@ async function deployViaHook() {
   if (!res.ok) throw new Error(`Deploy hook HTTP ${res.status}`);
 }
 
+/** Inside GitHub Actions: ask the workflow to run its deploy job after this run. */
+export function requestDeploy() {
+  if (process.env.GITHUB_OUTPUT) fs.appendFile(process.env.GITHUB_OUTPUT, 'deploy=true\n').catch(() => {});
+}
+
 export async function deployIfNeeded() {
   const state = await readState();
   const { count } = await one("SELECT COUNT(*) AS count FROM articles WHERE status = 'published' AND published_at > ?", [

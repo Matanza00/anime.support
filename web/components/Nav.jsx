@@ -4,11 +4,13 @@ import { usePathname } from 'next/navigation';
 const LINKS = [
   ['/', 'Latest'],
   ['/news/', 'News'],
+  ['/schedule/', 'Schedule'],
+  ['/season/', 'Seasons'],
+  ['/anime/', 'Anime'],
+  ['/donghua/', 'Donghua'],
   ['/upcoming/', 'Upcoming'],
-  ['/releases/', 'Out now'],
   ['/calendar/', 'Calendar'],
   ['/features/', 'Features'],
-  ['/anime/', 'Anime A–Z'],
 ];
 
 export default function Nav() {
