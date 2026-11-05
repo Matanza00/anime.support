@@ -9,6 +9,7 @@ import { clusterItems, clusterKeyFor, similarity, slugify, extractText, tokens }
 import { log, warn } from './log.js';
 import { mediaFromPage, buildMedia } from './media.js';
 import { createArtwork } from './artwork.js';
+import { coverFromOfficialMedia } from './official-media.js';
 import { allowedByRobots } from './robots.js';
 
 const VALID_CATEGORIES = new Set(['news', 'upcoming', 'release', 'feature']);
@@ -152,12 +153,11 @@ export async function draft() {
 
     const slug = `${slugify(out.title)}-${Date.now().toString(36).slice(-4)}`;
     const category = VALID_CATEGORIES.has(out.category) ? out.category : 'news';
-    const art = await createArtwork({ slug, title: String(out.title), anime, category, imagePrompt: out.image_prompt });
-    // Our own unique artwork is the cover; AniList art stays available as an option in the dashboard.
-    if (art.cover_url) {
-      if (mediaInfo.cover_url) mediaInfo.image_candidates.unshift({ kind: 'image', url: mediaInfo.cover_url, credit: mediaInfo.cover_credit, from: 'AniList' });
-      Object.assign(mediaInfo, { cover_url: art.cover_url, cover_credit: art.cover_credit });
-    }
+    // Cover: official media first (trailer still, key visual, banner); generated artwork only as a fallback.
+    const art =
+      (await coverFromOfficialMedia({ slug, title: String(out.title), anime, category, media: mediaInfo.media, image_candidates: mediaInfo.image_candidates })) ??
+      (await createArtwork({ slug, title: String(out.title), anime, category, imagePrompt: out.image_prompt }));
+    if (art.cover_url) Object.assign(mediaInfo, { cover_url: art.cover_url, cover_credit: art.cover_credit });
     const publishNow = await shouldAutoPublish(out);
     await insert('articles', {
           slug,

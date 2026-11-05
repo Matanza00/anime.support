@@ -12,6 +12,8 @@ import { publish } from './publish.js';
 import { optimize } from './optimize.js';
 import { seed } from './seed.js';
 import { catalog } from './catalog.js';
+import { remediaExisting } from './official-media.js';
+import { sql, parseRow } from './d1.js';
 import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
 import { log, fail } from './log.js';
@@ -46,12 +48,16 @@ const jobs = {
     await catalog();
     requestDeploy(); // the site rebuilds with the fresh catalog
   }),
+  // swap generated artwork for official images on existing drafts and articles
+  media: guarded('media', async () => {
+    if (await remediaExisting({ sql, parseRow })) requestDeploy();
+  }),
 };
 
 const cmd = process.argv[2];
 if (cmd) {
   if (!jobs[cmd]) {
-    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | catalog | seed`);
+    console.error(`Unknown command "${cmd}". Use: collect | draft | publish | optimize | catalog | media | seed`);
     process.exit(1);
   }
   const ok = await jobs[cmd]();

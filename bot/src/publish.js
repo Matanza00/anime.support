@@ -72,10 +72,20 @@ export function requestDeploy() {
 
 export async function deployIfNeeded() {
   const state = await readState();
-  const { count } = await one("SELECT COUNT(*) AS count FROM articles WHERE status = 'published' AND published_at > ?", [
-    state.lastDeployAt || '',
-  ]);
-  if (!count) return log('Publish: nothing new to deploy'), false;
+  const site = await one("SELECT value FROM bot_state WHERE key = 'site'").then((r) => (r ? JSON.parse(r.value) : {}));
+  const counts = await sql('SELECT status, COUNT(*) AS n FROM articles GROUP BY status');
+  log(`Articles in the database: ${counts.map((c) => `${c.n} ${c.status}`).join(', ') || 'none'}`);
+
+  // Compare with what the live site was actually built from (recorded by each successful deploy).
+  const since = site.builtAt || state.lastDeployAt || '';
+  const { count, newest } = await one(
+    "SELECT COUNT(*) AS count, MAX(published_at) AS newest FROM articles WHERE status = 'published' AND published_at > ?",
+    [since],
+  );
+  if (!count) return log(`Publish: the live site is up to date (built ${site.builtAt || 'unknown'})`), false;
+  // A deploy was already requested after these approvals and may still be running
+  const recent = state.lastDeployAt && state.lastDeployAt > newest && Date.now() - Date.parse(state.lastDeployAt) < 20 * 60e3;
+  if (recent) return log(`Publish: deploy for ${count} article(s) already started at ${state.lastDeployAt}`), false;
 
   const startedAt = new Date().toISOString();
   const mode = CONFIG.deploy.mode;

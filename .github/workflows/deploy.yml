@@ -61,6 +61,9 @@ jobs:
       - name: Deploy to Cloudflare
         run: npx --yes wrangler@4 deploy 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
 
+      - name: Remember what the live site contains
+        run: node database/setup.mjs --mark-built 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+
       - name: Give the Cloudflare timer its GitHub token
         run: |
           if [ -n "$GH_DISPATCH_TOKEN" ]; then

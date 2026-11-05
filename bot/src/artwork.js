@@ -2,7 +2,8 @@
 //   1. hero image  (1600×900, no text) – AI illustration, or procedural art when AI is off/fails.
 //      Used as the cover, og:image and Google Discover image (Google advises no text on these).
 //   2. social card (1200×630, with headline) – for the Facebook post.
-// Both are saved in the D1 media table and published as static files at each deploy. Nothing copies studio artwork, so there is no rights risk.
+// Both are saved in the D1 media table and published as static files at each deploy.
+// Used only when no official image exists (see official-media.js, which is tried first).
 import sharp from 'sharp';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';

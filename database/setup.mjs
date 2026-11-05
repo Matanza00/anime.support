@@ -45,6 +45,19 @@ if (!db) {
 const id = db.uuid;
 console.log(`D1 database: ${NAME} (${id})`);
 
+// After a successful deploy: remember which content the live site was built from (the bot compares against it)
+if (process.argv.includes('--mark-built')) {
+  const builtAt = process.env.BUILD_STARTED_AT || new Date().toISOString();
+  await query(
+    id,
+    "INSERT INTO bot_state (key, value, updated_at) VALUES ('site', ?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at",
+    [JSON.stringify({ builtAt }), new Date().toISOString()],
+  );
+  console.log(`Live site marked as built from content up to ${builtAt}`);
+  process.exit(0);
+}
+if (process.env.GITHUB_ENV) fs.appendFileSync(process.env.GITHUB_ENV, `BUILD_STARTED_AT=${new Date().toISOString()}\n`);
+
 // 2. schema, one statement at a time
 const schema = fs.readFileSync(path.join(here, 'schema.sql'), 'utf8').replace(/--[^\n]*/g, '');
 const statements = schema.split(/;\s*(?:\n|$)/).map((s) => s.trim()).filter(Boolean);

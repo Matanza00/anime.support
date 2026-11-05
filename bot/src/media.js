@@ -151,6 +151,11 @@ export async function buildMedia(animeTitles, pages) {
     if (p.ogImage) addCandidate({ kind: 'image', url: p.ogImage, credit: `Image: ${p.sourceName}`, from: `${p.sourceName} article image (check rights)` });
   }
 
+  // No video in the story itself: show the anime's official trailer in the article
+  const trailer = candidates.find((c) => c.kind === 'youtube');
+  if (!media.some((m) => m.type === 'youtube') && trailer) {
+    media.push({ type: 'youtube', url: trailer.url, caption: `${trailer.credit.split(' © ')[0].split(' · ')[0]}: official trailer`, credit: 'YouTube', from: 'anilist' });
+  }
   const cover = candidates.find((c) => c.kind === 'image' && c.from.startsWith('AniList')) ?? null;
   return { cover_url: cover?.url ?? null, cover_credit: cover?.credit ?? null, media, image_candidates: candidates };
 }
