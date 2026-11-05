@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: write # to commit the publish marker
+  actions: read # to see whether the Cloudflare timer already ran
 
 defaults:
   run:
@@ -63,6 +64,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Decide the task
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           case "${{ github.event_name }}/${{ github.event.schedule }}" in
             workflow_dispatch/*) TASK="${{ inputs.task }}" ;;
@@ -71,6 +74,14 @@ jobs:
             "schedule/41 22 * * 0") TASK=optimize ;;
             *) TASK=collect-and-publish ;;
           esac
+          # GitHub's own schedule is only a backup: skip it when the Cloudflare timer already started a run recently
+          if [ "${{ github.event_name }}" = schedule ] && [ "$TASK" = collect-and-publish ]; then
+            LAST=$(gh run list -R "${{ github.repository }}" -w bot.yml -e workflow_dispatch -L 1 --json createdAt -q '.[0].createdAt' 2>/dev/null || true)
+            if [ -n "$LAST" ] && [ $(( $(date +%s) - $(date -d "$LAST" +%s) )) -lt 5400 ]; then
+              echo "Cloudflare timer ran at $LAST; backup schedule skipped." | tee "$RUNNER_TEMP/report.txt"
+              TASK=none
+            fi
+          fi
           echo "TASK=$TASK" >> "$GITHUB_ENV"
           echo "Task: $TASK" | tee "$RUNNER_TEMP/report.txt"
       - uses: actions/setup-node@v4

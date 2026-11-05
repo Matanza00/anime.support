@@ -133,6 +133,7 @@ export async function shareToFacebook() {
 }
 
 export async function publish() {
-  await deployIfNeeded();
+  const deployed = await deployIfNeeded();
   await shareToFacebook();
+  return deployed;
 }

@@ -267,8 +267,11 @@ export function createApp() {
 
   app.post('/deploy', async (req, res) => {
     try {
-      await publish();
-      res.redirect(`/?msg=${encodeURIComponent('Deploy started on GitHub. The site updates in 2–3 minutes.')}`);
+      const started = await publish();
+      const msg = started
+        ? 'Deploy started on GitHub. The site updates in 2–3 minutes.'
+        : 'Nothing new to deploy: approve a draft first. (Already-approved stories are on the site, or their deploy is still running.)';
+      res.redirect(`/?msg=${encodeURIComponent(msg)}`);
     } catch (err) {
       fail(err);
       res.redirect(`/?msg=${encodeURIComponent('Deploy failed: ' + err.message)}`);
