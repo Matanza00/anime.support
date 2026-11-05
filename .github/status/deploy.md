@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-05T13:25:03Z
-- Commit: 6209571
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42035271328
+- When: 2026-11-05T17:34:22Z
+- Commit: c18263b
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42075598917
 
 ```
 + /anime/xianwu-dizun/__next._tree.txt
@@ -31,35 +31,35 @@
 + /anime/nue-no-onmyouji/__next._tree.txt
 + /anime/psychic-princess/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 6836 assets
-Uploaded 2000 of 6836 assets
-Uploaded 3000 of 6836 assets
-Uploaded 4000 of 6836 assets
-Uploaded 5000 of 6836 assets
-Uploaded 5929 of 6836 assets
-Uploaded 6046 of 6836 assets
-Uploaded 6836 of 6836 assets
-✨ Success! Uploaded 6836 files (1990 already uploaded) (29.57 sec)
+Uploaded 1000 of 6832 assets
+Uploaded 2000 of 6832 assets
+Uploaded 3000 of 6832 assets
+Uploaded 3929 of 6832 assets
+Uploaded 4929 of 6832 assets
+Uploaded 5929 of 6832 assets
+Uploaded 6042 of 6832 assets
+Uploaded 6832 of 6832 assets
+✨ Success! Uploaded 6832 files (1994 already uploaded) (36.99 sec)
 
 Total Upload: 2.35 KiB / gzip: 1.17 KiB
-Worker Startup Time: 2 ms
+Worker Startup Time: 4 ms
 Your Worker has access to the following bindings:
 Binding                         Resource         
 env.DB (anime-support)          D1 Database      
 env.ASSETS                      Assets           
 
-Uploaded anime-support (36.51 sec)
-Deployed anime-support triggers (1.33 sec)
+Uploaded anime-support (43.68 sec)
+Deployed anime-support triggers (1.44 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: a8f96b7a-8dd8-46e7-bad8-ae4db01a003b
+Current Version ID: 99237759-2b8a-4f0f-80c9-60cecd135f2f
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-05T13:23:34.559Z
+Live site marked as built from content up to 2026-11-05T17:32:39.603Z
 
  ⛅️ wrangler 4.157.0 (update available 4.158.0)
 ───────────────────────────────────────────────
