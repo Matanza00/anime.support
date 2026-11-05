@@ -29,11 +29,11 @@ const MEDIA = `
 `;
 
 const PAGE_QUERY = `query ($page: Int, $perPage: Int, $season: MediaSeason, $seasonYear: Int, $status: MediaStatus,
-  $sort: [MediaSort], $country: CountryCode) {
+  $sort: [MediaSort], $country: CountryCode, $startAfter: FuzzyDateInt) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { hasNextPage }
     media(type: ANIME, isAdult: false, season: $season, seasonYear: $seasonYear, status: $status, sort: $sort,
-          countryOfOrigin: $country, genre_not_in: ["Hentai"]) { ${MEDIA} }
+          countryOfOrigin: $country, startDate_greater: $startAfter, genre_not_in: ["Hentai"]) { ${MEDIA} }
   }
 }`;
 
@@ -147,6 +147,8 @@ export function mapMedia(m) {
     season: m.season ?? null,
     season_year: m.seasonYear ?? null,
     start_date: ymd(m.startDate),
+    start_precision: m.startDate?.day ? 'day' : m.startDate?.month ? 'month' : m.startDate?.year ? 'year' : null,
+    official_x: links.find((l) => /^(twitter|x)$/i.test(l.site || '') && /^https:\/\//.test(l.url || ''))?.url ?? null,
     end_date: ymd(m.endDate),
     country: m.countryOfOrigin ?? null,
     genres: (m.genres ?? []).filter((g) => g !== 'Hentai' && g !== 'Ecchi'),
@@ -174,7 +176,7 @@ const keep = (m) => m && !m.isAdult && (m.title?.english || m.title?.romaji) && 
 
 const COLS = [
   'id', 'slug', 'title', 'title_romaji', 'title_native', 'synonyms', 'format', 'status', 'episodes', 'duration', 'source',
-  'season', 'season_year', 'start_date', 'end_date', 'country', 'genres', 'tags', 'studios', 'score', 'popularity', 'trending',
+  'season', 'season_year', 'start_date', 'start_precision', 'official_x', 'end_date', 'country', 'genres', 'tags', 'studios', 'score', 'popularity', 'trending',
   'cover_url', 'cover_color', 'banner_url', 'trailer_youtube', 'streaming', 'official_site', 'next_episode', 'next_airing_at',
   'anilist_url', 'synopsis_src', 'updated_at',
 ];
@@ -274,7 +276,9 @@ export async function catalog() {
   const lists = [
     ...seasons.map((s) => ({ label: `${s.season} ${s.year}`, vars: { season: s.season, seasonYear: s.year, sort: ['POPULARITY_DESC'] }, pages: 8 })),
     { label: 'airing now', vars: { status: 'RELEASING', sort: ['POPULARITY_DESC'] }, pages: 8 },
-    { label: 'upcoming', vars: { status: 'NOT_YET_RELEASED', sort: ['POPULARITY_DESC'] }, pages: 4 },
+    { label: 'upcoming', vars: { status: 'NOT_YET_RELEASED', sort: ['POPULARITY_DESC'] }, pages: 8 },
+    // everything with an announced premiere date from today on, soonest first (feeds the release calendar)
+    { label: 'dated premieres', vars: { status: 'NOT_YET_RELEASED', startAfter: Number(new Date().toISOString().slice(0, 10).replace(/-/g, '')) - 1, sort: ['START_DATE'] }, pages: 6 },
     { label: 'trending', vars: { sort: ['TRENDING_DESC'] }, pages: 2 },
     { label: 'most popular', vars: { sort: ['POPULARITY_DESC'] }, pages: Number(process.env.CATALOG_POPULAR_PAGES || 10) },
     { label: 'donghua', vars: { country: 'CN', sort: ['POPULARITY_DESC'] }, pages: 6 },

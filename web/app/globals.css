@@ -393,3 +393,24 @@ button.chip { font: inherit; cursor: pointer; }
   .show-stats { gap: 16px; }
   .show-stats b { font-size: 17px; }
 }
+
+/* release calendar */
+.prem-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.prem-card { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 12px; min-width: 0; }
+.prem-poster { position: relative; aspect-ratio: 2 / 3; border-radius: 10px; overflow: hidden; background: linear-gradient(160deg, var(--c, hsl(var(--h, 340) 70% 45%)), var(--ink-2)); }
+.prem-poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.prem-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.prem-body .date { font: 700 13px var(--font-body); color: var(--gold); letter-spacing: .03em; }
+.prem-body .count { font: 800 24px/1.1 var(--font-display); }
+.prem-body .count small { font: 500 12px var(--font-body); color: var(--muted); margin-left: 6px; }
+.prem-body h3 { font-size: 16px; line-height: 1.3; }
+.prem-body h3 a:hover { color: var(--coral-text); }
+.prem-body .meta { margin-top: 0; font-size: 12px; }
+.prem-src { font-size: 12px; color: var(--faint); margin-top: auto; }
+.prem-src a { color: var(--coral-text); }
+.sub-head { font-size: 15px; color: var(--muted); margin: 22px 0 12px; font-family: var(--font-body); font-weight: 600; }
+.sources-note { padding: 22px 24px; margin-block: 28px; }
+.sources-note h2 { font-family: var(--font-display); font-size: 18px; margin-bottom: 10px; }
+.sources-note p { color: var(--muted); font-size: 15px; }
+.sources-note p + p { margin-top: 10px; }
+.sources-note a { color: var(--coral-text); }

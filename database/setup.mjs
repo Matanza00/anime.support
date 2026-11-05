@@ -61,7 +61,14 @@ if (process.env.GITHUB_ENV) fs.appendFileSync(process.env.GITHUB_ENV, `BUILD_STA
 // 2. schema, one statement at a time
 const schema = fs.readFileSync(path.join(here, 'schema.sql'), 'utf8').replace(/--[^\n]*/g, '');
 const statements = schema.split(/;\s*(?:\n|$)/).map((s) => s.trim()).filter(Boolean);
-for (const s of statements) await query(id, s);
+for (const s of statements) {
+  try {
+    await query(id, s);
+  } catch (err) {
+    if (/^ALTER TABLE/i.test(s) && /duplicate column/i.test(err.message)) continue; // already added
+    throw err;
+  }
+}
 console.log(`Schema applied (${statements.length} statements)`);
 
 // 3. launch articles

@@ -2,7 +2,8 @@
 import { mostRead, trendingAnime, upcomingReleases } from '@/lib/db';
 import { articlePath, formatDate } from '@/lib/site';
 import Countdown from './Countdown';
-import { allShows, showForName } from '@/lib/catalog';
+import { allShows, showForName, premieres } from '@/lib/catalog';
+import PremiereCard from './PremiereCard';
 
 export async function MostRead({ title = 'Most read this week', limit = 5 }) {
   const list = await mostRead(limit);
@@ -72,14 +73,18 @@ export function ReleaseCard({ article: a }) {
 
 export async function ComingSoon({ limit = 4 }) {
   const list = await upcomingReleases(limit);
-  if (!list.length) return null;
+  // fill with premieres from the anime database (popular ones first among the next 45 days)
+  const horizon = new Date(Date.now() + 45 * 864e5).toISOString().slice(0, 10);
+  const shows = (await premieres()).dated.filter((s) => s.start_date <= horizon).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, Math.max(0, limit - list.length)).sort((a, b) => a.start_date.localeCompare(b.start_date));
+  if (!list.length && !shows.length) return null;
   return (
     <section className="section">
       <div className="section-head">
         <h2>Coming soon</h2>
         <a href="/calendar/">Full release calendar →</a>
       </div>
-      <div className="releases">{list.map((a) => <ReleaseCard key={a.id} article={a} />)}</div>
+      {list.length > 0 && <div className="releases" style={{ marginBottom: shows.length ? 14 : 0 }}>{list.map((a) => <ReleaseCard key={a.id} article={a} />)}</div>}
+      {shows.length > 0 && <div className="prem-grid">{shows.map((s) => <PremiereCard key={s.id} show={s} />)}</div>}
     </section>
   );
 }

@@ -36,7 +36,7 @@ export function sectionMetadata(key, n = 1) {
   };
 }
 
-export default async function Listing({ section, page = 1 }) {
+export default async function Listing({ section, page = 1, children, newsTitle }) {
   const s = SECTIONS[section];
   const items = await sectionItems(section);
   const pages = Math.max(1, Math.ceil(items.length / PER_PAGE));
@@ -51,13 +51,15 @@ export default async function Listing({ section, page = 1 }) {
         <h1>{s.label}</h1>
         <p>{s.blurb}</p>
       </header>
+      {page === 1 && children}
       <div className="two-col section">
         <div>
           <AdSlot slot="top" />
+          {page === 1 && newsTitle && <div className="section-head"><h2>{newsTitle}</h2></div>}
           {slice.length ? (
             <div className="grid">{slice.map((a) => <Card key={a.id} article={a} />)}</div>
           ) : (
-            <div className="glass empty">No stories here yet. Check back soon.</div>
+            <div className="glass empty">{children ? 'Announcement stories appear here once they are published.' : 'No stories here yet. Check back soon.'}</div>
           )}
           {pages > 1 && (
             <nav className="pager" aria-label="Pages">

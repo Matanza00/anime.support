@@ -4,7 +4,7 @@ import { d1Configured, query } from './d1.js';
 import { animeHubs } from './db.js';
 
 const COLS =
-  'id, slug, title, title_romaji, title_native, synonyms, format, status, episodes, duration, source, season, season_year, start_date, end_date, country, genres, tags, studios, score, popularity, trending, cover_url, cover_color, banner_url, trailer_youtube, streaming, official_site, next_episode, next_airing_at, anilist_url, summary, updated_at';
+  'id, slug, title, title_romaji, title_native, synonyms, format, status, episodes, duration, source, season, season_year, start_date, start_precision, official_x, end_date, country, genres, tags, studios, score, popularity, trending, cover_url, cover_color, banner_url, trailer_youtube, streaming, official_site, next_episode, next_airing_at, anilist_url, summary, updated_at';
 const JSON_COLS = ['synonyms', 'genres', 'tags', 'studios', 'streaming'];
 
 let showsCache;
@@ -247,4 +247,34 @@ export async function scheduleData() {
     col: s.cover_color || undefined,
     k: s.country || undefined,
   }));
+}
+
+/* ---------- release calendar ---------- */
+
+/**
+ * Announced premieres: shows not out yet, with how exact the date is.
+ *   dated: exact day known (today or later), soonest first
+ *   month: only the month is known, grouped by month
+ *   later: only a season or year, or nothing yet
+ */
+export async function premieres() {
+  const today = new Date().toISOString().slice(0, 10);
+  const month = today.slice(0, 7);
+  const soon = (await allShows()).filter((s) => s.status === 'NOT_YET_RELEASED');
+  // rows saved before precision was tracked: treat a "-01" day as month-only (AniList pads missing days)
+  const prec = (s) => s.start_precision || (s.start_date ? (s.start_date.endsWith('-01') ? 'month' : 'day') : null);
+  const byDate = (a, b) => (a.start_date || '').localeCompare(b.start_date || '') || (b.popularity || 0) - (a.popularity || 0);
+  return {
+    dated: soon.filter((s) => prec(s) === 'day' && s.start_date >= today).sort(byDate),
+    month: soon.filter((s) => prec(s) === 'month' && s.start_date.slice(0, 7) >= month).sort(byDate),
+    later: soon.filter((s) => !prec(s) || prec(s) === 'year' || (s.start_date && s.start_date.slice(0, 7) < month && prec(s) !== 'day')).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)),
+  };
+}
+
+/** Where a date was announced: the show's own official channels. */
+export function officialSources(s) {
+  return [
+    s.official_site && { label: 'Official website', url: s.official_site },
+    s.official_x && { label: 'Official X', url: s.official_x },
+  ].filter(Boolean);
 }

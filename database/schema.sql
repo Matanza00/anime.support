@@ -142,6 +142,10 @@ CREATE TABLE IF NOT EXISTS anime_catalog (
 CREATE INDEX IF NOT EXISTS anime_catalog_season_idx ON anime_catalog (season_year, season);
 CREATE INDEX IF NOT EXISTS anime_catalog_status_idx ON anime_catalog (status, popularity);
 
+-- Added later (safe to repeat: "duplicate column" is ignored by setup.mjs)
+ALTER TABLE anime_catalog ADD COLUMN start_precision TEXT;   -- day | month | year: how exact the announced date is
+ALTER TABLE anime_catalog ADD COLUMN official_x TEXT;        -- the show's official X (Twitter) account, where dates are announced
+
 -- Upcoming and recent episode air times (next 8 days), for the weekly schedule page
 CREATE TABLE IF NOT EXISTS airing (
   media_id  INTEGER NOT NULL,
