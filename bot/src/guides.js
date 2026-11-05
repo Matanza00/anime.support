@@ -59,7 +59,7 @@ async function media(id, attempt = 0) {
 }
 
 const FOLLOW = new Set(['SEQUEL', 'PREQUEL']); // the main story line
-const KEEP = new Set(['SEQUEL', 'PREQUEL', 'SIDE_STORY', 'SPIN_OFF', 'ALTERNATIVE', 'PARENT']);
+const KEEP = new Set(['SEQUEL', 'PREQUEL', 'SIDE_STORY', 'SPIN_OFF', 'ALTERNATIVE', 'PARENT', 'SUMMARY', 'COMPILATION']);
 
 /** Every anime entry of a franchise: walks sequels/prequels, and records films, side stories and spin-offs. */
 async function franchise(rootId, cap = 40) {
@@ -140,7 +140,7 @@ const TABLES = {
   'beginners-guide': (f) => `${TABLE_HEAD}\n${f.series.slice(0, 12).map(row).join('\n')}`,
   'whats-next': (f) => (f.upcoming.length ? `${TABLE_HEAD}\n${f.upcoming.map(row).join('\n')}` : '_No new season or film is officially scheduled right now._'),
   'how-long-to-watch': (f) =>
-    `| What you watch | Episodes | Approx. time |\n| --- | --- | --- |\n| Every TV / web series | ${f.totals.episodes} | ${f.totals.hours_series} hours |\n| Every film | ${f.totals.films} films | ${f.totals.hours_films} hours |\n| Everything listed | | ${f.totals.hours_everything} hours |`,
+    `| What you watch | Episodes | Approx. time |\n| --- | --- | --- |\n| Every TV / web series | ${f.totals.episodes} | ${f.totals.hours_series} hours |\n| Every anime film | ${f.totals.films} films | ${f.totals.hours_films} hours |\n| Everything listed | | ${f.totals.hours_everything} hours |`,
 };
 
 const TYPES = {
