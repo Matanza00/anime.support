@@ -285,11 +285,49 @@ export async function guides({ only = process.env.GUIDES_ONLY || '' } = {}) {
         warn(`${fr.name} ${type} failed: ${err.message}`);
         if (/credit|quota|401|402/i.test(err.message)) {
           log(`Guides: stopped, the AI account is out of credits (${made} done before that)`);
+          await interleaveGuides();
           return made; // the ones already written still go live
         }
       }
     }
   }
   log(`Guides: ${made} published or updated${failed ? `, ${failed} failed` : ''}`);
+  await interleaveGuides();
   return made;
+}
+
+/**
+ * New guides are written anime by anime, so the 5 of one show would sit together at the top of the
+ * site. This spreads today's new guides out: one of each anime in turn, mixed between the news.
+ */
+export async function interleaveGuides({ hours = 10 } = {}) {
+  const types = Object.keys(TYPES);
+  const since = new Date(Date.now() - 24 * 3600e3).toISOString();
+  const rows = (await sql("SELECT id, slug, anime FROM articles WHERE status = 'published' AND published_at > ? ORDER BY id", [since])).filter((r) =>
+    types.some((t) => r.slug.endsWith(`-${t}`)),
+  );
+  if (rows.length < 2) return 0;
+  // round-robin: guide type 1 of every anime, then type 2 of every anime... with anime order rotated per type
+  const byAnime = new Map();
+  for (const r of rows) {
+    if (!byAnime.has(r.anime)) byAnime.set(r.anime, []);
+    byAnime.get(r.anime).push(r);
+  }
+  const groups = [...byAnime.values()];
+  const order = [];
+  for (let round = 0; order.length < rows.length; round++)
+    for (let g = 0; g < groups.length; g++) {
+      const item = groups[(g + round * 3) % groups.length][round];
+      if (item) order.push(item);
+    }
+  const end = Date.now() - 5 * 60e3;
+  const start = end - hours * 3600e3;
+  const step = (end - start) / order.length;
+  for (const [i, r] of order.entries()) {
+    // newest first on the site = last in this list; small jitter so times don't look machine-made
+    const t = new Date(start + step * (i + 0.5) + Math.round((Math.random() - 0.5) * step * 0.6)).toISOString();
+    await sql('UPDATE articles SET published_at = ? WHERE id = ?', [t, r.id]);
+  }
+  log(`Guides: ${order.length} new guides spread over the last ${hours} hours`);
+  return order.length;
 }

@@ -13,7 +13,7 @@ import { optimize } from './optimize.js';
 import { seed } from './seed.js';
 import { catalog } from './catalog.js';
 import { remediaExisting } from './official-media.js';
-import { guides } from './guides.js';
+import { guides, interleaveGuides } from './guides.js';
 import { sql, parseRow } from './d1.js';
 import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
@@ -59,6 +59,9 @@ const jobs = {
   // 5 evergreen guides per big franchise (watch order, where to watch, beginner's guide, what's next, how long)
   guides: guarded('guides', async () => {
     if (await guides()) requestDeploy();
+  }),
+  'mix-guides': guarded('mix-guides', async () => {
+    if (await interleaveGuides()) requestDeploy();
   }),
   // swap generated artwork for official images on existing drafts and articles
   media: guarded('media', async () => {
