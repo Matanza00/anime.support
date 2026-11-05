@@ -7,10 +7,10 @@ import { uploadBuffer, getMedia } from './storage.js';
 import { createArtwork, refreshSocialCard } from './artwork.js';
 import { marked } from 'marked';
 import { pathToFileURL } from 'node:url';
-import { sql, one, parseRow, setClause, now } from './d1.js';
+import { sql, one, parseRow, setClause, now, databaseId } from './d1.js';
 import { CONFIG } from './config.js';
 import { publish } from './publish.js';
-import { log, fail } from './log.js';
+import { log, warn, fail } from './log.js';
 
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -247,7 +247,10 @@ export function createApp() {
     if (b.action === 'reject') edits.status = 'rejected';
 
     const { clause, params } = setClause(edits);
-    const a = await one(`UPDATE articles SET ${clause} WHERE id = ? RETURNING cluster_key`, [...params, id]);
+    const a = await one(`UPDATE articles SET ${clause} WHERE id = ? RETURNING cluster_key, status`, [...params, id]);
+    if (!a) throw new Error(`Article ${id} was not found in the database, so nothing was saved. Reload the drafts list.`);
+    if (b.action === 'approve' && a.status !== 'published') throw new Error('The database did not accept the approval. Nothing was published.');
+    log(`${b.action === 'approve' ? 'Approved' : b.action === 'reject' ? 'Rejected' : 'Saved'} article ${id}: ${edits.title}`);
     if (b.action === 'approve' && a?.cluster_key) await creditSources(a.cluster_key);
 
     const skipped = rejected.length ? ` Not recognised as media (ignored): ${rejected.join(', ')}` : '';
@@ -317,10 +320,22 @@ async function uploadToStorage(file, articleId) {
 }
 
 /** Shows which database this dashboard writes to, so approvals never land in a local file by mistake. */
+let dbInfo = '';
 function dbBadge() {
   if (process.env.D1_LOCAL) return '<span class="pill low" title="Approvals here will NOT reach the website">Local test database</span>';
   if (!CONFIG.d1.accountId || !CONFIG.d1.token) return '<span class="pill low">Not connected to Cloudflare: check bot/.env</span>';
-  return '<span class="pill" title="Approvals are saved straight to the live database">Cloudflare D1 · live</span>';
+  return `<span class="pill" title="Approvals are saved straight to this database">Cloudflare D1 · ${esc(dbInfo || 'live')}</span>`;
+}
+/** Database id + account, shown in the header so you can compare with the site's (see .github/status/deploy.md). */
+async function loadDbInfo() {
+  try {
+    const id = await databaseId();
+    dbInfo = `db ${id.slice(0, 8)} · account ${CONFIG.d1.accountId.slice(0, 6)}`;
+    log(`Dashboard database: ${CONFIG.d1.name} (${id}), account ${CONFIG.d1.accountId}`);
+  } catch (err) {
+    dbInfo = 'lookup failed';
+    warn(`Database lookup failed: ${err.message}`);
+  }
 }
 
 function ytThumb(url) {
@@ -344,6 +359,7 @@ async function creditSources(clusterKey) {
 
 export function startReviewServer() {
   if (!CONFIG.review.password) log('WARNING: REVIEW_PASSWORD is empty; anyone on your Wi-Fi can open the dashboard.');
+  if (!process.env.D1_LOCAL) loadDbInfo();
   return createApp().listen(CONFIG.review.port, '0.0.0.0', () =>
     log(`Review dashboard: http://localhost:${CONFIG.review.port}`),
   );

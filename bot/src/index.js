@@ -48,6 +48,13 @@ const jobs = {
     await catalog();
     requestDeploy(); // the site rebuilds with the fresh catalog
   }),
+  // publish every draft waiting right now (used when you approved them but the laptop could not save it)
+  'approve-drafts': guarded('approve-drafts', async () => {
+    const rows = await sql("UPDATE articles SET status = 'published', published_at = ?, updated_at = ? WHERE status = 'draft' RETURNING title", [new Date().toISOString(), new Date().toISOString()]);
+    for (const r of rows) log(`Published: ${r.title}`);
+    log(`${rows.length} draft(s) published`);
+    await publish();
+  }),
   // swap generated artwork for official images on existing drafts and articles
   media: guarded('media', async () => {
     if (await remediaExisting({ sql, parseRow })) requestDeploy();

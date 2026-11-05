@@ -21,7 +21,7 @@ on:
       task:
         description: 'Task to run'
         type: choice
-        options: [collect-and-publish, collect, publish, optimize, catalog, media, seed]
+        options: [collect-and-publish, collect, publish, optimize, catalog, media, approve-drafts, seed]
         default: collect-and-publish
 
 permissions:
@@ -41,7 +41,7 @@ jobs:
     environment: Env # your secrets live in the "Env" environment
     timeout-minutes: 45
     outputs:
-      deploy: ${{ steps.publish.outputs.deploy || steps.catalog.outputs.deploy || steps.media.outputs.deploy }}
+      deploy: ${{ steps.publish.outputs.deploy || steps.catalog.outputs.deploy || steps.media.outputs.deploy || steps.approve.outputs.deploy }}
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -66,7 +66,7 @@ jobs:
         run: |
           case "${{ github.event_name }}/${{ github.event.schedule }}" in
             workflow_dispatch/*) TASK="${{ inputs.task }}" ;;
-            push/*) TASK="$(head -n1 .github/run-bot.txt | grep -oE '^(collect-and-publish|collect|publish|optimize|catalog|media|seed)' || echo collect-and-publish)" ;;
+            push/*) TASK="$(head -n1 .github/run-bot.txt | grep -oE '^(collect-and-publish|collect|publish|optimize|catalog|media|approve-drafts|seed)' || echo collect-and-publish)" ;;
             "schedule/41 1 * * *") TASK=catalog ;;
             "schedule/41 22 * * 0") TASK=optimize ;;
             *) TASK=collect-and-publish ;;
@@ -100,6 +100,12 @@ jobs:
         id: media
         if: env.TASK == 'media'
         run: node src/index.js media 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
+        working-directory: bot
+
+      - name: Publish every waiting draft
+        id: approve
+        if: env.TASK == 'approve-drafts'
+        run: node src/index.js approve-drafts 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
 
       - name: Publish launch articles
