@@ -59,6 +59,54 @@ async function wideHero(buf) {
   return sharp(buf).resize(1600, 900, { fit: 'cover' }).webp({ quality: 84 }).toBuffer();
 }
 
+/**
+ * For general stories that aren't about one show (guides, explainers): a 6×2 wall of official key
+ * visuals from the anime airing now, picked per article so every cover is different.
+ */
+export async function collageCover({ slug, title, category, sql }) {
+  const shows = await sql(
+    `SELECT title, cover_url, studios FROM anime_catalog
+      WHERE cover_url IS NOT NULL AND country = 'JP' AND status IN ('RELEASING', 'NOT_YET_RELEASED', 'FINISHED')
+      ORDER BY CASE status WHEN 'RELEASING' THEN 0 ELSE 1 END, popularity DESC LIMIT 60`,
+  ).catch(() => []);
+  if (shows.length < 12) return null;
+  let h = 0;
+  for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const start = h % shows.length;
+  // a different, stable selection per article: rotate the list, then lightly shuffle by the slug hash
+  const picked = [...shows.slice(start), ...shows.slice(0, start)]
+    .slice(0, 18)
+    .map((s, i) => ({ s, k: (h >>> (i % 24)) ^ (i * 2654435761) }))
+    .sort((a, b) => (a.k >>> 0) - (b.k >>> 0))
+    .map((x) => x.s);
+  const W = 1600 / 6;
+  const tiles = [];
+  for (const s of picked) {
+    if (tiles.length === 12) break;
+    const buf = await get(s.cover_url);
+    if (!buf) continue;
+    const i = tiles.length;
+    const left = Math.round((i % 6) * W);
+    const width = Math.round(((i % 6) + 1) * W) - left;
+    tiles.push({ input: await sharp(buf).resize(width, 450, { fit: 'cover' }).toBuffer(), left, top: i < 6 ? 0 : 450, title: s.title });
+  }
+  if (tiles.length < 12) return null;
+  const shade = Buffer.from('<svg width="1600" height="900"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16112a" stop-opacity=".05"/><stop offset="1" stop-color="#16112a" stop-opacity=".45"/></linearGradient></defs><rect width="1600" height="900" fill="url(#g)"/></svg>');
+  const hero = await sharp({ create: { width: 1600, height: 900, channels: 3, background: '#16112a' } })
+    .composite([...tiles.map(({ input, left, top }) => ({ input, left, top })), { input: shade, left: 0, top: 0 }])
+    .webp({ quality: 82 })
+    .toBuffer();
+  const card = await socialCard({ title, anime: null, category, heroBuffer: hero });
+  const v = Date.now().toString(36);
+  const [cover_url, social_card_url] = await Promise.all([
+    uploadBuffer(hero, `articles/${slug}/collage-${v}.webp`, 'image/webp'),
+    uploadBuffer(card, `articles/${slug}/card-${v}.jpg`, 'image/jpeg'),
+  ]);
+  const names = tiles.slice(0, 3).map((t) => t.title).join(', ');
+  log(`Key-visual collage used for ${slug}`);
+  return { cover_url, cover_credit: `Key visuals: ${names} and more © their studios · via AniList`, social_card_url };
+}
+
 const ytId = (url) => /(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/.exec(url || '')?.[1] ?? null;
 
 /** Ordered list of official image options for a draft, from its media and candidates. */
@@ -131,7 +179,9 @@ export async function remediaExisting({ sql, parseRow }) {
     if (!media.some((m) => m.type === 'youtube') && trailer) {
       media.push({ type: 'youtube', url: trailer.url, caption: `${String(trailer.credit || '').split(' © ')[0].split(' · ')[0]}: official trailer`, credit: 'YouTube', from: 'anilist' });
     }
-    const art = await coverFromOfficialMedia({ slug: a.slug, title: a.title, anime: a.anime, category: a.category, media, image_candidates: a.image_candidates });
+    const art =
+      (await coverFromOfficialMedia({ slug: a.slug, title: a.title, anime: a.anime, category: a.category, media, image_candidates: a.image_candidates })) ??
+      (!(a.anime ?? []).length ? await collageCover({ slug: a.slug, title: a.title, category: a.category, sql }) : null);
     if (!art) continue;
     await sql('UPDATE articles SET cover_url = ?, cover_credit = ?, social_card_url = ?, media = ?, updated_at = ? WHERE id = ?', [
       art.cover_url, art.cover_credit, art.social_card_url, JSON.stringify(media), new Date().toISOString(), a.id,

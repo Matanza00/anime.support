@@ -9,7 +9,7 @@ import { clusterItems, clusterKeyFor, similarity, slugify, extractText, tokens }
 import { log, warn } from './log.js';
 import { mediaFromPage, buildMedia } from './media.js';
 import { createArtwork } from './artwork.js';
-import { coverFromOfficialMedia } from './official-media.js';
+import { coverFromOfficialMedia, collageCover } from './official-media.js';
 import { allowedByRobots } from './robots.js';
 
 const VALID_CATEGORIES = new Set(['news', 'upcoming', 'release', 'feature']);
@@ -156,6 +156,7 @@ export async function draft() {
     // Cover: official media first (trailer still, key visual, banner); generated artwork only as a fallback.
     const art =
       (await coverFromOfficialMedia({ slug, title: String(out.title), anime, category, media: mediaInfo.media, image_candidates: mediaInfo.image_candidates })) ??
+      (!anime.length ? await collageCover({ slug, title: String(out.title), category, sql }) : null) ??
       (await createArtwork({ slug, title: String(out.title), anime, category, imagePrompt: out.image_prompt }));
     if (art.cover_url) Object.assign(mediaInfo, { cover_url: art.cover_url, cover_credit: art.cover_credit });
     const publishNow = await shouldAutoPublish(out);
