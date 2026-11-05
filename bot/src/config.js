@@ -33,7 +33,8 @@ export const CONFIG = {
   siteUrl: (e.SITE_URL || 'https://anime.support').replace(/\/$/, ''),
 
   deploy: {
-    mode: e.DEPLOY_MODE || (e.GITHUB_ACTIONS === 'true' ? 'actions' : 'git'),
+    // laptop: with a GitHub token, start the cloud deploy directly (no git needed); otherwise commit + push
+    mode: e.DEPLOY_MODE || (e.GITHUB_ACTIONS === 'true' ? 'actions' : e.GITHUB_DISPATCH_TOKEN ? 'dispatch' : 'git'),
     repoDir: path.resolve(botDir, e.REPO_DIR || '..'),
     branch: e.GIT_BRANCH || 'main',
     hookUrl: e.DEPLOY_HOOK_URL || '',
