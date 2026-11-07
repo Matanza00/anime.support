@@ -1,35 +1,35 @@
 # Last deploy: success
 
-- When: 2026-11-07T03:06:08Z
-- Commit: 6f701e6
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42332134504
+- When: 2026-11-07T03:13:08Z
+- Commit: b2cee3c
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42332494289
 
 ```
-+ /anime/spirit-circle/__next._tree.txt
-+ /anime/the-one-piece/__next._tree.txt
-+ /anime/youchien-wars/__next._tree.txt
-+ /anime/dan-katsu/__next._tree.txt
-+ /anime/medalist-movie/__next._tree.txt
-+ /anime/nintama-rantarou/__next._tree.txt
-+ /anime/rakshasa-street/__next._tree.txt
-+ /anime/the-chosen-one/__next._tree.txt
-+ /anime/wo-you-yi-jian/__next._tree.txt
-+ /anime/yaoguai-mingdan/__next._tree.txt
-+ /anime/yumene-connect/__next._tree.txt
-+ /anime/zhu-xian-final/__next._tree.txt
-+ /anime/celestial-bonds/__next._tree.txt
-+ /anime/dali-si-rizhi-3/__next._tree.txt
-+ /anime/ghost-meets-gal/__next._tree.txt
++ /anime/shin-oishinbo/__next._tree.txt
++ /anime/studio-cabana/__next._tree.txt
++ /anime/yao-shen-ji-2/__next._tree.txt
++ /anime/amayo-no-tsuki/__next._tree.txt
++ /anime/kakunaru-ue-wa/__next._tree.txt
++ /anime/megazone-23-sin/__next._tree.txt
++ /anime/no-doubt-in-us/__next._tree.txt
++ /anime/rhodes-academy/__next._tree.txt
++ /anime/throne-of-seal/__next._tree.txt
++ /anime/yami-shibai-17/__next._tree.txt
++ /anime/yi-jian-du-zun/__next._tree.txt
++ /anime/yuruyuru-zukan/__next._tree.txt
++ /anime/awm-jixian-juji/__next._tree.txt
++ /anime/chibi-maruko-chan/__next._tree.txt
++ /anime/deng-xia-jiu-fa/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7042 assets
-Uploaded 2000 of 7042 assets
-Uploaded 3000 of 7042 assets
-Uploaded 4000 of 7042 assets
-Uploaded 5000 of 7042 assets
-Uploaded 5948 of 7042 assets
-Uploaded 6258 of 7042 assets
-Uploaded 7042 of 7042 assets
-✨ Success! Uploaded 7042 files (3801 already uploaded) (28.56 sec)
+Uploaded 1000 of 7068 assets
+Uploaded 2000 of 7068 assets
+Uploaded 3000 of 7068 assets
+Uploaded 4000 of 7068 assets
+Uploaded 5000 of 7068 assets
+Uploaded 5329 of 7068 assets
+Uploaded 6284 of 7068 assets
+Uploaded 7068 of 7068 assets
+✨ Success! Uploaded 7068 files (3823 already uploaded) (23.94 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 1 ms
@@ -39,18 +39,18 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (36.53 sec)
-Deployed anime-support triggers (1.13 sec)
+Uploaded anime-support (31.11 sec)
+Deployed anime-support triggers (1.51 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: bc68e232-b64a-4cd9-986f-497366a38e49
+Current Version ID: 6fc2ca09-f21e-4594-a1ae-afe77a66d060
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-07T03:04:27.562Z
+Live site marked as built from content up to 2026-11-07T03:11:26.720Z
 
  ⛅️ wrangler 4.158.0
 ────────────────────
