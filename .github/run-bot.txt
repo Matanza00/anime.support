@@ -1,2 +1,2 @@
-mix-guides
-# 2026-11-05T13:22:58Z
+collect-and-publish
+# 2026-11-07T03:02:44Z
