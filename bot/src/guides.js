@@ -283,8 +283,8 @@ export async function guides({ only = process.env.GUIDES_ONLY || '' } = {}) {
       } catch (err) {
         failed++;
         warn(`${fr.name} ${type} failed: ${err.message}`);
-        if (/credit|quota|401|402/i.test(err.message)) {
-          log(`Guides: stopped, the AI account is out of credits (${made} done before that)`);
+        if (/AI_UNAVAILABLE|401/i.test(err.message)) {
+          log(`Guides: stopped, no AI available (credits empty and free models used up) (${made} done before that)`);
           await interleaveGuides();
           return made; // the ones already written still go live
         }

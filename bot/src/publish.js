@@ -132,7 +132,29 @@ export async function shareToFacebook() {
   return posted;
 }
 
+/**
+ * Auto-publish: drafts still waiting (from before auto-publish was on, or over yesterday's cap) go live
+ * when the AI was confident enough, newest first, within the daily cap. Old or doubtful ones stay drafts.
+ */
+export async function autoApproveWaiting() {
+  if (!CONFIG.autoPublish.on) return 0;
+  const since = new Date(Date.now() - 864e5).toISOString();
+  const [{ n }] = await sql("SELECT COUNT(*) AS n FROM articles WHERE status = 'published' AND published_at >= ? AND cluster_key IS NOT NULL", [since]);
+  const room = Math.max(0, CONFIG.autoPublish.maxPerDay - n);
+  if (!room) return 0;
+  const rows = await sql(
+    `UPDATE articles SET status = 'published', published_at = ?, updated_at = ?
+      WHERE id IN (SELECT id FROM articles WHERE status = 'draft' AND COALESCE(confidence, 0) >= ? AND created_at >= ?
+                   ORDER BY priority DESC, created_at DESC LIMIT ?)
+      RETURNING title`,
+    [new Date().toISOString(), new Date().toISOString(), CONFIG.autoPublish.minConfidence, new Date(Date.now() - 4 * 864e5).toISOString(), room],
+  );
+  for (const r of rows) log(`Auto-published waiting draft: ${r.title}`);
+  return rows.length;
+}
+
 export async function publish() {
+  await autoApproveWaiting();
   const deployed = await deployIfNeeded();
   await shareToFacebook();
   return deployed;

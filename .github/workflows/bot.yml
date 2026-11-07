@@ -57,10 +57,10 @@ jobs:
       SITE_URL: https://anime.support
       DEPLOY_MODE: actions
       MAX_DRAFTS_PER_RUN: ${{ vars.MAX_DRAFTS_PER_RUN || '6' }}
-      # Optional: publish high-confidence drafts without waiting for review (repo/environment variable)
-      AUTO_PUBLISH: ${{ vars.AUTO_PUBLISH || 'off' }}
-      AUTO_PUBLISH_MIN_CONFIDENCE: ${{ vars.AUTO_PUBLISH_MIN_CONFIDENCE || '0.85' }}
-      AUTO_PUBLISH_MAX_PER_DAY: ${{ vars.AUTO_PUBLISH_MAX_PER_DAY || '8' }}
+      # Articles go live automatically (set the variable AUTO_PUBLISH to "off" to review drafts by hand instead)
+      AUTO_PUBLISH: ${{ vars.AUTO_PUBLISH || 'on' }}
+      AUTO_PUBLISH_MIN_CONFIDENCE: ${{ vars.AUTO_PUBLISH_MIN_CONFIDENCE || '0.7' }}
+      AUTO_PUBLISH_MAX_PER_DAY: ${{ vars.AUTO_PUBLISH_MAX_PER_DAY || '30' }}
     steps:
       - uses: actions/checkout@v4
       - name: Decide the task
@@ -168,8 +168,18 @@ jobs:
           git commit -m "status: bot ${{ job.status }}" || exit 0
           git pull --rebase --autostash -q origin main && git push -q origin HEAD:main || true
 
+      # Fails the run (so GitHub emails you) only when no AI could write anything: credits empty AND free models used up
+      - name: Alert if the AI writer is unavailable
+        if: always()
+        run: |
+          if grep -q 'AI_UNAVAILABLE' "$RUNNER_TEMP/report.txt"; then
+            echo "::error::No AI available: OpenRouter credits are empty and the free models are used up for today. Top up at https://openrouter.ai/settings/credits"
+            exit 1
+          fi
+          grep -q 'AI credits are empty' "$RUNNER_TEMP/report.txt" && echo "::warning::OpenRouter credits are empty; articles are being written with free models (max ~50 AI calls a day)." || true
+
   deploy:
     needs: bot
-    if: needs.bot.outputs.deploy == 'true'
+    if: always() && needs.bot.outputs.deploy == 'true'
     uses: ./.github/workflows/deploy.yml
     secrets: inherit

@@ -3,7 +3,7 @@
 import * as cheerio from 'cheerio';
 import { sql, insert, marks, now } from './d1.js';
 import { CONFIG } from './config.js';
-import { chatJSON } from './llm.js';
+import { chatJSON, aiStatus, AiUnavailable } from './llm.js';
 import { SYSTEM_PROMPT, buildUserPrompt } from './prompts.js';
 import { clusterItems, clusterKeyFor, similarity, slugify, extractText, tokens } from './text.js';
 import { log, warn } from './log.js';
@@ -112,7 +112,8 @@ export async function draft() {
       await mark('skipped', ids);
       continue;
     }
-    if (made >= CONFIG.maxDraftsPerRun) break; // the rest wait for the next run
+    // the rest wait for the next run (fewer when running on the free models, which allow ~50 requests a day)
+    if (made >= (aiStatus().usedFallback ? Math.min(3, CONFIG.maxDraftsPerRun) : CONFIG.maxDraftsPerRun)) break;
 
     const material = await Promise.all(
       cluster.slice(0, 3).map(async (it) => {
@@ -127,6 +128,7 @@ export async function draft() {
       out = await chatJSON(SYSTEM_PROMPT, buildUserPrompt(material, recentArticles.slice(-60).map((a) => a.title)));
     } catch (err) {
       warn(`Draft failed for "${lead.title}": ${err.message}`);
+      if (err instanceof AiUnavailable) break; // no AI left this run: stop, everything stays 'new' for the next run
       continue; // stays 'new', retried next run
     }
 
@@ -188,6 +190,6 @@ export async function draft() {
     made++;
     log(`${publishNow ? 'Auto-published' : 'Drafted'}: ${out.title}`);
   }
-  log(`Draft done: ${made} new drafts waiting for review`);
+  log(`Draft done: ${made} new ${CONFIG.autoPublish.on ? 'articles' : 'drafts waiting for review'}${aiStatus().usedFallback ? ' (written with free AI models: credits are empty)' : ''}`);
   return made;
 }

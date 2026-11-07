@@ -7,7 +7,7 @@
 // Where-to-watch links come from AniList's list of official streaming links (Crunchyroll, Netflix, ...).
 import { sql, now } from './d1.js';
 import { CONFIG } from './config.js';
-import { chatJSON } from './llm.js';
+import { chatJSON, aiStatus } from './llm.js';
 import { slugify } from './text.js';
 import { log, warn } from './log.js';
 
@@ -242,6 +242,7 @@ async function writeSummaries(limit) {
   );
   let n = 0;
   for (const r of rows) {
+    if (aiStatus().usedFallback && n >= 5) break; // on the free models, keep the daily quota for news
     const facts = {
       title: r.title,
       native_title: r.title_native,
@@ -262,7 +263,7 @@ async function writeSummaries(limit) {
       n++;
     } catch (err) {
       warn(`Summary failed for ${r.title}: ${err.message}`);
-      if (/credit|quota|401|402/i.test(err.message)) break;
+      if (/AI_UNAVAILABLE|401/i.test(err.message)) break;
     }
   }
   return n;
