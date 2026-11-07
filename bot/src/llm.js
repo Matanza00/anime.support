@@ -1,19 +1,39 @@
 import OpenAI from 'openai';
 import { CONFIG, requireConfig } from './config.js';
-import { warn } from './log.js';
+import { log, warn } from './log.js';
 
 // The paid model is used first. When the account runs out of credits (HTTP 402), the rest of the run
 // switches to OpenRouter's free models (no credits needed; 50 requests/day, or 1,000/day once $10 of
 // credits has ever been bought). If those are exhausted too, AiUnavailable is thrown so callers stop early.
-const FALLBACKS = (process.env.LLM_FALLBACK_MODELS || 'google/gemma-4-31b-it:free,nvidia/nemotron-3-super-120b-a12b:free,minimax/minimax-m3.1-flash:free')
+// Free models change often, so the list is read from OpenRouter when first needed (LLM_FALLBACK_MODELS overrides it).
+let FALLBACKS = (process.env.LLM_FALLBACK_MODELS || '')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);
+let discovered = FALLBACKS.length > 0;
+
+async function discoverFreeModels() {
+  if (discovered || FALLBACKS.length) return;
+  discovered = true;
+  try {
+    const res = await fetch(`${CONFIG.llm.baseURL.replace(/\/$/, '')}/models`, { signal: AbortSignal.timeout(20000) });
+    const { data = [] } = await res.json();
+    const skip = /safety|guard|code|coder|embed|vl\b|vision|ocr|audio|tts|nano|mini-?code|2\.6b|1b|3b\b|4b\b/i;
+    FALLBACKS = data
+      .filter((m) => /:free$/.test(m.id) && !skip.test(m.id) && (m.context_length || 0) >= 16000)
+      .sort((a, b) => (b.context_length || 0) - (a.context_length || 0))
+      .slice(0, 6)
+      .map((m) => m.id);
+    log(`Free AI models available: ${FALLBACKS.join(', ') || 'none'}`);
+  } catch (err) {
+    warn(`Could not list free AI models: ${err.message}`);
+  }
+}
 
 export class AiUnavailable extends Error {}
 
 const state = { paidOut: false, freeOut: new Set(), usedFallback: false, noJsonMode: new Set() };
-export const aiStatus = () => ({ usedFallback: state.usedFallback, exhausted: state.paidOut && FALLBACKS.every((m) => state.freeOut.has(m)) });
+export const aiStatus = () => ({ usedFallback: state.usedFallback, exhausted: state.paidOut && discovered && FALLBACKS.every((m) => state.freeOut.has(m)) });
 
 let client;
 function llm() {
@@ -64,6 +84,7 @@ async function ask(model, system, user, temperature, maxTokens) {
 
 /** Asks for a JSON object: paid model first, then the free fallbacks. Retries once on malformed output. */
 export async function chatJSON(system, user, { temperature = 0.6, maxTokens = Number(process.env.LLM_MAX_TOKENS || 2000) } = {}) {
+  if (state.paidOut) await discoverFreeModels();
   const models = [...(state.paidOut ? [] : [CONFIG.llm.model]), ...FALLBACKS.filter((m) => !state.freeOut.has(m))];
   if (!models.length) throw new AiUnavailable('AI_UNAVAILABLE: out of credits and free models are used up for today');
   let lastErr;
@@ -78,10 +99,13 @@ export async function chatJSON(system, user, { temperature = 0.6, maxTokens = Nu
         if (model === CONFIG.llm.model && isCredit(err)) {
           state.paidOut = true;
           warn(`AI credits are empty (${CONFIG.llm.model}); switching to free models for this run. Top up at https://openrouter.ai/settings/credits`);
+          await discoverFreeModels();
+          models.push(...FALLBACKS.filter((m) => !models.includes(m)));
           break;
         }
-        if (FALLBACKS.includes(model) && (isLimit(err) || isCredit(err) || err?.status === 404)) {
+        if (FALLBACKS.includes(model) && (isLimit(err) || isCredit(err) || err?.status === 404 || err?.status === 400)) {
           state.freeOut.add(model);
+          warn(`Free model ${model} unavailable: ${String(err.message).slice(0, 140)}`);
           break;
         }
         if (err instanceof SyntaxError) continue; // malformed JSON: ask the same model again
