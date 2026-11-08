@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-08T00:23:15Z
-- Commit: e3e1158
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42429087116
+- When: 2026-11-08T01:48:56Z
+- Commit: 2d14c2e
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42435313869
 
 ```
 + /anime/shin-oishinbo/__next._tree.txt
@@ -15,21 +15,21 @@
 + /anime/rhodes-academy/__next._tree.txt
 + /anime/throne-of-seal/__next._tree.txt
 + /anime/yami-shibai-17/__next._tree.txt
-+ /anime/yi-jian-du-zun/__next._tree.txt
-+ /anime/yuruyuru-zukan/__next._tree.txt
-+ /anime/awm-jixian-juji/__next._tree.txt
-+ /anime/chibi-maruko-chan/__next._tree.txt
-+ /anime/deng-xia-jiu-fa/__next._tree.txt
++ /anime/yaoguai-mingdan/__next._tree.txt
++ /anime/yumene-connect/__next._tree.txt
++ /anime/zhu-xian-final/__next._tree.txt
++ /anime/celestial-bonds/__next._tree.txt
++ /anime/dali-si-rizhi-3/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
 Uploaded 1000 of 7156 assets
 Uploaded 2000 of 7156 assets
 Uploaded 3000 of 7156 assets
 Uploaded 4000 of 7156 assets
 Uploaded 5000 of 7156 assets
-Uploaded 5978 of 7156 assets
+Uploaded 5979 of 7156 assets
 Uploaded 6370 of 7156 assets
 Uploaded 7156 of 7156 assets
-✨ Success! Uploaded 7156 files (3891 already uploaded) (17.30 sec)
+✨ Success! Uploaded 7156 files (3903 already uploaded) (20.12 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 2 ms
@@ -39,18 +39,18 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (24.99 sec)
-Deployed anime-support triggers (0.94 sec)
+Uploaded anime-support (26.41 sec)
+Deployed anime-support triggers (1.18 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: f4ee8e59-5ee7-4810-95b8-75fb4c071e44
+Current Version ID: 2421b17e-414e-4054-9b5b-74535b2794b9
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-08T00:21:42.391Z
+Live site marked as built from content up to 2026-11-08T01:47:25.723Z
 
  ⛅️ wrangler 4.158.0
 ────────────────────
