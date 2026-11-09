@@ -232,13 +232,22 @@ Return JSON: {"summary": "..."}`;
 
 async function writeSummaries(limit) {
   if (!CONFIG.llm.apiKey || limit <= 0) return 0;
+  // shows our news covers come first: their pages get visitors, so they need a real overview soonest
+  const covered = [...new Set((await sql("SELECT anime FROM articles WHERE status = 'published' ORDER BY published_at DESC LIMIT 300")).flatMap((r) => {
+    try {
+      return JSON.parse(r.anime || '[]').map((n) => String(n).toLowerCase());
+    } catch {
+      return [];
+    }
+  }))].slice(0, 400);
   const rows = await sql(
     `SELECT id, title, title_native, format, status, episodes, season, season_year, source, country, genres, studios, synopsis_src
        FROM anime_catalog
       WHERE summary IS NULL AND synopsis_src IS NOT NULL AND length(synopsis_src) > 120
-      ORDER BY CASE status WHEN 'RELEASING' THEN 0 WHEN 'NOT_YET_RELEASED' THEN 1 ELSE 2 END, popularity DESC
-      LIMIT ?`,
-    [limit],
+      ORDER BY CASE WHEN lower(title) IN (SELECT value FROM json_each(?1)) OR lower(title_romaji) IN (SELECT value FROM json_each(?1)) THEN 0 ELSE 1 END,
+               CASE status WHEN 'RELEASING' THEN 0 WHEN 'NOT_YET_RELEASED' THEN 1 ELSE 2 END, popularity DESC
+      LIMIT ?2`,
+    [JSON.stringify(covered), limit],
   );
   let n = 0;
   for (const r of rows) {

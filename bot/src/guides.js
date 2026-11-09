@@ -155,7 +155,8 @@ const SYSTEM = `You write evergreen anime guides for ${CONFIG.siteName}, in an e
 Rules:
 - Use ONLY the FACTS, TOTALS, BACKGROUND and RECENT HEADLINES given. Never invent dates, episode counts, studios, cast, plot details or announcements.
 - BACKGROUND is from Wikipedia: use it to understand the series, write entirely in your own words, never copy phrases.
-- Put the literal line [[TABLE]] where the data table belongs (the site inserts an exact table there). Do not write your own table.
+- Put the literal line [[TABLE]] where the data table belongs (the site inserts an exact table there). Do not write your own table, and do not re-list every entry: the table is the complete list. Name only the entries you give advice about (where to start, what is skippable and why), and tell readers the full list is in the table.
+- No filler intros or sign-offs (no "Happy watching!"). Every paragraph should help the reader decide something.
 - Markdown with ## headings, no H1, no links, no images. 450–750 words. Short paragraphs.
 - Hide major spoilers inside <details><summary>Spoiler: label</summary>text</details>.
 - Headline: start with the anime name, 50–85 characters, specific, no clickbait, no ALL CAPS, include the year ${new Date().getUTCFullYear()} only if natural.

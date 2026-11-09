@@ -121,7 +121,7 @@ export function factLine(s) {
   const kind = formatLabel(s.format) || 'anime';
   const from = s.studios?.length ? ` from ${s.studios.join(' and ')}` : '';
   const based = sourceLabel(s.source) && s.source !== 'ORIGINAL' ? `, based on the ${sourceLabel(s.source)}` : s.source === 'ORIGINAL' ? ', an original story' : '';
-  bits.push(`${s.title} is ${/^[aeiou]/i.test(kind) ? 'an' : 'a'} ${s.country === 'CN' ? 'Chinese ' : ''}${kind[0].toLowerCase() + kind.slice(1).replace('(ONA)', '(ONA)')}${from}${based}.`);
+  bits.push(`${s.title} is ${/^[aeiou]/i.test(kind) ? 'an' : 'a'} ${s.country === 'CN' ? 'Chinese ' : ''}${/^[A-Z]{2}/.test(kind) ? kind : kind[0].toLowerCase() + kind.slice(1)}${from}${based}.`);
   if (s.genres?.length) bits.push(`It mixes ${listJoin(s.genres.slice(0, 4).map((g) => g.toLowerCase()))}.`);
   if (s.status === 'NOT_YET_RELEASED') bits.push(s.start_date ? `It is scheduled to premiere on ${airedLabel({ ...s, end_date: s.start_date, format: 'MOVIE' })}.` : 'A premiere date has not been announced yet.');
   else if (s.status === 'RELEASING') bits.push(`It is airing now${s.episodes ? ` and is planned for ${s.episodes} episodes` : ''}.`);
@@ -225,7 +225,8 @@ function mergeHub(a, b) {
 }
 
 /** Pages worth indexing: our own overview or our own news coverage. Others are noindex (still useful to visitors). */
-export const indexable = (page) => Boolean(page && !page.alias && (page.show?.summary || page.hub?.articles?.length));
+// Show pages need our own overview, or at least two of our stories, before Google sees them (one story = a thin copy of it).
+export const indexable = (page) => Boolean(page && !page.alias && (page.show?.summary || (page.hub?.articles?.length || 0) >= (page.show ? 2 : 1)));
 
 /* ---------- browse ---------- */
 

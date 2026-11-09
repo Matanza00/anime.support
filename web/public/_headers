@@ -6,3 +6,11 @@
   Cache-Control: public, max-age=604800
 /ads.txt
   Cache-Control: public, max-age=3600
+/rss.xml
+  X-Robots-Tag: noindex
+/site.webmanifest
+  X-Robots-Tag: noindex
+/search-index.json
+  X-Robots-Tag: noindex
+/ads.txt
+  X-Robots-Tag: noindex
