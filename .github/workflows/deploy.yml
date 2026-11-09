@@ -41,6 +41,7 @@ jobs:
       APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
       TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+      NEXT_PUBLIC_GA4_ID: ${{ vars.GA4_ID }} # Google Analytics 4 Measurement ID (G-...)
       ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS || secrets.ADMIN_EMAILS }}
       HASH_SALT: ${{ secrets.HASH_SALT }}
     steps:
