@@ -32,6 +32,17 @@ export default function RootLayout({ children }) {
         {SITE.adsClient && (
           <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsClient}`} crossOrigin="anonymous" />
         )}
+        {SITE.gtm && (
+          <>
+            {/* Google tag (Analytics), loaded through the Tag Manager container Google created */}
+            <script async src={`https://www.googletagmanager.com/gtm.js?id=${SITE.gtm}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());`,
+              }}
+            />
+          </>
+        )}
         {SITE.ga4 && (
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}`} />

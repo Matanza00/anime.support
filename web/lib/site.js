@@ -12,6 +12,7 @@ export const SITE = {
     bottom: e.NEXT_PUBLIC_ADSENSE_SLOT_BOTTOM || '',
   },
   ga4: e.NEXT_PUBLIC_GA4_ID || '',
+  gtm: e.NEXT_PUBLIC_GTM_ID || '',
 };
 
 /** The four sections, their labels and their URLs. */
