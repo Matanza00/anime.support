@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-10T01:51:55Z
-- Commit: f61f820
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42737528576
+- When: 2026-11-10T02:27:05Z
+- Commit: 2265db5
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42741737904
 
 ```
 + /anime/perfect-world/__next._tree.txt
@@ -21,15 +21,15 @@
 + /anime/zhu-xian-final/__next._tree.txt
 + /anime/celestial-bonds/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7236 assets
-Uploaded 2000 of 7236 assets
-Uploaded 3000 of 7236 assets
-Uploaded 4000 of 7236 assets
-Uploaded 5000 of 7236 assets
-Uploaded 5791 of 7236 assets
-Uploaded 6791 of 7236 assets
-Uploaded 7236 of 7236 assets
-✨ Success! Uploaded 7236 files (3977 already uploaded) (38.95 sec)
+Uploaded 1000 of 7260 assets
+Uploaded 2000 of 7260 assets
+Uploaded 3000 of 7260 assets
+Uploaded 4000 of 7260 assets
+Uploaded 5000 of 7260 assets
+Uploaded 5787 of 7260 assets
+Uploaded 6260 of 7260 assets
+Uploaded 7260 of 7260 assets
+✨ Success! Uploaded 7260 files (3983 already uploaded) (48.91 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 2 ms
@@ -39,18 +39,18 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (46.86 sec)
-Deployed anime-support triggers (0.95 sec)
+Uploaded anime-support (56.34 sec)
+Deployed anime-support triggers (1.07 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 4a89d877-f6e3-4e3c-88c7-84ad7bed32ee
+Current Version ID: f0d52d87-2c01-4ec3-aa19-42b4c1fe7697
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-10T01:50:01.810Z
+Live site marked as built from content up to 2026-11-10T02:24:48.399Z
 
  ⛅️ wrangler 4.158.0 (update available 4.159.0)
 ───────────────────────────────────────────────
