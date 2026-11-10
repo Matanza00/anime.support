@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-09T09:35:07Z
-- Commit: 2450051
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42594313708
+- When: 2026-11-10T00:25:50Z
+- Commit: ab70637
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42727175887
 
 ```
 + /anime/perfect-world/__next._tree.txt
@@ -21,39 +21,39 @@
 + /anime/zhu-xian-final/__next._tree.txt
 + /anime/celestial-bonds/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7223 assets
-Uploaded 2000 of 7223 assets
-Uploaded 3000 of 7223 assets
-Uploaded 4000 of 7223 assets
-Uploaded 5000 of 7223 assets
-Uploaded 5998 of 7223 assets
-Uploaded 6434 of 7223 assets
-Uploaded 7223 of 7223 assets
-✨ Success! Uploaded 7223 files (3966 already uploaded) (20.04 sec)
+Uploaded 1000 of 7243 assets
+Uploaded 2000 of 7243 assets
+Uploaded 3000 of 7243 assets
+Uploaded 4000 of 7243 assets
+Uploaded 5000 of 7243 assets
+Uploaded 6000 of 7243 assets
+Uploaded 6792 of 7243 assets
+Uploaded 7243 of 7243 assets
+✨ Success! Uploaded 7243 files (3970 already uploaded) (32.29 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
-Worker Startup Time: 1 ms
+Worker Startup Time: 2 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (26.95 sec)
-Deployed anime-support triggers (1.26 sec)
+Uploaded anime-support (40.91 sec)
+Deployed anime-support triggers (1.75 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 0670f241-106e-43fa-a8a9-a7c66f41c0d9
+Current Version ID: 021354a4-db38-4409-b845-48258f1113e0
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-09T09:33:25.287Z
+Live site marked as built from content up to 2026-11-10T00:23:59.758Z
 
- ⛅️ wrangler 4.158.0
-────────────────────
+ ⛅️ wrangler 4.158.0 (update available 4.159.0)
+───────────────────────────────────────────────
 🌀 Creating the secret for the Worker "anime-support"
 Cloudflare timer: on
 GOOGLE_CLIENT_ID: set
