@@ -1,10 +1,12 @@
 # Last deploy: success
 
-- When: 2026-11-10T04:26:36Z
-- Commit: 22c9fb5
-- Run: https://github.com/Matanza00/anime.support/actions/runs/42754926437
+- When: 2026-11-10T08:54:06Z
+- Commit: 062b7b2
+- Run: https://github.com/Matanza00/anime.support/actions/runs/42785717931
 
 ```
++ /anime/perfect-world/__next._tree.txt
++ /anime/shin-oishinbo/__next._tree.txt
 + /anime/studio-cabana/__next._tree.txt
 + /anime/yao-shen-ji-2/__next._tree.txt
 + /anime/amayo-no-tsuki/__next._tree.txt
@@ -19,38 +21,36 @@
 + /anime/zhu-xian-final/__next._tree.txt
 + /anime/celestial-bonds/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7269 assets
-Uploaded 2000 of 7269 assets
-Uploaded 3000 of 7269 assets
-Asset upload failed. Retrying... 1 of 5 attempts.
-
-Uploaded 4000 of 7269 assets
-Uploaded 5000 of 7269 assets
-Uploaded 5481 of 7269 assets
-Uploaded 6481 of 7269 assets
-Uploaded 7269 of 7269 assets
-✨ Success! Uploaded 7269 files (3996 already uploaded) (26.33 sec)
+Uploaded 1000 of 7272 assets
+Uploaded 2000 of 7272 assets
+Uploaded 3000 of 7272 assets
+Uploaded 4000 of 7272 assets
+Uploaded 5000 of 7272 assets
+Uploaded 5484 of 7272 assets
+Uploaded 6484 of 7272 assets
+Uploaded 7272 of 7272 assets
+✨ Success! Uploaded 7272 files (4005 already uploaded) (22.75 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
-Worker Startup Time: 2 ms
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (32.69 sec)
-Deployed anime-support triggers (1.22 sec)
+Uploaded anime-support (30.04 sec)
+Deployed anime-support triggers (1.07 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 20e83169-5f75-4b04-abc0-0bd6c6ff9150
+Current Version ID: 9c0177a4-c123-46d9-94c1-0ab725242b64
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-10T04:25:04.001Z
+Live site marked as built from content up to 2026-11-10T08:52:25.521Z
 
  ⛅️ wrangler 4.158.0 (update available 4.159.0)
 ───────────────────────────────────────────────
