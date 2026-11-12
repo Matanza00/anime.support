@@ -570,3 +570,9 @@ a.contest-card:hover { transform: translateY(-3px); border-color: var(--coral); 
 }
 .signin-note { margin-top: 14px; font-size: 13px; color: var(--faint); }
 .signin-note a { text-decoration: underline; color: var(--muted); }
+
+/* Home: visible brand heading (the site's one H1) */
+.home-brand { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding-top: 26px; font-weight: 400; }
+.home-brand .name { font: 800 clamp(22px, 2.6vw, 30px)/1.1 var(--font-display); letter-spacing: -0.02em; }
+.home-brand .tag { font-size: clamp(14px, 1.6vw, 17px); color: var(--muted); }
+.home-brand + .hero { padding-top: 16px; }

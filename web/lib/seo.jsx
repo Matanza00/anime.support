@@ -3,9 +3,13 @@ import { SITE, absUrl } from './site.js';
 export const publisher = {
   '@type': 'Organization',
   name: SITE.name,
-  url: SITE.url,
+  url: `${SITE.url}/`,
+  alternateName: ['Anime Support', 'animesupport'],
   logo: { '@type': 'ImageObject', url: absUrl('/brand/logo.png'), width: 1200, height: 488 },
 };
+
+/** Open Graph fields every page needs. A page's own openGraph replaces the site-wide one in Next.js, so pages spread this in. */
+export const ogBase = { siteName: SITE.name, locale: 'en_US' };
 
 export function breadcrumbs(items) {
   return {

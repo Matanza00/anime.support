@@ -10,7 +10,7 @@ import { renderArticle } from '@/lib/markdown';
 import { renderMediaList } from '@/lib/embeds';
 import { animeHref } from '@/lib/catalog';
 import { CATEGORIES, SITE, absUrl, articlePath, catLabel, formatDate, readingTime, slugify } from '@/lib/site';
-import { JsonLd, breadcrumbs, publisher } from '@/lib/seo';
+import { JsonLd, breadcrumbs, publisher, ogBase } from '@/lib/seo';
 
 export const dynamicParams = false;
 const EMPTY = '__none';
@@ -31,6 +31,7 @@ export async function generateMetadata({ params }) {
     alternates: { canonical: articlePath(a.slug) },
     keywords: a.anime,
     openGraph: {
+      ...ogBase,
       type: 'article',
       title: a.title,
       description: a.excerpt,

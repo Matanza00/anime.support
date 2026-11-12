@@ -10,7 +10,7 @@ import Trailer from '@/components/Trailer';
 import { ReleaseCard, TrendingChart } from '@/components/Widgets';
 import { animePages, indexable, franchise, similar, factLine, formatLabel, statusLabel, sourceLabel, countryLabel, airedLabel, seasonLabel, seasonId, seasonWindow } from '@/lib/catalog';
 import { absUrl, formatDate } from '@/lib/site';
-import { JsonLd, breadcrumbs } from '@/lib/seo';
+import { JsonLd, breadcrumbs, ogBase } from '@/lib/seo';
 
 export const dynamicParams = false;
 
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
       title,
       description: `Everything officially confirmed about ${h.name}: new seasons, release dates, cast and story news. Updated ${formatDate(h.latest)}.`,
       alternates: { canonical },
-      openGraph: { title, images: h.cover ? [absUrl(h.cover)] : undefined },
+      openGraph: { ...ogBase, url: canonical, title, images: h.cover ? [absUrl(h.cover)] : undefined },
     };
   }
   const s = p.show;
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }) {
     description,
     alternates: { canonical },
     robots,
-    openGraph: { title, description, images: s.banner_url || s.cover_url ? [s.banner_url || s.cover_url] : undefined },
+    openGraph: { ...ogBase, url: canonical, title, description, images: s.banner_url || s.cover_url ? [s.banner_url || s.cover_url] : undefined },
   };
 }
 

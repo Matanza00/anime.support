@@ -7,7 +7,16 @@ import { ShowGrid } from '@/components/ShowCard';
 import Schedule from '@/components/Schedule';
 import { scheduleData, showsInSeason, seasonOf, seasonId, seasonLabel } from '@/lib/catalog';
 import { CATEGORIES, SITE, articlePath, catLabel, formatDate } from '@/lib/site';
-import { JsonLd, publisher } from '@/lib/seo';
+import { JsonLd, publisher, ogBase } from '@/lib/seo';
+
+const HOME_DESCRIPTION = 'anime.support is an independent anime news site: confirmed announcements, release dates, airing schedules, seasonal charts and where to watch every show legally.';
+
+export const metadata = {
+  description: HOME_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: { ...ogBase, type: 'website', url: '/', title: `${SITE.name}: ${SITE.tagline}`, description: HOME_DESCRIPTION, images: [{ url: '/brand/logo.png', width: 1200, height: 488, alt: SITE.name }] },
+  twitter: { card: 'summary_large_image', title: `${SITE.name}: ${SITE.tagline}`, description: HOME_DESCRIPTION },
+};
 
 export default async function Home() {
   const all = await allArticles();
@@ -23,7 +32,7 @@ export default async function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, alternateName: ['Anime Support', 'animesupport', 'anime support news'], url: `${SITE.url}/`, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/search/?q={query}`, 'query-input': 'required name=query' } },
+      { '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, alternateName: ['Anime Support', 'animesupport', 'anime support news'], url: `${SITE.url}/`, description: HOME_DESCRIPTION, inLanguage: 'en', publisher: { '@id': `${SITE.url}/#org` }, potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/search/?q={query}`, 'query-input': 'required name=query' } },
       { ...publisher, '@id': `${SITE.url}/#org` },
     ],
   };
@@ -33,7 +42,7 @@ export default async function Home() {
       <div className="wrap section">
         <JsonLd data={jsonLd} />
         <div className="glass empty">
-          <h1 style={{ fontSize: 28, marginBottom: 8 }}>The newsroom is warming up</h1>
+          <h1 style={{ fontSize: 28, marginBottom: 8 }}>{SITE.name}: the newsroom is warming up</h1>
           <p>The first stories appear here as soon as they are approved.</p>
         </div>
       </div>
@@ -43,7 +52,10 @@ export default async function Home() {
   return (
     <div className="wrap">
       <JsonLd data={jsonLd} />
-      <h1 className="sr-only">{SITE.name}: {SITE.tagline}</h1>
+      <h1 className="home-brand">
+        <span className="name">{SITE.name}</span>
+        <span className="tag">{SITE.tagline}</span>
+      </h1>
 
       {/* Featured story + top stories, the layout every major anime outlet leads with */}
       <section className="hero" aria-label="Top stories">
