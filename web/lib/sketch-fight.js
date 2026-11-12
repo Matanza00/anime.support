@@ -251,6 +251,86 @@ export function start(canvas, { still = false, at = 2.58 } = {}) {
     }
   }
 
+  // Fixed shapes for the scenery (same every loop), separate from the per-frame pencil jitter.
+  const shape = (i, k) => {
+    const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453;
+    return x - Math.floor(x);
+  };
+  // Draws the items of one scrolling layer: each item sits at a fixed spot in a strip `period` wide that
+  // slides left at `speed` scene-px per second, wrapping around, so the world rushes past the fighters.
+  function layer(t, { speed, period, count, k }, draw) {
+    const left = -ox / scale - 60, right = (canvas.width - ox) / scale + 60;
+    const off = (t * speed) % period;
+    for (let i = 0; i < count; i++) {
+      const base = (i / count) * period + shape(i, k) * (period / count) * 0.6;
+      for (let x = base - off; x < right + period; x += period) {
+        if (x > left - 200 && x < right) draw(x, i);
+      }
+    }
+  }
+  const streak = (x, y, len, alpha) => line([x, y], [x + len, y + j(0.6)], { w: 0.8, passes: 1, alpha, wob: 0.4 });
+
+  function scenery(t) {
+    const left = -ox / scale - 60, right = (canvas.width - ox) / scale + 60;
+    // far: clouds drifting slowly, with a few wind streaks behind them
+    layer(t, { speed: 45, period: 1500, count: 4, k: 1 }, (x, i) => {
+      const y = 45 + shape(i, 2) * 70, w = 110 + shape(i, 3) * 80;
+      ctx.beginPath();
+      const bumps = 4;
+      ctx.moveTo(x, y);
+      for (let b = 0; b < bumps; b++) {
+        const bx = x + (b + 0.5) * (w / bumps), r = w / bumps / 1.6 + shape(i, 10 + b) * 8;
+        ctx.arc(bx + j(1.2), y - r * 0.35 + j(1.2), r, Math.PI, 0);
+      }
+      ctx.lineWidth = 1; ctx.strokeStyle = `rgba(${INK}, 0.4)`; ctx.stroke();
+      line([x - 4, y + 2], [x + w + 4, y + 2], { w: 0.9, passes: 1, alpha: 0.35 });
+      streak(x + w + 14, y - 4, 40, 0.18);
+      streak(x + w + 30, y + 6, 26, 0.14);
+    });
+    // middle: distant mountain ridge, sliding a bit faster
+    layer(t, { speed: 110, period: 1600, count: 7, k: 4 }, (x, i) => {
+      const h = 40 + shape(i, 5) * 55, w = 120 + shape(i, 6) * 90, base = GROUND - 18;
+      const peak = [x + w * (0.4 + shape(i, 7) * 0.2), base - h];
+      line([x, base], peak, { w: 1, passes: 1, alpha: 0.3 });
+      line(peak, [x + w, base], { w: 1, passes: 1, alpha: 0.3 });
+      for (let s = 1; s < 4; s++) { // hatching on the shady side
+        const u = s / 4;
+        const p = [lerp(peak[0], x + w, u), lerp(peak[1], base, u)];
+        line(p, [p[0] - 10, p[1] + 12], { w: 0.6, passes: 1, alpha: 0.18, wob: 0.4 });
+      }
+    });
+    // ground line (static: the camera tracks the fighters)
+    line([left, GROUND], [right, GROUND + 1], { w: 1.2, alpha: 0.6, passes: 1 });
+    // near: trees whipping past, with motion-blur streaks
+    layer(t, { speed: 520, period: 1700, count: 5, k: 8 }, (x, i) => {
+      const h = 115 + shape(i, 9) * 90;
+      const pine = shape(i, 11) > 0.45;
+      line([x, GROUND], [x + j(1), GROUND - h * 0.35], { w: 1.6, passes: 2, alpha: 0.5 });
+      if (pine) {
+        for (let l = 0; l < 3; l++) {
+          const yb = GROUND - h * (0.25 + l * 0.22), half = 34 - l * 8, top = yb - h * 0.32;
+          line([x - half, yb], [x, top], { w: 1, passes: 1, alpha: 0.45 });
+          line([x, top], [x + half, yb], { w: 1, passes: 1, alpha: 0.45 });
+          line([x - half, yb], [x + half, yb + j(2)], { w: 0.8, passes: 1, alpha: 0.3 });
+        }
+      } else {
+        const cy = GROUND - h * 0.62, r = h * 0.3;
+        ctx.beginPath();
+        for (let a = 0; a <= 28; a++) {
+          const ang = (a / 28) * Math.PI * 2.1, rr = r * (0.82 + 0.18 * Math.sin(ang * 5 + i)) + j(1.5);
+          a ? ctx.lineTo(x + Math.cos(ang) * rr, cy + Math.sin(ang) * rr * 0.85) : ctx.moveTo(x + Math.cos(ang) * rr, cy + Math.sin(ang) * rr * 0.85);
+        }
+        ctx.lineWidth = 1.1; ctx.strokeStyle = `rgba(${INK}, 0.45)`; ctx.stroke();
+      }
+      for (let s = 0; s < 4; s++) streak(x + 20 + s * 6, GROUND - h * (0.2 + s * 0.2), 50 + s * 18, 0.22);
+    });
+    // fastest: ground dashes and wind lines
+    layer(t, { speed: 900, period: 1200, count: 9, k: 13 }, (x, i) => {
+      streak(x, GROUND + 7 + shape(i, 14) * 10, 20 + shape(i, 15) * 30, 0.3);
+      if (i % 3 === 0) streak(x, 30 + shape(i, 16) * 220, 90 + shape(i, 17) * 80, 0.12);
+    });
+  }
+
   function frame(t) {
     const step = Math.floor(t * FPS);
     seed = 1 + (step % 9973) * 7919; // lines "boil" a little each frame, like hand-drawn animation
@@ -263,14 +343,8 @@ export function start(canvas, { still = false, at = 2.58 } = {}) {
     const shake = hit ? 3 * (1 - (tt - hit.t) / 0.25) : 0;
     ctx.setTransform(scale, 0, 0, scale, ox + j(shake) * scale, oy + j(shake) * scale);
     ctx.lineCap = 'round';
-    // ground
-    line([60, GROUND], [520, GROUND + 1], { w: 1.2, alpha: 0.6 });
-    line([480, GROUND + 1], [940, GROUND], { w: 1.2, alpha: 0.6 });
-    for (let i = 0; i < 9; i++) {
-      const x = 100 + i * 100 + j(10);
-      line([x, GROUND + 10], [x + 26, GROUND + 10 + j(1)], { w: 0.7, passes: 1, alpha: 0.25 });
-    }
-    const a = fighterAt(A, tt, false), b = fighterAt(B, tt, true);
+    scenery(step / FPS);
+    const a =fighterAt(A, tt, false), b = fighterAt(B, tt, true);
     drawFighter(a, fighterAt(A, pt, false), 'A');
     drawFighter(b, fighterAt(B, pt, true), 'B');
     for (const i of impacts) if (tt >= i.t && tt - i.t < 0.5) drawImpact(i.p, tt - i.t);
