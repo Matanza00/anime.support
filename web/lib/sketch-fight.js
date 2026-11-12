@@ -186,9 +186,14 @@ export function makeArtist(ctx) {
       // bangs + headband
       for (let i = 0; i < 3; i++) line([hd[0] + f.dir * (2 + i * 4), hd[1] - 13], [hd[0] + f.dir * (5 + i * 5), hd[1] - 2], { w: 1, passes: 1, alpha: 0.7 });
       line([hd[0] - 14, hd[1] - 6], [hd[0] + 14, hd[1] - 8], { w: 1.2, passes: 1, alpha: 0.7 });
+      if (f.mask) { // thief's eye mask with fluttering ties
+        line([hd[0] - 14, hd[1] - 1], [hd[0] + 14, hd[1] - 2], { w: 3.2, passes: 2, alpha: 0.9 });
+        line([hd[0] - f.dir * 14, hd[1] - 1], [hd[0] - f.dir * 26, hd[1] + 4 + j(3)], { w: 1, passes: 1, alpha: 0.7 });
+      }
     }
-    // sword: blade, guard, handle
+    // sword: blade, guard, handle (none while carrying or being carried)
     const r = (f.s * Math.PI) / 180, c = Math.cos(r), s = Math.sin(r);
+    if (!f.noSword) {
     line(f.h1, f.tip, { w: 1.4, passes: 2, alpha: 0.95, wob: 0.8 });
     line([f.h1[0] + c * 6 - s * 7, f.h1[1] + s * 6 + c * 7], [f.h1[0] + c * 6 + s * 7, f.h1[1] + s * 6 - c * 7], { w: 1.6, passes: 1 });
     line(f.h1, [f.h1[0] - c * 18, f.h1[1] - s * 18], { w: 2.2, passes: 1 });
@@ -202,6 +207,7 @@ export function makeArtist(ctx) {
         ctx.arc(f.h1[0], f.h1[1], rr, pr, r, da < 0);
         ctx.lineWidth = 0.8; ctx.strokeStyle = `rgba(${INK}, ${0.18 + k * 0.06})`; ctx.stroke();
       }
+    }
     }
     // speed lines when moving fast
     const sp = Math.hypot(vx, vy);

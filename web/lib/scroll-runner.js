@@ -1,33 +1,38 @@
-// Scroll-driven pencil swordsman for the homepage. As the reader scrolls, he leaves the header, runs across
-// the gap above each section, fights an opponent there (and keeps fighting while the reader pauses), slides
-// down the page edge to the next section, and at the very bottom wins one last fight and leaps into the
-// footer logo. Everything is drawn on one fixed, click-through canvas; position comes from the scroll
-// position, the fighting and pencil "boil" from the clock.
+// "The star thief": a scroll-driven pencil chase for the homepage.
+// A masked thief (B) steals the glowing star, the hero (A) chases him down the page, they duel at the
+// section headings, the thief taunts from the top of the sticky "Airing next" panel, and in the end the
+// hero captures him and throws him into the anime.support logo in the footer.
+//
+// Everything is placed in SCREEN space from the live layout each frame, so the action is always where the
+// reader is looking: scenes happen on the gap above whichever section heading is on screen, and between
+// headings the two slide down the page edges level with the reader. Scrolling back replays it in reverse.
 import { makeArtist, P as BASE, BLADE, lerp, angLerp, ease } from './sketch-fight.js';
 
-const K = 0.5; // scene units → CSS pixels (a fighter is ~90 px tall)
-const HIP = 86; // hip height above the feet, in scene units
+const K = 0.5; // scene units → CSS px (a fighter is ~105 px tall)
+const HIP = 86;
 const P = {
   ...BASE,
   run1: { n: [14, -92], hd: [22, -114], k1: [34, 32], f1: [58, 70], k2: [-18, 42], f2: [-50, 60], e1: [26, -62], h1: [40, -44], e2: [-4, -64], h2: [-22, -46], s: 168 },
   run2: { n: [14, -90], hd: [22, -112], k1: [8, 46], f1: [-6, 86], k2: [34, 26], f2: [26, 64], e1: [24, -60], h1: [38, -42], e2: [12, -62], h2: [30, -50], s: 172 },
   slide: { n: [2, -94], hd: [6, -116], k1: [14, 40], f1: [18, 84], k2: [-6, 42], f2: [-2, 86], e1: [22, -60], h1: [30, -34], e2: [-16, -112], h2: [-12, -134], s: 80 },
+  taunt: { n: [-4, -95], hd: [-2, -118], k1: [26, 42], f1: [44, 86], k2: [-24, 44], f2: [-46, 86], e1: [22, -66], h1: [40, -52], e2: [-18, -116], h2: [-14, -142], s: -30 },
+  lift: { n: [0, -96], hd: [4, -118], k1: [28, 42], f1: [46, 86], k2: [-26, 42], f2: [-46, 86], e1: [16, -126], h1: [12, -152], e2: [-16, -126], h2: [-12, -152], s: 100 },
+  victory: { n: [0, -96], hd: [4, -119], k1: [26, 42], f1: [44, 86], k2: [-24, 44], f2: [-46, 86], e1: [20, -120], h1: [22, -148], e2: [-14, -66], h2: [-24, -42], s: -88 },
+  hang: { n: [0, -95], hd: [4, -118], k1: [10, 40], f1: [6, 84], k2: [-6, 44], f2: [-14, 82], e1: [6, -125], h1: [4, -150], e2: [22, -80], h2: [44, -92], s: 90 },
+  down: { n: [-6, -60], hd: [-10, -80], k1: [30, 30], f1: [50, 80], k2: [-20, 40], f2: [-40, 84], e1: [24, -40], h1: [40, -20], e2: [-20, -40], h2: [-34, -20], s: 20 },
 };
-// fight loop (seconds): the two trade blows; impacts where the blades meet
 const FIGHT_T = 1.6;
 const FIGHT_A = [[0, 'clash'], [0.4, 'strike'], [0.8, 'clash'], [1.2, 'block'], [1.6, 'clash']];
 const FIGHT_B = [[0, 'clash'], [0.4, 'block'], [0.8, 'clash'], [1.2, 'strike'], [1.6, 'clash']];
 const FIGHT_HITS = [0.4, 0.8, 1.2];
 
 const clamp01 = (x) => Math.max(0, Math.min(1, x));
+const seg = (q, a, b) => clamp01((q - a) / (b - a)); // 0..1 progress of q within [a, b]
 
-/** A fighter's joints (hip at 0,0, in scene units) blended between two poses. dir 1 = facing right. */
-function build(pa, pb, u, dir) {
-  const a = P[pa], b = P[pb];
-  const out = { x: 0, y: 0, dir };
-  for (const k of Object.keys(a)) {
-    if (k !== 's') out[k] = [dir * lerp(a[k][0], b[k][0], u), lerp(a[k][1], b[k][1], u)];
-  }
+function build(name, dir, name2 = name, u = 0) {
+  const a = P[name], b = P[name2];
+  const out = { dir };
+  for (const k of Object.keys(a)) if (k !== 's') out[k] = [dir * lerp(a[k][0], b[k][0], u), lerp(a[k][1], b[k][1], u)];
   const s = angLerp(a.s, b.s, u);
   out.s = dir < 0 ? 180 - s : s;
   const r = (out.s * Math.PI) / 180;
@@ -38,208 +43,271 @@ function fromKeys(keys, t, dir) {
   let i = 0;
   while (i < keys.length - 2 && t >= keys[i + 1][0]) i++;
   const u = ease(clamp01((t - keys[i][0]) / (keys[i + 1][0] - keys[i][0])));
-  return build(keys[i][1], keys[i + 1][1], u, dir);
+  return build(keys[i][1], dir, keys[i + 1][1], u);
 }
 
 export function start(canvas, { hero, logo } = {}) {
   const ctx = canvas.getContext('2d');
   const art = makeArtist(ctx);
-  let dpr = 1, segs = [], vTotal = 1, maxScroll = 1;
-  let lastV = 0, lastMove = 0, runDist = 0, prevPos = null;
+  let dpr = 1, gaps = [], aside = null, wrapBox = null;
+  // displayed positions (screen px, feet), eased toward each frame's target so scene changes look like leaps
+  const shown = { A: null, B: null };
 
-  /* ---------- the route through the page (document coordinates, CSS px) ---------- */
-  function buildRoute() {
+  /* ---------- layout: where the scenes are (document y), measured on load and on resize ---------- */
+  function measure() {
     dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = Math.round(innerWidth * dpr);
     canvas.height = Math.round(innerHeight * dpr);
-    maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
     const sy = scrollY;
-    const wrap = (hero?.closest('.wrap') || document.querySelector('main .wrap'))?.getBoundingClientRect();
-    if (!wrap) return (segs = []);
-    const xL = Math.max(30, wrap.left - 26), xR = Math.min(innerWidth - 30, wrap.right + 26);
-    const heroBox = hero?.getBoundingClientRect();
-    const startPt = [heroBox ? heroBox.right - 150 : wrap.right - 150, (heroBox ? heroBox.bottom : 200) + sy - 22];
-    // run lines: just above each main-column section heading, at least 260 px apart
-    const ys = [];
+    const wrapEl = hero?.closest('.wrap') || document.querySelector('main .wrap');
+    if (!wrapEl) return (gaps = []);
+    const w = wrapEl.getBoundingClientRect();
+    wrapBox = { left: w.left, right: w.right };
+    // a sticky sidebar long enough to stand on ("Airing next")
+    aside = [...document.querySelectorAll('main .sidebar')].find((a) => a.getBoundingClientRect().height > 300) || null;
+    const asideTop = aside ? aside.getBoundingClientRect().top + sy : Infinity;
+    const list = [];
+    if (hero) list.push({ y: hero.getBoundingClientRect().bottom + sy - 18, type: 'steal' });
     for (const h of document.querySelectorAll('main .section-head')) {
       if (h.closest('.sidebar, aside')) continue;
       const r = h.getBoundingClientRect();
-      if (r.left > wrap.left + 80 || r.width < 200) continue;
-      const y = r.top + sy - 12;
-      if (y > startPt[1] + 200 && (!ys.length || y - ys.at(-1) > 260)) ys.push(y);
+      if (r.left > w.left + 80 || r.width < 200) continue;
+      const y = r.top + sy - 10;
+      if (list.length && y - list.at(-1).y < 240) continue;
+      list.push({ y, type: 'scene' });
     }
-    const foot = document.querySelector('footer')?.getBoundingClientRect();
-    const lg = logo?.getBoundingClientRect();
-    const out = [];
-    let cur = startPt, side = 'R';
-    const run = (to, fight) => { out.push({ type: 'run', a: cur, b: to, fight }); cur = to; };
-    const slide = (toY) => { out.push({ type: 'slide', a: cur, b: [cur[0], toY] }); cur = [cur[0], toY]; };
-    run([xR, startPt[1]], false); // runs off from the header fight
-    for (const y of ys) {
-      slide(y);
-      side = side === 'R' ? 'L' : 'R';
-      run([side === 'R' ? xR : xL, y], true);
-    }
-    if (foot && lg) {
-      const fy = foot.top + sy - 14;
-      if (fy - cur[1] > 120) slide(fy);
-      const target = [lg.left + lg.width / 2, lg.top + sy + lg.height / 2];
-      const landX = target[0] + (cur[0] > target[0] ? 120 : -120);
-      run([landX, fy], true); // the last fight
-      out.push({ type: 'leap', a: cur, b: target });
-    }
-    // scroll budget: runs and the leap borrow from the slide that follows, so the swordsman stays on screen
-    for (let i = 0; i < out.length; i++) {
-      const s = out[i];
-      s.len = Math.hypot(s.b[0] - s.a[0], s.b[1] - s.a[1]);
-      s.dv = s.type === 'slide' ? s.len : s.type === 'leap' ? 140 : Math.max(120, (s.fight ? 0.55 : 0.3) * s.len);
-    }
-    let v = 0;
-    for (const s of out) { s.v0 = v; v += s.dv; s.v1 = v; }
-    vTotal = Math.max(1, v);
-    segs = out;
+    // give each section heading its part of the story
+    const scenes = list.filter((g) => g.type === 'scene');
+    scenes.forEach((g, i) => {
+      const next = scenes[i + 1]?.y ?? Infinity;
+      if (asideTop > g.y - 60 && asideTop < next) g.type = 'perch';
+      else if (i === scenes.length - 1) g.type = 'capture';
+      else g.type = i % 2 ? 'fight' : 'chase';
+    });
+    const foot = document.querySelector('footer');
+    if (foot && logo) list.push({ y: foot.getBoundingClientRect().top + sy - 4, type: 'throw' });
+    gaps = list;
   }
 
-  /* ---------- drawing ---------- */
-  function place(f, feet, { scale = 1, rot = 0, alpha = 1, ground = 0, vx = 0, vy = 0, prevS }) {
-    const sx = feet[0], syy = feet[1] - scrollY;
-    if (syy < -150 || syy > innerHeight + 150) return;
-    ctx.setTransform(dpr * K * scale, 0, 0, dpr * K * scale, dpr * sx, dpr * syy);
+  /* ---------- drawing helpers ---------- */
+  function place(f, feet, { scale = 1, rot = 0, alpha = 1, ground = true, vx = 0, vy = 0, prevS } = {}) {
+    if (feet[1] < -160 || feet[1] > innerHeight + 160) return;
+    ctx.setTransform(dpr * K * scale, 0, 0, dpr * K * scale, dpr * feet[0], dpr * feet[1]);
     ctx.translate(0, -HIP);
     if (rot) ctx.rotate(rot);
     ctx.globalAlpha = alpha;
-    f.ground = ground === null ? null : HIP;
-    art.drawFighter(f, { x: -vx, y: -vy, s: prevS ?? f.s }, f.kind || 'A');
+    const g = { ...f, x: 0, y: 0, ground: ground ? HIP : null };
+    art.drawFighter(g, { x: -vx, y: -vy, s: prevS ?? f.s }, f.kind);
+    if (f.star) star(f.h2, 9);
     ctx.globalAlpha = 1;
   }
+  function star([cx, cy], r) {
+    const pts = [];
+    for (let i = 0; i < 10; i++) {
+      const a = -Math.PI / 2 + (i * Math.PI) / 5, rr = i % 2 ? r * 0.45 : r;
+      pts.push([cx + Math.cos(a) * rr, cy - 8 + Math.sin(a) * rr]);
+    }
+    for (let i = 0; i < 10; i++) art.line(pts[i], pts[(i + 1) % 10], { w: 1.2, passes: 1, alpha: 0.95, wob: 0.5 });
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + art.j(0.3);
+      art.line([cx + Math.cos(a) * (r + 4), cy - 8 + Math.sin(a) * (r + 4)], [cx + Math.cos(a) * (r + 10), cy - 8 + Math.sin(a) * (r + 10)], { w: 0.8, passes: 1, alpha: 0.6 });
+    }
+  }
+  function sparks(f, feet) {
+    ctx.setTransform(dpr * K, 0, 0, dpr * K, dpr * feet[0], dpr * feet[1]);
+    ctx.translate(0, -HIP);
+    for (let i = 0; i < 5; i++) {
+      const a = -Math.PI / 2 + art.j(1.1);
+      const p0 = [f.tip[0] + art.j(4), f.tip[1] + art.j(4)];
+      art.line(p0, [p0[0] + Math.cos(a) * 12, p0[1] + Math.sin(a) * 12], { w: 1, passes: 1, alpha: 0.8 });
+    }
+  }
   function burst(at, age, size = 1) {
-    const syy = at[1] - scrollY;
-    ctx.setTransform(dpr * K * size, 0, 0, dpr * K * size, dpr * at[0], dpr * syy);
+    ctx.setTransform(dpr * K * size, 0, 0, dpr * K * size, dpr * at[0], dpr * at[1]);
     art.drawImpact([0, 0], age);
   }
+  function shout(at) {
+    ctx.setTransform(dpr * K, 0, 0, dpr * K, dpr * at[0], dpr * at[1]);
+    art.line([0, -30], [2, -6], { w: 3, passes: 2 });
+    art.circle([2, 4], 2);
+  }
 
+  /* ---------- the story, one frame ---------- */
+  function scene(t) {
+    const vh = innerHeight, sy = scrollY;
+    const maxS = Math.max(1, document.documentElement.scrollHeight - vh);
+    const xL = Math.max(34, wrapBox.left - 30), xR = Math.min(innerWidth - 34, wrapBox.right + 30);
+    const mid = (wrapBox.left + wrapBox.right) / 2;
+    let A = null, B = null; // targets: { at:[x,y], f, opts }
+    // the thief dangles by one hand from the corner of the sticky "Airing next" panel, swinging and waving the star
+    const hanging = (ar) => ({ at: [ar.right + 10, ar.top + 26 + (150 + HIP) * K], f: build('hang', -1), star: true, hang: true, noSword: true, rot: Math.sin(t * 2.4) * 0.16 });
+    const extras = [];
+
+    // which scene is on screen: the first heading gap not yet scrolled near the top
+    let cur = null, prev = null;
+    for (const g of gaps) {
+      const enter = g.y - 0.95 * vh, exit = Math.min(g.y - 0.3 * vh, maxS);
+      if (sy < enter) break;
+      if (sy <= exit) { cur = { g, q: exit > enter ? clamp01((sy - enter) / (exit - enter)) : 1, y: g.y - sy }; break; }
+      prev = g;
+    }
+
+    if (cur) {
+      const { g, q, y } = cur;
+      const across = (from, to, k) => lerp(from, to, ease(k));
+      if (g.type === 'steal') {
+        const hb = hero.getBoundingClientRect();
+        const tx = hb.right - 150, hx = hb.right - 340;
+        if (q < 0.3) {
+          B = { at: [tx, y], f: build('taunt', -1), star: true };
+          A = { at: [hx, y], f: build('crouch', 1) };
+          extras.push(() => shout([hx + 4, y - 150 * K]));
+        } else {
+          const k = seg(q, 0.3, 1);
+          B = { at: [across(tx, xR, k), y], run: 1, star: true };
+          A = { at: [across(hx, xR - 120, k), y], run: 1 };
+        }
+      } else if (g.type === 'chase' || g.type === 'perch') {
+        // thief runs across the gap, the hero leaps after him; on the perch scene the thief escapes up onto the sidebar
+        const fromR = (gaps.indexOf(g) % 2) === 1;
+        const from = fromR ? xR : xL, to = fromR ? xL : xR;
+        const k = seg(q, 0.05, 0.75);
+        const bx = across(from, to, k), dir = Math.sign(to - from);
+        B = { at: [bx, y], run: 1, star: true };
+        A = { at: [bx - dir * 150, y - (k > 0.4 && k < 0.6 ? Math.sin(seg(k, 0.4, 0.6) * Math.PI) * 50 : 0)], run: 1 };
+        if (g.type === 'perch' && aside && q > 0.75) {
+          const ar = aside.getBoundingClientRect();
+          B = hanging(ar);
+        }
+      } else if (g.type === 'fight' || g.type === 'capture') {
+        const dir = 1;
+        const ax = mid - 62, bx = mid + 62;
+        if (q < 0.15) {
+          A = { at: [ax, y], run: 1 }; B = { at: [bx, y], f: build('stance', -1), star: true };
+        } else if (q < (g.type === 'capture' ? 0.55 : 0.8)) {
+          const ft = t % FIGHT_T, pt = (ft - 0.08 + FIGHT_T) % FIGHT_T;
+          A = { at: [ax, y], f: fromKeys(FIGHT_A, ft, dir), prevS: fromKeys(FIGHT_A, pt, dir).s };
+          B = { at: [bx, y], f: fromKeys(FIGHT_B, ft, -dir), prevS: fromKeys(FIGHT_B, pt, -dir).s, star: true };
+          const hit = FIGHT_HITS.find((h) => ft >= h && ft - h < 0.35);
+          if (hit !== undefined) extras.push(() => burst([mid, y - 105 * K], ft - hit, 0.8));
+        } else if (g.type === 'fight') {
+          const k = seg(q, 0.8, 1); // the thief breaks away to the next section
+          B = { at: [across(bx, xR, k), y], run: 1, star: true };
+          A = { at: [across(ax, xR - 140, k), y], run: 1 };
+        } else {
+          // capture: the winning blow, the thief goes down, the hero lifts him overhead
+          const k = seg(q, 0.55, 0.7);
+          if (q < 0.7) {
+            A = { at: [ax + 20, y], f: build('clash', dir, 'strike', ease(k)) };
+            B = { at: [bx + k * 30, y], f: build('block', -1, 'down', ease(k)), star: true, noSword: true };
+            if (k < 0.7) extras.push(() => burst([mid + 10, y - 95 * K], k * 0.7, 1.4));
+          } else {
+            A = { at: [ax + 20, y], f: build('lift', dir), noSword: true, carry: true };
+          }
+        }
+      } else if (g.type === 'throw') {
+        // the hero carries the thief to the footer logo and throws him in
+        const lr = logo.getBoundingClientRect();
+        const target = [lr.left + lr.width * 0.28, lr.top + lr.height * 0.45];
+        const start = [Math.min(xR, lr.right + 260), y];
+        const k1 = seg(q, 0, 0.35), k2 = seg(q, 0.35, 0.75);
+        const ax = lerp(start[0], lr.right + 90, ease(k1));
+        if (q < 0.35) {
+          A = { at: [ax, y], run: 1, noSword: true, carry: true, dir: -1 };
+        } else {
+          A = { at: [ax, y], f: build(q < 0.75 ? 'lift' : 'victory', -1), noSword: q < 0.75 };
+          if (q < 0.75) {
+            // thrown: an arc from the hero's hands into the logo, spinning and shrinking
+            const hands = [ax, y - (HIP + 150) * K];
+            const e = ease(k2);
+            const p = [lerp(hands[0], target[0], e), lerp(hands[1], target[1], e) - Math.sin(k2 * Math.PI) * 120];
+            extras.push(() => place({ ...build('jump', -1), kind: 'B', mask: true, noSword: true }, [p[0], p[1] + HIP * K * (1 - e * 0.6)], { rot: -k2 * 9, scale: lerp(1, 0.25, e), alpha: 1 - seg(k2, 0.85, 1), ground: false }));
+          }
+          if (q > 0.68) extras.push(() => burst(target, Math.min(0.49, (q - 0.68) * 1.6), 1.1));
+          if (q > 0.75) extras.push(() => { ctx.setTransform(dpr * K, 0, 0, dpr * K, dpr * target[0], dpr * (target[1] - 34)); star([0, 0], 12); });
+        }
+        logo.classList.toggle('logo-hit', q > 0.72);
+      }
+    } else if (prev) {
+      // between headings: both slide down the page edges, level with the reader
+      const sliding = (x, yy, face) => ({ at: [x, yy], f: build('slide', face), slide: true });
+      const ar = aside?.getBoundingClientRect();
+      const onAside = prev.type === 'perch' && ar && ar.top > 0.05 * vh && ar.top < 0.7 * vh;
+      if (prev.type === 'capture') {
+        A = { at: [xL, 0.6 * vh], f: build('lift', 1), noSword: true, carry: true, slide: true };
+      } else {
+        A = sliding(onAside ? ar.left - 14 : xL, 0.42 * vh, 1);
+        B = onAside ? hanging(ar) : { ...sliding(xR, 0.62 * vh, -1), star: true };
+      }
+    }
+    if (!cur || cur.g.type !== 'throw') logo?.classList.remove('logo-hit');
+    return { A, B, extras };
+  }
+
+  function drawActor(key, tgt, t, moving) {
+    if (!tgt) { shown[key] = null; return; }
+    const prevAt = shown[key] || tgt.at;
+    const dist = Math.hypot(tgt.at[0] - prevAt[0], tgt.at[1] - prevAt[1]);
+    const at = dist > 2 ? [lerp(prevAt[0], tgt.at[0], 0.35), lerp(prevAt[1], tgt.at[1], 0.35)] : tgt.at;
+    shown[key] = at;
+    const vx = at[0] - prevAt[0], vy = at[1] - prevAt[1];
+    const dir = tgt.dir || (Math.abs(vx) > 0.5 ? Math.sign(vx) : tgt.f?.dir || (key === 'A' ? 1 : -1));
+    let f;
+    if (dist > 60) f = build('jump', dir); // flying to the next scene
+    else if (tgt.run) f = Math.abs(vx) > 0.4 ? build('run1', dir, 'run2', (Math.sin(t * 14) + 1) / 2) : build(tgt.carry ? 'lift' : 'stance', dir);
+    else f = tgt.f;
+    if (tgt.carry) { // arms stay up holding the thief, whatever the legs are doing
+      const l = build('lift', dir);
+      f = { ...f, e1: l.e1, h1: l.h1, e2: l.e2, h2: l.h2 };
+    }
+    f = { ...f, kind: key, mask: key === 'B', noSword: tgt.noSword || tgt.carry, star: key === 'B' && tgt.star };
+    if (tgt.hang && dist <= 60) f = { ...tgt.f, kind: key, mask: true, noSword: true, star: tgt.star };
+    const air = dist > 60 || tgt.slide || tgt.hang;
+    place(f, at, { ground: !air, vx: vx / K / 2, vy: vy / K / 2, prevS: tgt.prevS, rot: tgt.hang ? tgt.rot : 0 });
+    if (tgt.slide && moving && !tgt.carry) sparks(f, at);
+    if (tgt.carry) {
+      // the defeated thief, held overhead
+      const thief = { ...build('down', -dir), kind: 'B', mask: true, noSword: true };
+      place(thief, [at[0], at[1] - 150 * K], { rot: -dir * Math.PI / 2, ground: false });
+    }
+  }
+
+  let lastY = scrollY, lastMove = 0;
   function render(now) {
     const t = now / 1000;
     art.setSeed(Math.floor(t * 12));
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineCap = 'round';
-    const active = scrollY > 40 && segs.length;
+    const active = scrollY > 40 && gaps.length && wrapBox;
     hero?.querySelector('.sketch-fight')?.classList.toggle('away', Boolean(active));
     canvas.classList.toggle('on', Boolean(active));
-    if (!active) return;
-
-    const v = clamp01(scrollY / maxScroll) * vTotal;
-    if (Math.abs(v - lastV) > 0.5) lastMove = now;
-    const moving = now - lastMove < 260;
-    const dvSign = Math.sign(v - lastV) || 1;
-    lastV = v;
-    const s = segs.find((x) => v <= x.v1) || segs.at(-1);
-    const u = clamp01((v - s.v0) / (s.v1 - s.v0));
-    const dir = Math.sign(s.b[0] - s.a[0]) || (s.a[0] > innerWidth / 2 ? -1 : 1);
-
-    if (s.type === 'slide') {
-      // hop off the ledge, then slide down the page edge, sword scraping sparks
-      const pos = [s.a[0], lerp(s.a[1], s.b[1], u)];
-      const face = s.a[0] > innerWidth / 2 ? -1 : 1;
-      if (u < 0.08) {
-        const k = u / 0.08;
-        place(build('jump', 'slide', ease(k), face), [pos[0] - face * Math.sin(k * Math.PI) * 26, pos[1]], { ground: null, vy: 6 });
-      } else if (u > 0.93) {
-        place(build('slide', 'crouch', ease((u - 0.93) / 0.07), face), pos, { vy: 2 });
-      } else {
-        const f = build('slide', 'slide', 0, face);
-        place(f, pos, { ground: null, vy: moving ? 9 : 0 });
-        if (moving) {
-          // sparks off the blade tip
-          ctx.setTransform(dpr * K, 0, 0, dpr * K, dpr * pos[0], dpr * (pos[1] - scrollY));
-          ctx.translate(0, -HIP);
-          for (let i = 0; i < 5; i++) {
-            const a = -Math.PI / 2 + art.j(1.1);
-            const p0 = [f.tip[0] + art.j(4), f.tip[1] + art.j(4)];
-            art.line(p0, [p0[0] + Math.cos(a) * 12, p0[1] + Math.sin(a) * 12], { w: 1, passes: 1, alpha: 0.8 });
-          }
-        }
-      }
-    } else if (s.type === 'run') {
-      const y = s.a[1];
-      const runPose = (x) => {
-        const was = prevPos;
-        if (was && Math.abs(was - x) < 400) runDist += Math.abs(x - was);
-        prevPos = x;
-        if (!moving) return build('stance', 'stance', 0, dir);
-        const ph = (Math.sin(runDist * 0.09) + 1) / 2;
-        return build('run1', 'run2', ph, dir);
-      };
-      if (!s.fight) {
-        const x = lerp(s.a[0], s.b[0], u);
-        place(runPose(x), [x, y], { vx: moving ? dir * dvSign * 8 : 0 });
-      } else {
-        const mid = (s.a[0] + s.b[0]) / 2;
-        const gap = 62 * K * 2.2;
-        const bx = mid + dir * gap * 0.5;
-        if (u < 0.35) {
-          const x = lerp(s.a[0], mid - dir * gap * 0.5, ease(u / 0.35));
-          place(runPose(x), [x, y], { vx: moving ? dir * 8 : 0 });
-          const wait = build('stance', 'stance', 0, -dir);
-          wait.kind = 'B';
-          place(wait, [bx, y], {});
-        } else if (u < 0.78) {
-          // the duel: keeps going on the clock even when the reader stops scrolling
-          const ft = (t % FIGHT_T);
-          const fa = fromKeys(FIGHT_A, ft, dir), fb = fromKeys(FIGHT_B, ft, -dir);
-          const pa = fromKeys(FIGHT_A, (ft - 0.08 + FIGHT_T) % FIGHT_T, dir), pb = fromKeys(FIGHT_B, (ft - 0.08 + FIGHT_T) % FIGHT_T, -dir);
-          fa.kind = 'A'; fb.kind = 'B';
-          place(fa, [mid - dir * gap * 0.5, y], { prevS: pa.s });
-          place(fb, [bx, y], { prevS: pb.s });
-          const hit = FIGHT_HITS.find((h) => ft >= h && ft - h < 0.35);
-          if (hit !== undefined) burst([mid, y - 105 * K], ft - hit, 0.8);
-        } else if (u < 0.88) {
-          // finishing blow: the opponent is knocked flying
-          const k = (u - 0.78) / 0.1;
-          const fa = build('clash', 'strike', ease(Math.min(1, k * 2)), dir);
-          fa.kind = 'A';
-          place(fa, [mid - dir * gap * 0.3, y], { vx: dir * 4 });
-          const fb = build('block', 'jump', ease(k), -dir);
-          fb.kind = 'B';
-          place(fb, [bx + dir * k * 220, y - Math.sin(k * Math.PI * 0.8) * 120], { rot: dir * k * 3, alpha: 1 - k * 0.9, ground: null, vx: dir * 10 });
-          if (k < 0.6) burst([mid + dir * 10, y - 100 * K], k * 0.8, 1.3);
-        } else {
-          const x = lerp(mid - dir * gap * 0.3, s.b[0], ease((u - 0.88) / 0.12));
-          place(runPose(x), [x, y], { vx: moving ? dir * 8 : 0 });
-        }
-      }
-    } else if (s.type === 'leap') {
-      // the final leap into the logo
-      const e = ease(u);
-      const x = lerp(s.a[0], s.b[0], e);
-      const y = lerp(s.a[1], s.b[1], e) - Math.sin(u * Math.PI) * 170;
-      const done = u > 0.94;
-      logo?.classList.toggle('logo-hit', u > 0.97);
-      if (!done) place(build('crouch', 'jump', Math.min(1, u * 4), dir), [x, y], { scale: lerp(1, 0.45, e), ground: null, vy: -4 });
-      if (u > 0.85) burst([s.b[0], s.b[1]], Math.min(0.49, (u - 0.85) * 2), 0.7);
-    }
-    if (s.type !== 'leap') logo?.classList.remove('logo-hit');
+    if (!active) { shown.A = shown.B = null; return; }
+    if (Math.abs(scrollY - lastY) > 0.5) lastMove = now;
+    lastY = scrollY;
+    const { A, B, extras } = scene(t);
+    drawActor('B', B, t, now - lastMove < 250);
+    drawActor('A', A, t, now - lastMove < 250);
+    for (const x of extras) x();
   }
 
-  /* ---------- loop ---------- */
-  buildRoute();
+  measure();
   let raf = 0, last = 0, pending = 0;
   const loop = (now) => {
     raf = requestAnimationFrame(loop);
-    if (now - last < 33) return; // ~30 fps is plenty for pencil lines
+    if (now - last < 33) return; // ~30 fps
     last = now;
     render(now);
   };
   raf = requestAnimationFrame(loop);
-  const rebuild = () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(buildRoute); };
-  const ro = new ResizeObserver(rebuild);
+  const remeasure = () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(measure); };
+  const ro = new ResizeObserver(remeasure);
   ro.observe(document.body);
-  addEventListener('resize', rebuild);
+  addEventListener('resize', remeasure);
   return () => {
     cancelAnimationFrame(raf);
     ro.disconnect();
-    removeEventListener('resize', rebuild);
+    removeEventListener('resize', remeasure);
     hero?.querySelector('.sketch-fight')?.classList.remove('away');
     logo?.classList.remove('logo-hit');
   };
