@@ -4,11 +4,11 @@
 
 const FPS = 12;
 const LOOP = 10;
-const BLADE = 112;
+export const BLADE = 112;
 const INK = '235, 228, 255';
 
 // Poses for a fighter facing right. Hip at (0,0), y grows downward. s = sword angle in degrees (0 = right).
-const P = {
+export const P = {
   stance: { n: [0, -95], hd: [6, -118], k1: [28, 42], f1: [48, 86], k2: [-24, 44], f2: [-48, 86], e1: [24, -68], h1: [42, -54], e2: [4, -66], h2: [34, -52], s: -38 },
   crouch: { n: [16, -78], hd: [26, -99], k1: [36, 40], f1: [52, 72], k2: [-30, 48], f2: [-58, 72], e1: [4, -58], h1: [-18, -42], e2: [-4, -56], h2: [-12, -40], s: 168 },
   dash: { n: [38, -78], hd: [54, -95], k1: [46, 30], f1: [82, 64], k2: [-40, 28], f2: [-86, 52], e1: [14, -58], h1: [-14, -48], e2: [24, -62], h2: [-8, -50], s: 176 },
@@ -25,9 +25,9 @@ const IMPACTS = [2.5, 5.6];
 const LANDINGS = [[5.0, 'B'], [8.2, 'A'], [8.2, 'B']];
 const GROUND = 331;
 
-const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
-const lerp = (a, b, t) => a + (b - a) * t;
-const angLerp = (a, b, t) => a + ((((b - a) % 360) + 540) % 360 - 180) * t;
+export const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
+export const lerp = (a, b, t) => a + (b - a) * t;
+export const angLerp = (a, b, t) => a + ((((b - a) % 360) + 540) % 360 - 180) * t;
 
 function fighterAt(keys, t, mirror) {
   let i = 0;
@@ -57,27 +57,15 @@ function intersect([a, b], [c, d]) {
   return t >= -0.1 && t <= 1.1 && u >= -0.1 && u <= 1.1 ? [lerp(a[0], b[0], t), lerp(a[1], b[1], t)] : null;
 }
 
-export function start(canvas, { still = false, at = 2.58 } = {}) {
-  const ctx = canvas.getContext('2d');
+/**
+ * The pencil: hand-drawn lines, circles, the two fighters, impact bursts and dust, drawn on one canvas.
+ * Lines "boil" (jitter slightly) every time the seed changes, like hand-drawn animation.
+ */
+export function makeArtist(ctx) {
   let seed = 1;
   const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
   const j = (amt) => (rnd() - 0.5) * 2 * amt;
-
-  // impact points: where the blades cross at each impact moment
-  const impacts = IMPACTS.map((t) => {
-    const a = fighterAt(A, t, false), b = fighterAt(B, t, true);
-    return { t, p: intersect([a.h1, a.tip], [b.h1, b.tip]) || [lerp(a.h1[0], a.tip[0], 0.6), lerp(a.h1[1], a.tip[1], 0.6)] };
-  });
-
-  let W = 0, H = 0, scale = 1, ox = 0, oy = 0;
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    scale = Math.min(W / 1000, H / 420) * dpr;
-    ox = (canvas.width - 1000 * scale) / 2;
-    oy = (canvas.height - 420 * scale) / 2;
-  }
+  const setSeed = (n) => { seed = 1 + (Math.abs(Math.floor(n)) % 9973) * 7919; };
 
   function line(a, b, { w = 1.3, passes = 2, alpha = 0.85, wob = 1.6 } = {}) {
     for (let p = 0; p < passes; p++) {
@@ -110,14 +98,17 @@ export function start(canvas, { still = false, at = 2.58 } = {}) {
   }
 
   function drawFighter(f, prev, kind) {
+    const G = f.ground === undefined ? GROUND : f.ground;
     const vx = f.x - prev.x, vy = f.y - prev.y;
     const back = -f.dir;
-    // ground shadow (hatched), smaller when airborne
-    const air = Math.max(0, GROUND - (f.y + 86));
+    // ground shadow (hatched), smaller when airborne (none when there's no ground, e.g. sliding down a wall)
+    if (G !== null) {
+    const air = Math.max(0, G - (f.y + 86));
     const sw = Math.max(14, 46 - air * 0.18);
     for (let i = 0; i < 6; i++) {
       const x = f.x - sw + (i / 5) * sw * 2;
-      line([x, GROUND + 6], [x + 9, GROUND + 1], { w: 0.8, passes: 1, alpha: 0.35, wob: 0.8 });
+      line([x, G + 6], [x + 9, G + 1], { w: 0.8, passes: 1, alpha: 0.35, wob: 0.8 });
+    }
     }
     // limbs with volume: two tapered contour lines, like a pencil figure drawing
     const limb = (a, b, wa, wb, alpha = 0.85) => {
@@ -239,16 +230,39 @@ export function start(canvas, { still = false, at = 2.58 } = {}) {
     }
   }
 
-  function drawDust(x, age) {
+  function drawDust(x, age, G = GROUND) {
     const k = age / 0.6;
     for (const d of [-1, 1]) {
       for (let i = 0; i < 3; i++) {
-        const cx = x + d * (14 + k * 50 + i * 10), cy = GROUND - 4 - i * 4 - k * 10;
+        const cx = x + d * (14 + k * 50 + i * 10), cy = G - 4 - i * 4 - k * 10;
         ctx.beginPath();
         ctx.arc(cx, cy, 4 + k * 8, Math.PI, 0);
         ctx.lineWidth = 0.9; ctx.strokeStyle = `rgba(${INK}, ${0.5 * (1 - k)})`; ctx.stroke();
       }
     }
+  }
+
+  return { line, circle, drawFighter, drawImpact, drawDust, rnd, j, setSeed };
+}
+
+export function start(canvas, { still = false, at = 2.58 } = {}) {
+  const ctx = canvas.getContext('2d');
+  const { line, drawFighter, drawImpact, drawDust, j, setSeed } = makeArtist(ctx);
+
+  // impact points: where the blades cross at each impact moment
+  const impacts = IMPACTS.map((t) => {
+    const a = fighterAt(A, t, false), b = fighterAt(B, t, true);
+    return { t, p: intersect([a.h1, a.tip], [b.h1, b.tip]) || [lerp(a.h1[0], a.tip[0], 0.6), lerp(a.h1[1], a.tip[1], 0.6)] };
+  });
+
+  let W = 0, H = 0, scale = 1, ox = 0, oy = 0;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    scale = Math.min(W / 1000, H / 420) * dpr;
+    ox = (canvas.width - 1000 * scale) / 2;
+    oy = (canvas.height - 420 * scale) / 2;
   }
 
   // Fixed shapes for the scenery (same every loop), separate from the per-frame pencil jitter.
@@ -333,7 +347,7 @@ export function start(canvas, { still = false, at = 2.58 } = {}) {
 
   function frame(t) {
     const step = Math.floor(t * FPS);
-    seed = 1 + (step % 9973) * 7919; // lines "boil" a little each frame, like hand-drawn animation
+    setSeed(step); // lines "boil" a little each frame, like hand-drawn animation
     const tt = (step / FPS) % LOOP;
     const pt = (tt - 1 / FPS + LOOP) % LOOP;
     ctx.setTransform(1, 0, 0, 1, 0, 0);

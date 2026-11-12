@@ -2,6 +2,7 @@ import Card, { Pill, RowCard } from '@/components/Card';
 import Cover, { coverAlt } from '@/components/Cover';
 import AdSlot from '@/components/AdSlot';
 import SketchFight from '@/components/SketchFight';
+import ScrollRunner from '@/components/ScrollRunner';
 import { MostRead, TrendingChart, ComingSoon } from '@/components/Widgets';
 import { allArticles, animeHubs } from '@/lib/db';
 import { ShowGrid } from '@/components/ShowCard';
@@ -55,6 +56,7 @@ export default async function Home() {
       <JsonLd data={jsonLd} />
       <div className="home-hero">
         <SketchFight />
+        <ScrollRunner />
         <h1 className="home-brand">
           <span className="name">{SITE.name}</span>
           <span className="sr-only">: </span>
