@@ -1,11 +1,10 @@
 # Last deploy: success
 
-- When: 2026-11-12T08:53:51Z
-- Commit: 5a2ced0
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43186177699
+- When: 2026-11-12T11:00:46Z
+- Commit: 79b522d
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43205085133
 
 ```
-+ /anime/east-of-eden/__next._tree.txt
 + /anime/mom-i-m-sorry/__next._tree.txt
 + /anime/poketoon-2026/__next._tree.txt
 + /anime/shin-oishinbo/__next._tree.txt
@@ -21,15 +20,16 @@
 + /anime/yani-neko-mini/__next._tree.txt
 + /anime/yi-jian-du-zun/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7417 assets
-Uploaded 2000 of 7417 assets
-Uploaded 3000 of 7417 assets
-Uploaded 4000 of 7417 assets
-Uploaded 5000 of 7417 assets
-Uploaded 6000 of 7417 assets
-Uploaded 6614 of 7417 assets
-Uploaded 7417 of 7417 assets
-✨ Success! Uploaded 7417 files (4110 already uploaded) (16.60 sec)
+Uploaded 1000 of 7416 assets
+Uploaded 2000 of 7416 assets
+Uploaded 3000 of 7416 assets
+Uploaded 4000 of 7416 assets
+Uploaded 5000 of 7416 assets
+Uploaded 6000 of 7416 assets
+Uploaded 6001 of 7416 assets
+Uploaded 6797 of 7416 assets
+Uploaded 7416 of 7416 assets
+✨ Success! Uploaded 7416 files (4111 already uploaded) (21.48 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 1 ms
@@ -39,18 +39,18 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (24.88 sec)
-Deployed anime-support triggers (1.34 sec)
+Uploaded anime-support (30.34 sec)
+Deployed anime-support triggers (3.09 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 08332f64-7f3f-48b9-8266-f3f63ae874aa
+Current Version ID: 0908a108-4cc1-4dda-a5c2-99377241d764
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-12T08:52:19.865Z
+Live site marked as built from content up to 2026-11-12T10:59:00.592Z
 
  ⛅️ wrangler 4.158.0 (update available 4.160.1)
 ───────────────────────────────────────────────
