@@ -29,7 +29,7 @@ export default function CreatorProfile() {
   return (
     <div className="profile">
       <header className="profile-head glass">
-        {u.avatar ? <img src={u.avatar} alt="" referrerPolicy="no-referrer" /> : <span className="initial huge">{u.name[0]}</span>}
+        {u.avatar ? <img src={u.avatar} alt={`${u.name} profile picture`} referrerPolicy="no-referrer" /> : <span className="initial huge">{u.name[0]}</span>}
         <div className="grow">
           <h1>{u.name}</h1>
           <p className="meta">@{u.handle}{u.role ? ` · ${u.role}` : ''} · joined {fmtDate(u.joinedAt)}</p>

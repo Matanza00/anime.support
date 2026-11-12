@@ -167,8 +167,17 @@ export async function showForName(name) {
 
 /** Link for an anime name used in a news story: its catalog page when we have one. */
 export async function animeHref(name) {
+  const p = (await animePages()).get(slugify(preferredName(name)));
+  if (p) return `/anime/${p.canonical}/`;
   const s = await showForName(name);
   return `/anime/${s ? s.slug : slugify(name)}/`;
+}
+
+/** The page (show or news hub) an anime name belongs to. */
+export async function pageForName(name) {
+  const pages = await animePages();
+  const p = pages.get(slugify(preferredName(name)));
+  return p ? pages.get(p.canonical) ?? p : null;
 }
 
 /** Other entries of the same franchise (seasons, films, spin-offs). */
@@ -200,22 +209,80 @@ export async function similar(show, limit = 6) {
  * Returns Map slug → { show, hub }. A hub that matches a show is merged into the show's page.
  */
 let pagesCache;
+/**
+ * The same show written under another name in news stories (Japanese vs English title, a typo).
+ * Key: the variant as a slug. Value: the name its stories are filed under.
+ * Spelling and suffix variants ("Dan-Katsu" / "Dankatsu", "Wandance manga") are merged automatically below.
+ */
+const NAME_EQUIV = {
+  precure: 'Pretty Cure',
+  'exorcist-o-otosenai': 'Make the Exorcist Fall in Love',
+  '33-sai-dokushin-onna-kishi-taichou': '33 Years Old Single Female Knight Captain',
+  'maomao-no-hitorigoto-3rd-season': 'The Apothecary Diaries Season 3',
+  'mahou-kishi-rayearth': 'Magic Knight Rayearth 2026',
+  'jk-dark-summoner-to-deki-dei-nai': "I'm Dating a Dark Summoner",
+  'dan-katsu': 'Reincarnation in the Game World: Dankatsu',
+};
+const preferredName = (name) => NAME_EQUIV[slugify(name)] ?? name;
+
+// "wandance-manga" and "wandance-anime" are the same page as "wandance"; "...-dan-katsu" is "...-dankatsu"
+const VARIANT_SUFFIX = /-(manga|anime|tv-anime|the-animation|animation|mini-anime|series)$/;
+function variantKey(slug) {
+  let s = slug;
+  while (VARIANT_SUFFIX.test(s)) s = s.replace(VARIANT_SUFFIX, '');
+  return s.replace(/-/g, '');
+}
+
+/** Groups news-only slugs that are spellings of one show; the first slug of each group is the page to keep. */
+export function groupVariants(slugs) {
+  const groups = [];
+  for (const slug of [...slugs].sort((a, b) => variantKey(a).length - variantKey(b).length || a.length - b.length || a.localeCompare(b))) {
+    const k = variantKey(slug);
+    const g = groups.find((x) => x.key === k);
+    if (g) g.slugs.push(slug);
+    else groups.push({ key: k, slugs: [slug] });
+  }
+  return groups.map((g) => g.slugs);
+}
+
 export async function animePages() {
   if (pagesCache) return pagesCache;
   const pages = new Map();
   for (const s of await allShows()) pages.set(s.slug, { show: s, hub: null, canonical: s.slug });
-  for (const h of await animeHubs()) {
-    const s = pages.get(h.slug)?.show ?? (await showForName(h.name));
+  const newsOnly = new Map();
+  const renamed = new Map(); // old hub slug → the slug of the name it was filed under (NAME_EQUIV)
+  const aliasOf = (slug, target) => {
+    const t = pages.get(target);
+    if (slug !== target && t && !pages.has(slug)) pages.set(slug, { ...t, canonical: t.canonical, alias: true });
+  };
+  for (const h0 of await animeHubs()) {
+    const name = preferredName(h0.name);
+    const h = name === h0.name ? h0 : { ...h0, name, slug: slugify(name) };
+    if (h.slug !== h0.slug) renamed.set(h0.slug, h.slug);
+    const s = pages.get(h.slug)?.show ?? (await showForName(name));
     if (s) {
       const page = pages.get(s.slug);
       page.hub = mergeHub(page.hub, h);
-      // the news hub's own URL keeps working and points search engines to the show page
+      // the news hub's own URL keeps working and redirects to the show page
       if (h.slug !== s.slug) pages.set(h.slug, { show: s, hub: page.hub, canonical: s.slug, alias: true });
     } else {
-      pages.set(h.slug, { show: null, hub: h, canonical: h.slug });
+      newsOnly.set(h.slug, mergeHub(newsOnly.get(h.slug), h));
     }
   }
+  // spelling variants of a news-only show become one page; the others redirect to it
+  for (const [main, ...rest] of groupVariants([...newsOnly.keys()])) {
+    let hub = newsOnly.get(main);
+    for (const r of rest) hub = mergeHub(hub, newsOnly.get(r));
+    pages.set(main, { show: null, hub, canonical: main });
+    for (const r of rest) pages.set(r, { show: null, hub, canonical: main, alias: true });
+  }
+  for (const [from, to] of renamed) aliasOf(from, to);
   return (pagesCache = pages);
+}
+
+/** Old or duplicate anime URLs → the page they belong to, for permanent (301) redirects. */
+export async function animeRedirects() {
+  return [...(await animePages()).entries()].filter(([, p]) => p.alias).map(([from, p]) => [`/anime/${from}/`, `/anime/${p.canonical}/`]);
 }
 function mergeHub(a, b) {
   if (!a) return b;

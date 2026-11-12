@@ -75,7 +75,7 @@ export default function Schedule({ slots, builtAt, compact = false, limitDays, m
                 <li key={`${s.s}-${s.e}`} className={left <= 0 ? 'aired' : ''}>
                   <time dateTime={new Date(s.t * 1000).toISOString()}>{timeOf(s.t, tz)}</time>
                   <a href={`/anime/${s.s}/`} className="sched-show">
-                    <span className="thumb" style={{ background: s.col || undefined }}>{s.c && <img src={s.c} alt="" loading="lazy" referrerPolicy="no-referrer" />}</span>
+                    <span className="thumb" style={{ background: s.col || undefined }}>{s.c && <img src={s.c} alt={`${s.n} cover`} loading="lazy" referrerPolicy="no-referrer" />}</span>
                     <span>
                       <strong>{s.n}</strong>
                       <small>Episode {s.e}{s.of ? ` of ${s.of}` : ''}{s.k === 'CN' ? ' · Donghua' : ''}</small>

@@ -38,7 +38,7 @@ export default function Search() {
       <div className="stack">
         {results.map((r) => (
           <a key={(r.k || 'n') + r.s} className="row-card glass" href={r.k ? `/anime/${r.s}/` : `/news/${r.s}/`} style={{ gridTemplateColumns: r.k ? '56px 1fr' : '1fr' }}>
-            {r.k && <span className="thumb">{r.c && <img src={r.c} alt="" loading="lazy" referrerPolicy="no-referrer" />}</span>}
+            {r.k && <span className="thumb">{r.c && <img src={r.c} alt={`${r.t} cover`} loading="lazy" referrerPolicy="no-referrer" />}</span>}
             <div>
               <h3>{r.t}{r.k && <small className="tag-anime">Anime</small>}</h3>
               <p className="meta" style={{ marginTop: 6 }}>{r.e}</p>

@@ -58,7 +58,7 @@ function Signed({ me }) {
     <div className="acct">
       <section className="glass acct-card">
         <div className="acct-head">
-          {u.avatar ? <img src={u.avatar} alt="" referrerPolicy="no-referrer" /> : <span className="initial big">{u.name[0]?.toUpperCase()}</span>}
+          {u.avatar ? <img src={u.avatar} alt={`${u.name} profile picture`} referrerPolicy="no-referrer" /> : <span className="initial big">{u.name[0]?.toUpperCase()}</span>}
           <div>
             <h2>{u.name}</h2>
             <p className="meta">@{u.handle} · {u.followers} followers · {u.following} following{u.role !== 'user' ? ` · ${u.role}` : ''}</p>
@@ -78,7 +78,7 @@ function Signed({ me }) {
           <ul className="my-entries">
             {me.entries.map((e) => (
               <li key={e.id}>
-                <a href={`/contests/entry/?id=${e.id}`} className="thumb-sm">{e.thumb && <img src={e.thumb} alt="" />}</a>
+                <a href={`/contests/entry/?id=${e.id}`} className="thumb-sm">{e.thumb && <img src={e.thumb} alt={`Your entry: ${e.title}`} />}</a>
                 <div>
                   <a href={`/contests/entry/?id=${e.id}`}><strong>{e.title}</strong></a>
                   <div className="meta">

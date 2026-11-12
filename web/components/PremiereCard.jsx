@@ -10,7 +10,7 @@ export default function PremiereCard({ show: s, precision = 'day' }) {
   return (
     <article className="prem-card glass">
       <a href={`/anime/${s.slug}/`} className="prem-poster" style={{ '--h': hueFor(s.title), '--c': s.cover_color || undefined }} tabIndex={-1} aria-hidden="true">
-        {s.cover_url && <img src={s.cover_url} alt="" loading="lazy" referrerPolicy="no-referrer" />}
+        {s.cover_url && <img src={s.cover_url} alt={`${s.title} poster`} loading="lazy" referrerPolicy="no-referrer" />}
       </a>
       <div className="prem-body">
         <span className="date">

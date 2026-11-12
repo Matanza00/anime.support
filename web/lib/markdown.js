@@ -17,7 +17,7 @@ const ALLOWED = {
       const external = /^https?:\/\//.test(attribs.href || '');
       return { tagName: 'a', attribs: external ? { ...attribs, rel: 'noopener nofollow', target: '_blank' } : attribs };
     },
-    img: (tag, attribs) => ({ tagName: 'img', attribs: { ...attribs, loading: 'lazy' } }),
+    img: (tag, attribs) => ({ tagName: 'img', attribs: { ...attribs, alt: attribs.alt?.trim() || attribs.title || 'Official image', loading: 'lazy' } }),
   },
 };
 

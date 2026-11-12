@@ -64,7 +64,7 @@ export function renderEmbed(raw, scripts = new Set()) {
     case 'video':
       return `<figure class="embed"><video controls preload="metadata" playsinline src="${esc(item.url)}"></video>${caption(item)}</figure>`;
     case 'image':
-      return `<figure class="embed"><img src="${esc(item.url)}" alt="${esc(item.caption || '')}" loading="lazy">${caption(item)}</figure>`;
+      return `<figure class="embed"><img src="${esc(item.url)}" alt="${esc(item.caption || item.credit || 'Official image')}" loading="lazy">${caption(item)}</figure>`;
     default:
       return '';
   }

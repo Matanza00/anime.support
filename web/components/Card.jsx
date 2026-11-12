@@ -1,4 +1,4 @@
-import Cover from './Cover';
+import Cover, { coverAlt } from './Cover';
 import { articlePath, catLabel, formatDate } from '@/lib/site';
 
 export function Pill({ category }) {
@@ -8,7 +8,7 @@ export function Pill({ category }) {
 export default function Card({ article: a }) {
   return (
     <a className="card glass" href={articlePath(a.slug)}>
-      <Cover label={a.anime?.[0] ?? catLabel(a.category)} image={a.cover_url} />
+      <Cover label={a.anime?.[0] ?? catLabel(a.category)} alt={coverAlt(a)} image={a.cover_url} />
       <div className="body">
         <div><Pill category={a.category} /></div>
         <h3>{a.title}</h3>
@@ -25,7 +25,7 @@ export default function Card({ article: a }) {
 export function RowCard({ article: a }) {
   return (
     <a className="row-card glass" href={articlePath(a.slug)}>
-      <Cover label={a.anime?.[0] ?? catLabel(a.category)} image={a.cover_url} />
+      <Cover label={a.anime?.[0] ?? catLabel(a.category)} alt={coverAlt(a)} image={a.cover_url} />
       <div>
         <h3>{a.title}</h3>
         <div className="meta" style={{ marginTop: 6 }}>

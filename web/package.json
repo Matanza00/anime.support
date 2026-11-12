@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/finish-build.mjs",
     "start": "npx serve out",
     "prebuild": "node scripts/export-media.mjs"
   },

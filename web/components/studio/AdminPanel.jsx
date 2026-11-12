@@ -46,7 +46,7 @@ function Queue() {
     <div className="review-list">
       {data.pending.map((e) => (
         <article key={e.id} className="review glass">
-          <a href={e.media} target="_blank" rel="noopener" className="review-thumb"><img src={e.thumb} alt="" /></a>
+          <a href={e.media} target="_blank" rel="noopener" className="review-thumb"><img src={e.thumb} alt={`Entry: ${e.title}`} /></a>
           <div>
             <h3>{e.title}</h3>
             <p className="meta">

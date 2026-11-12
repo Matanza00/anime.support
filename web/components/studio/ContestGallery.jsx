@@ -69,7 +69,7 @@ export default function ContestGallery({ slug }) {
 
       {p === 'results' && winner && (
         <a className="winner glass" href={`/contests/entry/?id=${winner.id}`}>
-          <img src={winner.thumb} alt="" />
+          <img src={winner.thumb} alt={`Winning entry: ${winner.title}`} />
           <div>
             <p className="eyebrow">Winner</p>
             <h2>{winner.title}</h2>
@@ -144,7 +144,7 @@ export default function ContestGallery({ slug }) {
                   <div className="entry-info">
                     <a href={`/contests/entry/?id=${e.id}`}><h3>{e.title}</h3></a>
                     <a className="by" href={`/creators/?u=${e.creator.handle}`}>
-                      {e.creator.avatar && <img src={e.creator.avatar} alt="" referrerPolicy="no-referrer" />}
+                      {e.creator.avatar && <img src={e.creator.avatar} alt={`${e.creator.name} profile picture`} referrerPolicy="no-referrer" />}
                       {e.creator.name}
                     </a>
                     {p === 'results' && <span className="votes">{e.votes} votes</span>}

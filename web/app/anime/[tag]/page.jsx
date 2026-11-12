@@ -8,6 +8,8 @@ import ShowCard from '@/components/ShowCard';
 import NextEpisode from '@/components/NextEpisode';
 import Trailer from '@/components/Trailer';
 import { ReleaseCard, TrendingChart } from '@/components/Widgets';
+import GuideLinks from '@/components/GuideLinks';
+import { guidesIn, guideType } from '@/lib/guides';
 import { animePages, indexable, franchise, similar, factLine, formatLabel, statusLabel, sourceLabel, countryLabel, airedLabel, seasonLabel, seasonId, seasonWindow } from '@/lib/catalog';
 import { absUrl, formatDate } from '@/lib/site';
 import { JsonLd, breadcrumbs, ogBase } from '@/lib/seo';
@@ -61,7 +63,8 @@ export default async function AnimePage({ params }) {
 
 async function ShowPage({ p }) {
   const s = p.show;
-  const news = p.hub?.articles ?? [];
+  const guides = guidesIn(p.hub?.articles);
+  const news = (p.hub?.articles ?? []).filter((a) => !guideType(a));
   const today = new Date().toISOString().slice(0, 10);
   const dated = news.filter((a) => a.release_date && a.release_date >= today).sort((a, b) => a.release_date.localeCompare(b.release_date));
   const [fam, alike] = await Promise.all([franchise(s), similar(s)]);
@@ -107,7 +110,7 @@ async function ShowPage({ p }) {
     <div className="show-page">
       <JsonLd data={[breadcrumbs([['Home', '/'], ['Anime', '/anime/'], [s.title, url]]), ld]} />
       <div className="show-banner" style={{ '--c': s.cover_color || '#e4435a' }}>
-        {s.banner_url && <img src={s.banner_url} alt="" referrerPolicy="no-referrer" fetchPriority="high" />}
+        {s.banner_url && <img src={s.banner_url} alt={`${s.title} banner artwork`} referrerPolicy="no-referrer" fetchPriority="high" />}
       </div>
       <div className="wrap">
         <nav aria-label="Breadcrumb"><ol className="crumbs"><li><a href="/">Home</a></li><li><a href="/anime/">Anime</a></li>{s.country === 'CN' && <li><a href="/donghua/">Donghua</a></li>}</ol></nav>
@@ -152,6 +155,8 @@ async function ShowPage({ p }) {
               )}
               {s.official_site && <p className="meta" style={{ marginTop: 8 }}><a href={s.official_site} target="_blank" rel="noopener nofollow">Official website ↗</a></p>}
             </section>
+
+            <GuideLinks name={s.title} guides={guides} />
 
             <section className="section" aria-labelledby="about">
               <h2 id="about" className="h2">About {s.title}</h2>
@@ -226,6 +231,8 @@ async function ShowPage({ p }) {
 
 function HubPage({ h }) {
   const today = new Date().toISOString().slice(0, 10);
+  const guides = guidesIn(h.articles);
+  const news = h.articles.filter((a) => !guideType(a));
   const dated = h.articles.filter((a) => a.release_date && a.release_date >= today).sort((a, b) => a.release_date.localeCompare(b.release_date));
   return (
     <div className="wrap section">
@@ -237,7 +244,7 @@ function HubPage({ h }) {
       />
       <nav aria-label="Breadcrumb"><ol className="crumbs"><li><a href="/">Home</a></li><li><a href="/anime/">Anime</a></li></ol></nav>
       <header className="glass" style={{ overflow: 'hidden' }}>
-        <Cover label={h.name} image={h.cover} eager className="hub-cover" />
+        <Cover label={h.name} alt={`${h.name} official artwork`} image={h.cover} eager className="hub-cover" />
         <div className="article-head" style={{ background: 'none', border: 0 }}>
           <p className="eyebrow">Everything confirmed so far</p>
           <h1>{h.name}</h1>
@@ -247,14 +254,15 @@ function HubPage({ h }) {
       <AdSlot slot="top" />
       <div className="two-col section">
         <div>
+          <GuideLinks name={h.name} guides={guides} />
           {dated.length > 0 && (
             <section className="section" style={{ paddingTop: 0 }}>
               <div className="section-head"><h2>Coming up</h2></div>
               <div className="releases">{dated.map((a) => <ReleaseCard key={a.id} article={a} />)}</div>
             </section>
           )}
-          <div className="section-head"><h2>All {h.name} news</h2></div>
-          <div className="grid">{h.articles.map((a) => <Card key={a.id} article={a} />)}</div>
+          {news.length > 0 && <div className="section-head"><h2>All {h.name} news</h2></div>}
+          <div className="grid">{news.map((a) => <Card key={a.id} article={a} />)}</div>
         </div>
         <aside className="sidebar"><TrendingChart limit={8} /></aside>
       </div>

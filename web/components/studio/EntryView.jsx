@@ -122,7 +122,7 @@ export default function EntryView() {
             <h2 className="h3">Comments ({data.comments.length})</h2>
             {data.comments.map((c) => (
               <div key={c.id} className="comment">
-                <a href={`/creators/?u=${c.author.handle}`} className="by">{c.author.avatar && <img src={c.author.avatar} alt="" referrerPolicy="no-referrer" />}{c.author.name}</a>
+                <a href={`/creators/?u=${c.author.handle}`} className="by">{c.author.avatar && <img src={c.author.avatar} alt={`${c.author.name} profile picture`} referrerPolicy="no-referrer" />}{c.author.name}</a>
                 <span className="meta">{fmtDate(c.createdAt)}</span>
                 <p>{c.body}</p>
               </div>
@@ -140,7 +140,7 @@ export default function EntryView() {
         </div>
         <aside className="sidebar">
           <a className="creator-card glass" href={`/creators/?u=${e.creator.handle}`}>
-            {e.creator.avatar ? <img src={e.creator.avatar} alt="" referrerPolicy="no-referrer" /> : <span className="initial big">{e.creator.name[0]}</span>}
+            {e.creator.avatar ? <img src={e.creator.avatar} alt={`${e.creator.name} profile picture`} referrerPolicy="no-referrer" /> : <span className="initial big">{e.creator.name[0]}</span>}
             <div>
               <strong>{e.creator.name}</strong>
               <span className="meta">@{e.creator.handle}</span>

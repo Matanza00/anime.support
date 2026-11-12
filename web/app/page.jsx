@@ -1,5 +1,5 @@
 import Card, { Pill, RowCard } from '@/components/Card';
-import Cover from '@/components/Cover';
+import Cover, { coverAlt } from '@/components/Cover';
 import AdSlot from '@/components/AdSlot';
 import { MostRead, TrendingChart, ComingSoon } from '@/components/Widgets';
 import { allArticles, animeHubs } from '@/lib/db';
@@ -61,7 +61,7 @@ export default async function Home() {
       {/* Featured story + top stories, the layout every major anime outlet leads with */}
       <section className="hero" aria-label="Top stories">
         <a className="lead glass" href={articlePath(lead.slug)}>
-          <Cover label={lead.anime?.[0] ?? catLabel(lead.category)} image={lead.cover_url} credit={lead.cover_credit} eager />
+          <Cover label={lead.anime?.[0] ?? catLabel(lead.category)} alt={coverAlt(lead)} image={lead.cover_url} credit={lead.cover_credit} eager />
           <div className="body">
             <div><Pill category={lead.category} /></div>
             <h2 style={{ fontSize: 'clamp(26px, 3.4vw, 42px)' }}>{lead.title}</h2>

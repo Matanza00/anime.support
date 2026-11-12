@@ -8,7 +8,7 @@ export default function AccountButton() {
   return (
     <a className={`acct-btn${u ? ' in' : ''}`} href="/account/" aria-label={u ? `Your account (${u.name})` : 'Sign in'}>
       {u ? (
-        u.avatar ? <img src={u.avatar} alt="" referrerPolicy="no-referrer" /> : <span className="initial">{(u.name || '?')[0].toUpperCase()}</span>
+        u.avatar ? <img src={u.avatar} alt={`${u.name || 'Your'} profile picture`} referrerPolicy="no-referrer" /> : <span className="initial">{(u.name || '?')[0].toUpperCase()}</span>
       ) : (
         <span>Sign in</span>
       )}

@@ -8,7 +8,10 @@ import { MostRead, TrendingChart } from '@/components/Widgets';
 import { allArticles, getArticle, related } from '@/lib/db';
 import { renderArticle } from '@/lib/markdown';
 import { renderMediaList } from '@/lib/embeds';
-import { animeHref } from '@/lib/catalog';
+import { animeHref, pageForName } from '@/lib/catalog';
+import GuideLinks from '@/components/GuideLinks';
+import { guidesIn, guideType } from '@/lib/guides';
+import { coverAlt } from '@/components/Cover';
 import { CATEGORIES, SITE, absUrl, articlePath, catLabel, formatDate, readingTime, slugify } from '@/lib/site';
 import { JsonLd, breadcrumbs, publisher, ogBase } from '@/lib/seo';
 
@@ -58,8 +61,14 @@ export default async function ArticlePage({ params }) {
   const url = absUrl(articlePath(a.slug));
   const cat = CATEGORIES[a.category] ?? CATEGORIES.news;
 
-  const crumbs = [['Home', '/'], [cat.label, cat.path], [a.title, articlePath(a.slug)]];
   const hrefs = Object.fromEntries(await Promise.all((a.anime ?? []).map(async (n) => [n, await animeHref(n)])));
+  const show = a.anime?.[0];
+  const crumbs = [['Home', '/'], [cat.label, cat.path], ...(show ? [[show, hrefs[show]]] : []), [a.title, articlePath(a.slug)]];
+  // the show's guide cluster: shown under guides (as siblings) and under news about the show
+  const showPage = show ? await pageForName(show) : null;
+  const guides = guidesIn(showPage?.hub?.articles);
+  const isGuide = Boolean(guideType(a));
+  const otherGuides = guides.filter((g) => g.article.slug !== a.slug);
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -68,11 +77,14 @@ export default async function ArticlePage({ params }) {
       description: a.excerpt,
       datePublished: a.published_at,
       dateModified: a.updated_at ?? a.published_at,
-      mainEntityOfPage: url,
-      image: a.cover_url ? [absUrl(a.cover_url)] : undefined,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      url,
+      inLanguage: 'en',
+      isAccessibleForFree: true,
+      image: a.cover_url ? [{ '@type': 'ImageObject', url: absUrl(a.cover_url), width: 1600, height: 900, caption: a.cover_credit || undefined }] : undefined,
       articleSection: cat.label,
       keywords: (a.anime ?? []).join(', ') || undefined,
-      author: { '@type': 'Organization', name: `${SITE.name} Newsroom`, url: absUrl('/about/') },
+      author: { '@type': 'Organization', name: `${SITE.name} Newsroom`, url: absUrl('/about/'), parentOrganization: { '@id': publisher['@id'] } },
       publisher,
       about: (a.anime ?? []).map((name) => ({ '@type': 'CreativeWork', name })),
       isBasedOn: a.source_urls?.length ? a.source_urls : undefined,
@@ -114,7 +126,7 @@ export default async function ArticlePage({ params }) {
           </header>
 
           <div className="article-cover">
-            <Cover label={a.anime?.[0] ?? cat.label} image={a.cover_url} credit={a.cover_credit} eager />
+            <Cover label={a.anime?.[0] ?? cat.label} alt={coverAlt(a)} image={a.cover_url} credit={a.cover_credit} eager />
           </div>
 
           <AdSlot slot="top" />
@@ -145,6 +157,16 @@ export default async function ArticlePage({ params }) {
             )}
             <ShareBar url={url} title={a.title} />
           </div>
+
+          {otherGuides.length > 0 && (
+            <GuideLinks
+              name={show}
+              guides={isGuide ? guides : otherGuides}
+              current={a.slug}
+              hubHref={hrefs[show]}
+              title={isGuide ? `Related guides for ${show}` : `${show} guides`}
+            />
+          )}
 
           <AdSlot slot="bottom" />
 

@@ -2,6 +2,7 @@ import { SITE, absUrl } from './site.js';
 
 export const publisher = {
   '@type': 'Organization',
+  '@id': `${SITE.url}/#org`,
   name: SITE.name,
   url: `${SITE.url}/`,
   alternateName: ['Anime Support', 'animesupport'],
