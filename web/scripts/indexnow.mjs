@@ -23,14 +23,21 @@ const list = [...urls].slice(0, 10000);
 if (!list.length) {
   console.log('IndexNow: nothing new to submit');
 } else {
-  try {
-    const res = await fetch('https://api.indexnow.org/indexnow', {
+  const send = () =>
+    fetch('https://api.indexnow.org/indexnow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({ host: HOST, key: KEY, keyLocation: `https://${HOST}/${KEY}.txt`, urlList: list }),
       signal: AbortSignal.timeout(30000),
     });
-    console.log(`IndexNow: submitted ${list.length} URLs → HTTP ${res.status}`); // 200/202 = accepted
+  try {
+    let res = await send();
+    // 403 = the key file couldn't be read yet (a fresh deploy takes a moment to reach every edge): wait and retry
+    for (let i = 0; res.status === 403 && i < 2; i++) {
+      await new Promise((r) => setTimeout(r, 60000));
+      res = await send();
+    }
+    console.log(`IndexNow: submitted ${list.length} URLs → HTTP ${res.status}${res.ok ? ' (accepted)' : ` ${(await res.text()).slice(0, 200)}`}`);
   } catch (err) {
     console.log(`IndexNow: could not submit (${err.message}); the site is deployed anyway`);
   }
