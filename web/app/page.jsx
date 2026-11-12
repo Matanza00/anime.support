@@ -54,6 +54,7 @@ export default async function Home() {
       <JsonLd data={jsonLd} />
       <h1 className="home-brand">
         <span className="name">{SITE.name}</span>
+        <span className="sr-only">: </span>
         <span className="tag">{SITE.tagline}</span>
       </h1>
 
