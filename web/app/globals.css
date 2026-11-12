@@ -587,3 +587,21 @@ a.contest-card:hover { transform: translateY(-3px); border-color: var(--coral); 
 .guide-links b { display: block; font-size: 0.98rem; }
 .guide-links small { display: block; margin-top: 4px; font-size: 0.82rem; opacity: 0.72; line-height: 1.4; }
 .guide-links .meta { margin: 14px 0 0; }
+
+/* homepage header: brand on the left, a faint pencil-sketch sword fight on the right */
+.home-hero { position: relative; display: flex; align-items: center; min-height: 190px; }
+.home-hero .home-brand { position: relative; z-index: 1; margin: 0; }
+.sketch-fight {
+  position: absolute; top: 0; right: 0; width: min(620px, 56%); height: 100%; z-index: 0; pointer-events: none;
+  opacity: 0; transition: opacity 1.2s ease;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 22%, #000 85%, transparent);
+}
+.sketch-fight.on { opacity: 0.5; }
+@media (max-width: 759px) {
+  .home-hero { min-height: 170px; align-items: flex-start; padding-top: 14px; }
+  .sketch-fight { width: 100%; top: auto; bottom: 0; height: 120px; }
+  .sketch-fight.on { opacity: 0.28; }
+}
+.home-hero .home-brand { flex-direction: column; align-items: flex-start; padding-top: 0; }
+.home-hero .home-brand .name { font-size: clamp(32px, 4.2vw, 50px); }

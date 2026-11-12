@@ -1,6 +1,7 @@
 import Card, { Pill, RowCard } from '@/components/Card';
 import Cover, { coverAlt } from '@/components/Cover';
 import AdSlot from '@/components/AdSlot';
+import SketchFight from '@/components/SketchFight';
 import { MostRead, TrendingChart, ComingSoon } from '@/components/Widgets';
 import { allArticles, animeHubs } from '@/lib/db';
 import { ShowGrid } from '@/components/ShowCard';
@@ -52,11 +53,14 @@ export default async function Home() {
   return (
     <div className="wrap">
       <JsonLd data={jsonLd} />
-      <h1 className="home-brand">
-        <span className="name">{SITE.name}</span>
-        <span className="sr-only">: </span>
-        <span className="tag">{SITE.tagline}</span>
-      </h1>
+      <div className="home-hero">
+        <SketchFight />
+        <h1 className="home-brand">
+          <span className="name">{SITE.name}</span>
+          <span className="sr-only">: </span>
+          <span className="tag">{SITE.tagline}</span>
+        </h1>
+      </div>
 
       {/* Featured story + top stories, the layout every major anime outlet leads with */}
       <section className="hero" aria-label="Top stories">
