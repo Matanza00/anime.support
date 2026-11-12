@@ -10,6 +10,7 @@ import { renderArticle } from '@/lib/markdown';
 import { renderMediaList } from '@/lib/embeds';
 import { animeHref, pageForName } from '@/lib/catalog';
 import GuideLinks from '@/components/GuideLinks';
+import ReaderRevenue, { RRM_PRODUCT_ID } from '@/components/ReaderRevenue';
 import { guidesIn, guideType } from '@/lib/guides';
 import { coverAlt } from '@/components/Cover';
 import { CATEGORIES, SITE, absUrl, articlePath, catLabel, formatDate, readingTime, slugify } from '@/lib/site';
@@ -81,6 +82,7 @@ export default async function ArticlePage({ params }) {
       url,
       inLanguage: 'en',
       isAccessibleForFree: true,
+      isPartOf: { '@type': ['CreativeWork', 'Product'], name: SITE.name, productID: RRM_PRODUCT_ID },
       image: a.cover_url ? [{ '@type': 'ImageObject', url: absUrl(a.cover_url), width: 1600, height: 900, caption: a.cover_credit || undefined }] : undefined,
       articleSection: cat.label,
       keywords: (a.anime ?? []).join(', ') || undefined,
@@ -98,6 +100,7 @@ export default async function ArticlePage({ params }) {
   return (
     <div className="wrap section">
       <JsonLd data={jsonLd} />
+      <ReaderRevenue />
       <ArticleClient slug={a.slug} scripts={[...scripts]} />
 
       <nav aria-label="Breadcrumb">
