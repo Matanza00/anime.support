@@ -41,8 +41,16 @@ export async function generateMetadata({ params }) {
     };
   }
   const s = p.show;
-  const what = s.format === 'MOVIE' ? 'release date, trailer and where to watch' : s.status === 'RELEASING' ? 'episode schedule, where to watch and news' : s.status === 'NOT_YET_RELEASED' ? 'release date, trailer and news' : 'where to watch, episodes and news';
-  const title = `${s.title}: ${what}`;
+  // match what people search: "<show> episode 7 release date", "<show> season 2 release date", "<donghua> english sub"
+  const nextEp = s.status === 'RELEASING' && s.next_episode && s.next_airing_at && s.next_airing_at * 1000 > Date.now() ? s.next_episode : null;
+  const subs = s.country === 'CN' && s.streaming?.length ? ' with English subs' : '';
+  const what =
+    s.format === 'MOVIE' ? 'release date, trailer and where to watch'
+    : nextEp ? null
+    : s.status === 'RELEASING' ? `episode schedule and where to watch${subs}`
+    : s.status === 'NOT_YET_RELEASED' ? 'release date, trailer and everything we know'
+    : `where to watch${subs}, episodes and news`;
+  const title = nextEp ? `${s.title} Episode ${nextEp}: release date, time and where to watch${subs}` : `${s.title}: ${what}`;
   const description = `${factLine(s)}`.slice(0, 158);
   return {
     title,
@@ -116,7 +124,7 @@ async function ShowPage({ p }) {
         <nav aria-label="Breadcrumb"><ol className="crumbs"><li><a href="/">Home</a></li><li><a href="/anime/">Anime</a></li>{s.country === 'CN' && <li><a href="/donghua/">Donghua</a></li>}</ol></nav>
         <header className="show-head glass">
           <div className="poster" style={{ '--c': s.cover_color || undefined }}>
-            {s.cover_url ? <img src={s.cover_url} alt={`${s.title} key visual`} referrerPolicy="no-referrer" fetchPriority="high" /> : <b>{s.title}</b>}
+            {s.cover_url ? <img src={s.cover_url} alt={`${s.title} key visual`} referrerPolicy="no-referrer" /> : <b>{s.title}</b>}
           </div>
           <div className="show-title">
             <p className="eyebrow">{[formatLabel(s.format), s.country === 'CN' ? 'Donghua' : null, statusLabel(s.status)].filter(Boolean).join(' · ')}</p>

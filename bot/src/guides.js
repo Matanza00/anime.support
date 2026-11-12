@@ -145,7 +145,7 @@ const TABLES = {
 
 const TYPES = {
   'watch-order': { category: 'feature', ask: 'a complete WATCH ORDER guide: explain the recommended order to watch the series, seasons and films, and which films/specials are optional side stories. Mention release order vs. story order only if clear from the facts.' },
-  'where-to-watch': { category: 'feature', ask: 'a WHERE TO WATCH guide: which official, legal services carry it (from the facts only), subbed/dubbed notes only if the facts say so, and a reminder that availability depends on country.' },
+  'where-to-watch': { category: 'feature', ask: 'a WHERE TO WATCH guide: which official, legal services carry it (from the facts only), subbed/dubbed notes only if the facts say so, and a reminder that availability depends on country. Answer the common "Is it on Netflix / Crunchyroll / Prime Video?" questions directly: yes only if that service is in the facts, otherwise say it is not listed as an official service right now.' },
   'beginners-guide': { category: 'feature', ask: "a BEGINNER'S GUIDE: what the story is about (premise only, no spoilers), who made it, why it is so popular, and where a newcomer should start." },
   'whats-next': { category: 'upcoming', ask: "a WHAT'S NEXT guide: the latest confirmed seasons, films or episodes that are airing or upcoming (from the facts and the recent headlines only). If nothing is scheduled, say so plainly and explain what is officially known." },
   'how-long-to-watch': { category: 'feature', ask: 'a HOW LONG TO WATCH guide: total episodes and hours (use the numbers in TOTALS exactly), what you can skip, and a realistic watching plan (e.g. at 3 episodes a day).' },
@@ -157,7 +157,9 @@ Rules:
 - BACKGROUND is from Wikipedia: use it to understand the series, write entirely in your own words, never copy phrases.
 - Put the literal line [[TABLE]] where the data table belongs (the site inserts an exact table there). Do not write your own table, and do not re-list every entry: the table is the complete list. Name only the entries you give advice about (where to start, what is skippable and why), and tell readers the full list is in the table.
 - No filler intros or sign-offs (no "Happy watching!"). Every paragraph should help the reader decide something.
-- Markdown with ## headings, no H1, no links, no images. 450–750 words. Short paragraphs.
+- Start with a 40–60 word paragraph that directly answers the guide's main question (Google uses it as the featured snippet), before any heading.
+- Markdown with ## headings, no H1, no links, no images. 500–800 words. Short paragraphs.
+- End with "## Frequently asked questions": 3–4 questions fans actually search, each as "### Question?" followed by a 1–3 sentence answer from the facts only (e.g. "Is <anime> on Netflix?", "Do I need to watch the movies?", "How many episodes are there?"). If the facts can't answer a question, don't ask it.
 - Hide major spoilers inside <details><summary>Spoiler: label</summary>text</details>.
 - Headline: start with the anime name, 50–85 characters, specific, no clickbait, no ALL CAPS, include the year ${new Date().getUTCFullYear()} only if natural.
 Return JSON: {"title": "...", "excerpt": "140-160 characters", "body_markdown": "...", "facebook_caption": "1-2 lines, at most 2 emoji"}`;

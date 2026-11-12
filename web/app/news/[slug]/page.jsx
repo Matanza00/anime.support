@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }) {
   if (!a) notFound();
 
   const scripts = new Set();
-  const { before, after, toc } = renderArticle(a.body_md, scripts);
+  const { before, after, toc, faq } = renderArticle(a.body_md, scripts);
   const mediaHtml = renderMediaList(a.media ?? [], scripts);
   const more = await related(a, 3);
   const url = absUrl(articlePath(a.slug));
@@ -90,6 +90,9 @@ export default async function ArticlePage({ params }) {
       isBasedOn: a.source_urls?.length ? a.source_urls : undefined,
     },
     breadcrumbs(crumbs),
+    ...(faq.length >= 2
+      ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }]
+      : []),
   ];
 
   return (

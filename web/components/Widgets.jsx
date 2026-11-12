@@ -2,7 +2,7 @@
 import { mostRead, trendingAnime, upcomingReleases } from '@/lib/db';
 import { articlePath, formatDate } from '@/lib/site';
 import Countdown from './Countdown';
-import { allShows, showForName, premieres } from '@/lib/catalog';
+import { allShows, showForName, premieres, pageForName } from '@/lib/catalog';
 import PremiereCard from './PremiereCard';
 
 export async function MostRead({ title = 'Most read this week', limit = 5 }) {
@@ -29,13 +29,19 @@ export async function MostRead({ title = 'Most read this week', limit = 5 }) {
 }
 
 export async function TrendingChart({ limit = 10 }) {
-  let list = await Promise.all(
-    (await trendingAnime(limit)).map(async (t) => {
-      const show = await showForName(t.name);
-      const href = show ? `/anime/${show.slug}/` : t.hub ? `/anime/${t.slug}/` : `/search/?q=${encodeURIComponent(t.name)}`;
-      return { key: t.slug, name: t.name, href, note: t.hub ? `${t.hub.count} ${t.hub.count === 1 ? 'story' : 'stories'}` : show?.status === 'RELEASING' ? 'airing' : '' };
-    }),
-  );
+  // one row per page: "MASHLE: MAGIC AND MUSCLES" and "Mashle: Magic and Muscles" are the same show
+  const seen = new Set();
+  let list = [];
+  for (const t of await trendingAnime(limit * 3)) {
+    const page = await pageForName(t.name);
+    const show = page?.show ?? (await showForName(t.name));
+    const href = show ? `/anime/${show.slug}/` : page ? `/anime/${page.canonical}/` : `/search/?q=${encodeURIComponent(t.name)}`;
+    if (seen.has(href)) continue;
+    seen.add(href);
+    const hub = page?.hub ?? t.hub;
+    list.push({ key: href, name: show?.title || hub?.name || t.name, href, note: hub ? `${hub.count} ${hub.count === 1 ? 'story' : 'stories'}` : show?.status === 'RELEASING' ? 'airing' : '' });
+    if (list.length === limit) break;
+  }
   if (list.length < 5) {
     // no reader data yet: AniList's trending list
     const shows = [...(await allShows())].sort((a, b) => (b.trending || 0) - (a.trending || 0)).slice(0, limit);

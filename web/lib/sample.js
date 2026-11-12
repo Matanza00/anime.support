@@ -59,7 +59,7 @@ export const SAMPLE = [
   make(7, 'Neon Shrine Maidens Episode 1 Is Out Now', 'Neon Shrine Maidens', 'release', 220),
   // evergreen guides (slug = show-slug + guide type), to preview the guide links
   { ...make(8, 'Starfall Academy Watch Order: Every Season and Film in Order', 'Starfall Academy', 'feature', 150), slug: 'starfall-academy-watch-order' },
-  { ...make(9, 'Where to Watch Starfall Academy Legally', 'Starfall Academy', 'feature', 120), slug: 'starfall-academy-where-to-watch' },
+  { ...make(9, 'Where to Watch Starfall Academy Legally', 'Starfall Academy', 'feature', 120), slug: 'starfall-academy-where-to-watch', body_md: body('Starfall Academy') + '\n\n## Frequently asked questions\n\n### Is Starfall Academy on Netflix?\n\nNo. It is not listed as an official Netflix title right now.\n\n### Is there an English dub?\n\nNo dub has been officially announced yet.' },
   { ...make(10, "Starfall Academy Beginner's Guide", 'Starfall Academy', 'feature', 90), slug: 'starfall-academy-beginners-guide' },
   // the same news-only show tagged two ways, to preview duplicate merging
   { ...make(11, 'Lantern Road Gets an Anime Adaptation', 'Paper Moon Café', 'news', 60), anime: ['Lantern Road'] },

@@ -50,9 +50,30 @@ export function renderArticle(md = '', scripts = new Set()) {
     return `<h2 id="${id}">${inner}</h2>`;
   });
   html = html.replace(/<p>EMBEDTOKEN(\d+)<\/p>/g, (_, i) => renderEmbed({ url: embeds[Number(i)] }, scripts));
+  const faq = extractFaq(html);
 
   const parts = html.split('</p>');
-  if (parts.length < 4) return { before: html, after: '', toc, scripts };
+  if (parts.length < 4) return { before: html, after: '', toc, scripts, faq };
   const mid = Math.floor(parts.length / 2);
-  return { before: parts.slice(0, mid).join('</p>') + '</p>', after: parts.slice(mid).join('</p>'), toc, scripts };
+  return { before: parts.slice(0, mid).join('</p>') + '</p>', after: parts.slice(mid).join('</p>'), toc, scripts, faq };
+}
+
+const plain = (h) => h.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ').trim();
+
+/**
+ * Questions under a "## Frequently asked questions" (or "## FAQ") heading, written as "### Question?" followed
+ * by the answer. Used for FAQPage structured data; the questions are also visible on the page, as Google requires.
+ */
+export function extractFaq(html) {
+  const m = html.match(/<h2[^>]*>[^<]*(frequently asked|faq)[^<]*<\/h2>([\s\S]*?)(?=<h2|$)/i);
+  if (!m) return [];
+  return m[2]
+    .split(/<h3[^>]*>/)
+    .slice(1)
+    .map((chunk) => {
+      const [q, rest = ''] = chunk.split('</h3>');
+      return { q: plain(q), a: plain(rest) };
+    })
+    .filter((x) => x.q && x.a)
+    .slice(0, 8);
 }
