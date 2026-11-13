@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-12T14:45:27Z
-- Commit: 0d0372c
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43240135624
+- When: 2026-11-13T00:22:02Z
+- Commit: ec9733b
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43335891365
 
 ```
 + /anime/majo-to-youhei/__next._tree.txt
@@ -19,16 +19,16 @@
 + /anime/giant-ojou-sama/__next._tree.txt
 + /anime/left-hand-layup/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7419 assets
-Uploaded 2000 of 7419 assets
-Uploaded 3000 of 7419 assets
-Uploaded 4000 of 7419 assets
-Uploaded 5000 of 7419 assets
-Uploaded 6000 of 7419 assets
-Uploaded 6004 of 7419 assets
-Uploaded 6625 of 7419 assets
-Uploaded 7419 of 7419 assets
-✨ Success! Uploaded 7419 files (4112 already uploaded) (23.03 sec)
+Uploaded 1000 of 7436 assets
+Uploaded 2000 of 7436 assets
+Uploaded 3000 of 7436 assets
+Uploaded 4000 of 7436 assets
+Uploaded 5000 of 7436 assets
+Uploaded 6000 of 7436 assets
+Uploaded 6010 of 7436 assets
+Uploaded 6804 of 7436 assets
+Uploaded 7436 of 7436 assets
+✨ Success! Uploaded 7436 files (4119 already uploaded) (29.94 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 3 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (33.46 sec)
-Deployed anime-support triggers (2.13 sec)
+Uploaded anime-support (37.44 sec)
+Deployed anime-support triggers (1.36 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 8fdb133e-af5c-4d58-a48b-efef3b301602
+Current Version ID: f8a71bb5-a9a1-4571-b507-9da3499c5851
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 150 URLs → HTTP 200 (accepted)
+IndexNow: submitted 48 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-12T14:43:34.635Z
+Live site marked as built from content up to 2026-11-13T00:20:06.464Z
 
  ⛅️ wrangler 4.158.0 (update available 4.161.0)
 ───────────────────────────────────────────────
