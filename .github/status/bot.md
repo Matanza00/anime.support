@@ -1,23 +1,88 @@
 # Last bot run: success
 
-- When: 2026-11-16T02:22:25Z
-- Trigger: workflow_dispatch
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43791266007
+- When: 2026-11-16T03:02:43Z
+- Trigger: schedule
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43791783925
 
 ```
-Task: collect-and-publish
-[16/11/2026, 02:17:50] Anime News Network: 0 new of 22 recent
-[16/11/2026, 02:17:51] Crunchyroll News: 0 new of 14 recent
-[16/11/2026, 02:17:52] MyAnimeList News: 0 new of 3 recent
-[16/11/2026, 02:17:52] Anime Corner: unchanged
-[16/11/2026, 02:17:53] Anime UK News: unchanged
-[16/11/2026, 02:17:54] Collect done: 0 new headlines
-[16/11/2026, 02:17:55] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
-[16/11/2026, 02:17:55] Free AI models available: inclusionai/ling-3.2-flash:free, thinkingmachines/inkling-2-small:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free
-[16/11/2026, 02:21:05] WARN Free model particle-ai/particle-1:free unavailable: 429 Provider returned error
-[16/11/2026, 02:22:21] Official image (poster) used for retrocrush-adds-sugar-sugar-rune-genocyber-and-viz-classics-to-streaming-library-1k8c
-[16/11/2026, 02:22:21] Auto-published: RetroCrush Adds Sugar Sugar Rune, Genocyber and Viz Classics to Streaming Library
-[16/11/2026, 02:22:21] Draft done: 1 new articles (written with free AI models: credits are empty)
-[16/11/2026, 02:22:23] Articles in the database: 4 draft, 187 published
-[16/11/2026, 02:22:25] Deploy triggered for 1 new article(s)
+[16/11/2026, 02:56:25] WARN Naruto how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:57:48] Dragon Ball: 38 entries (8 series, 20 films, 1 upcoming)
+[16/11/2026, 02:57:48] WARN Dragon Ball watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:57:48] WARN Dragon Ball where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:57:48] WARN Dragon Ball beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:57:49] WARN Dragon Ball whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:57:49] WARN Dragon Ball how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:23] Attack on Titan: 16 entries (7 series, 4 films, 0 upcoming)
+[16/11/2026, 02:58:23] WARN Attack on Titan watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:23] WARN Attack on Titan where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:23] WARN Attack on Titan beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:24] WARN Attack on Titan whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:24] WARN Attack on Titan how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:43] Demon Slayer: 9 entries (5 series, 2 films, 2 upcoming)
+[16/11/2026, 02:58:43] WARN Demon Slayer watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:43] WARN Demon Slayer where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:43] WARN Demon Slayer beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:43] WARN Demon Slayer whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:44] WARN Demon Slayer how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:58] Jujutsu Kaisen: 7 entries (3 series, 3 films, 1 upcoming)
+[16/11/2026, 02:58:59] WARN Jujutsu Kaisen watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:59] WARN Jujutsu Kaisen where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:59] WARN Jujutsu Kaisen beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:59] WARN Jujutsu Kaisen whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:58:59] WARN Jujutsu Kaisen how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:53] My Hero Academia: 25 entries (12 series, 4 films, 0 upcoming)
+[16/11/2026, 02:59:54] WARN My Hero Academia watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:54] WARN My Hero Academia where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:54] WARN My Hero Academia beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:54] WARN My Hero Academia whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:54] WARN My Hero Academia how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:58] Death Note: 2 entries (1 series, 0 films, 0 upcoming)
+[16/11/2026, 02:59:58] WARN Death Note watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:58] WARN Death Note where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:58] WARN Death Note beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:58] WARN Death Note whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 02:59:58] WARN Death Note how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:35] Code Geass: 17 entries (3 series, 4 films, 0 upcoming)
+[16/11/2026, 03:00:35] WARN Code Geass watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:35] WARN Code Geass where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:36] WARN Code Geass beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:36] WARN Code Geass whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:36] WARN Code Geass how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:37] Monster: 1 entries (1 series, 0 films, 0 upcoming)
+[16/11/2026, 03:00:38] WARN Monster watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:38] WARN Monster where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:38] WARN Monster beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:38] WARN Monster whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:38] WARN Monster how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:53] One-Punch Man: 7 entries (3 series, 0 films, 1 upcoming)
+[16/11/2026, 03:00:53] WARN One-Punch Man watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:53] WARN One-Punch Man where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:53] WARN One-Punch Man beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:53] WARN One-Punch Man whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:00:53] WARN One-Punch Man how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:06] Spy x Family: 6 entries (4 series, 1 films, 1 upcoming)
+[16/11/2026, 03:01:06] WARN Spy x Family watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:06] WARN Spy x Family where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:06] WARN Spy x Family beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:06] WARN Spy x Family whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:06] WARN Spy x Family how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:59] Gintama: 24 entries (9 series, 8 films, 0 upcoming)
+[16/11/2026, 03:01:59] WARN Gintama watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:59] WARN Gintama where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:59] WARN Gintama beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:59] WARN Gintama whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:01:59] WARN Gintama how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:25] Bleach: 12 entries (5 series, 4 films, 0 upcoming)
+[16/11/2026, 03:02:26] WARN Bleach watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:26] WARN Bleach where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:26] WARN Bleach beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:26] WARN Bleach whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:26] WARN Bleach how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] Hunter x Hunter: 8 entries (2 series, 2 films, 0 upcoming)
+[16/11/2026, 03:02:43] WARN Hunter x Hunter watch-order failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] WARN Hunter x Hunter where-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] WARN Hunter x Hunter beginners-guide failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] WARN Hunter x Hunter whats-next failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] WARN Hunter x Hunter how-long-to-watch failed: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 03:02:43] Guides: 2 published or updated, 73 failed
 ```
