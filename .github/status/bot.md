@@ -1,87 +1,32 @@
 # Last bot run: success
 
-- When: 2026-11-16T08:41:26Z
-- Trigger: schedule
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43832507909
+- When: 2026-11-16T10:28:53Z
+- Trigger: workflow_dispatch
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43847524692
 
 ```
-Task: catalog
-[16/11/2026, 08:36:03] AniList SUMMER 2026: 107 shows
-[16/11/2026, 08:36:10] AniList FALL 2026: 105 shows
-[16/11/2026, 08:36:14] AniList WINTER 2027: 76 shows
-[16/11/2026, 08:36:25] AniList airing now: 217 shows
-[16/11/2026, 08:36:43] AniList upcoming: 400 shows
-[16/11/2026, 08:36:54] AniList dated premieres: 226 shows
-[16/11/2026, 08:36:59] AniList trending: 100 shows
-[16/11/2026, 08:37:20] AniList most popular: 500 shows
-[16/11/2026, 08:37:34] AniList donghua: 300 shows
-[16/11/2026, 08:37:38] AniList donghua airing: 51 shows
-[16/11/2026, 08:37:45] AniList schedule: 144 episodes in the next 8 days
-[16/11/2026, 08:37:55] Catalog: 1559 shows saved
-[16/11/2026, 08:37:56] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
-[16/11/2026, 08:37:56] Free AI models available: inclusionai/ling-3.2-flash:free, thinkingmachines/inkling-2-small:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free
-[16/11/2026, 08:41:19] WARN Free model inclusionai/ling-3.2-flash:free unavailable: 429 Provider returned error
-[16/11/2026, 08:41:20] WARN Free model particle-ai/particle-1:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 08:41:20] WARN Free model baidu/ernie-5.5-flash-preview:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 08:41:21] WARN Free model nvidia/nemotron-3.5-lightning:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 08:41:22] WARN Free model nvidia/nemotron-3-ultra-550b-a55b:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 08:41:22] WARN Summary failed for Pie no Mi: Oshi no Mori e Youkoso!: LLM failed: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/credits?utm_source=api&utm_campaign=free_daily_limit
-[16/11/2026, 08:41:22] WARN Summary failed for Chikyuu Daisuki! Kikkun: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Stella Sora Anime PVs: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Mazenchu: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Metal Cardbot W: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Onaka ga Guuguu Island: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Matsuken Anime: Kore Seibaishite mo Ii desu ka?: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for GO! GO! TOKYO MER: Kinkyuujitai to Tatakau Nakama-tachi: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Di Ling Ai: Shui Xin Chan: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Azarashi no Eru Aru: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Shi Wang Zhe A? 6: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Ocha-ken: Chobitto Monogatari: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for The Guy She Was Interested In Wasn't a Guy At All: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for The Apothecary Diaries: The Late Lady’s Treasure: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:22] WARN Summary failed for Kagurabachi: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for THE ONE PIECE: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Omniscient Reader: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for The Wrong Way to Use Healing Magic Season 2: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Sekiro: No Defeat: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Lycoris Recoil (Shinsaku Animation): LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Kaguya-sama wa Kokurasetai: Kanketsu-hen: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Genshin: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:24] WARN Summary failed for Bocchi the Rock!: Hoshi no Ashiato: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for SK∞ 2nd Season: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for NARUTO×NINKU: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Kakunaru Ue wa: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for AKIRA (Shin Anime): LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Ruri Dragon: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Jirai nan desu ka? Chihara-san: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den Part 2: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Dragon Ball Super: Ginga Patrol: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Isshun de Chiryou Shiteita no ni Yakutatazu to Tsuihou Sareta Tensai Chiyushi, Yami Healer Toshite Tanoshiku Ikiru 2nd Season: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Berserk of Gluttony Season 2: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for GATE 2: Jieitai Kano Umi nite, Kaku Tatakaeri: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Jimoto Saikou!: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Youchien WARS: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Koiseyo Mayakashi Tenshi-domo: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Evangelion (Shinsaku Series): LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Amayo no Tsuki: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Hirayasumi: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for Akane-banashi 2nd Season: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:25] WARN Summary failed for MEKAKUCITY RELOAD: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Himekishi-sama no Himo: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Ousama Ranking Movie: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Haikyuu!!: Bakemono-tachi no Iku Tokoro: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Otherworldly Munchkin: Let's Speedrun the Dungeon with Only 1 HP!: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Megane, Tokidoki, Yankee-kun: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for The Boxer: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Go-toubun no Hanayome: Shunkashuutou: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Historié: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Hi-DRIVERS: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Majo to Ryouken: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Ane Naru Mono: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for DemVAMPS: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for ELECEED: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Go-toubun no Hanayome (Shinsaku OVA): LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] WARN Summary failed for Akuyaku Reijou no Naka no Hito: LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 08:41:26] Catalog: 2 new overviews written
+Task: collect-and-publish
+[16/11/2026, 10:17:46] Anime News Network: 1 new of 24 recent
+[16/11/2026, 10:17:46] Crunchyroll News: 1 new of 13 recent
+[16/11/2026, 10:17:47] MyAnimeList News: 1 new of 5 recent
+[16/11/2026, 10:17:47] Anime Corner: 0 new of 6 recent
+[16/11/2026, 10:17:48] Anime UK News: 1 new of 2 recent
+[16/11/2026, 10:17:49] Collect done: 4 new headlines
+[16/11/2026, 10:17:50] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
+[16/11/2026, 10:17:50] Free AI models available: inclusionai/ling-3.2-flash:free, thinkingmachines/inkling-2-small:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free
+[16/11/2026, 10:23:01] WARN Free model particle-ai/particle-1:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
+[16/11/2026, 10:23:02] WARN Free model baidu/ernie-5.5-flash-preview:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
+[16/11/2026, 10:23:02] WARN Free model nvidia/nemotron-3.5-lightning:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
+[16/11/2026, 10:23:03] WARN Free model nvidia/nemotron-3-ultra-550b-a55b:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
+[16/11/2026, 10:23:03] WARN Draft failed for "'Skip to Loafer 2nd Season' Reveals Additional Cast Pair, First Promo": LLM failed: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/credits?utm_source=api&utm_campaign=free_daily_limit
+[16/11/2026, 10:28:21] Official image (poster) used for wanpaku-touken-ranbu-anime-debuts-january-6-2027-with-teaser-visual-ekwm
+[16/11/2026, 10:28:22] Auto-published: Wanpaku! Touken Ranbu Anime Debuts January 6, 2027 With Teaser Visual
+[16/11/2026, 10:28:47] Skipped "Fate/Grand Order – Absolute Demonic Front: Babylonia – Part 2 – Collector’s Edition Review": Source is a home video Collector's Edition review, not anime news, and the page could not be fetched — only the headline and a one-line summary were available, leaving too little factual detail to write an accurate original article.
+[16/11/2026, 10:28:50] WARN Free model inclusionai/ling-3.2-flash:free unavailable: 429 Provider returned error
+[16/11/2026, 10:28:50] WARN Draft failed for "'Wanpaku! Touken Ranbu' Reveals Main Staff, Winter 2027 Premiere": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 10:28:51] WARN Draft failed for "Scope Out the New VOTOMS Popcorn Bucket": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 10:28:51] WARN Draft failed for "Black Witch Mirror Manga to End in 4th Volume": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
+[16/11/2026, 10:28:51] Draft done: 1 new articles (written with free AI models: credits are empty)
+[16/11/2026, 10:28:52] Articles in the database: 4 draft, 188 published
+[16/11/2026, 10:28:53] Deploy triggered for 1 new article(s)
 ```
