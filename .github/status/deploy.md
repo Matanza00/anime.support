@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-16T10:31:07Z
-- Commit: 6d90fa3
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43847524692
+- When: 2026-11-16T17:18:52Z
+- Commit: e141af5
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43916776119
 
 ```
 + /anime/amayo-no-tsuki/__next._tree.txt
@@ -19,40 +19,40 @@
 + /anime/deng-xia-jiu-fa/__next._tree.txt
 + /anime/giant-ojou-sama/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7760 assets
-Uploaded 2000 of 7760 assets
-Uploaded 3000 of 7760 assets
-Uploaded 4000 of 7760 assets
-Uploaded 5000 of 7760 assets
-Uploaded 6000 of 7760 assets
-Uploaded 6819 of 7760 assets
-Uploaded 7541 of 7760 assets
-Uploaded 7760 of 7760 assets
-✨ Success! Uploaded 7760 files (4367 already uploaded) (21.09 sec)
+Uploaded 1000 of 7755 assets
+Uploaded 2000 of 7755 assets
+Uploaded 3000 of 7755 assets
+Uploaded 4000 of 7755 assets
+Uploaded 5000 of 7755 assets
+Uploaded 5819 of 7755 assets
+Uploaded 6819 of 7755 assets
+Uploaded 7034 of 7755 assets
+Uploaded 7755 of 7755 assets
+✨ Success! Uploaded 7755 files (4372 already uploaded) (22.62 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
-Worker Startup Time: 1 ms
+Worker Startup Time: 2 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (29.43 sec)
-Deployed anime-support triggers (1.43 sec)
+Uploaded anime-support (30.87 sec)
+Deployed anime-support triggers (1.79 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: c65a03f0-02e9-4d1b-802b-6132cc0926bb
+Current Version ID: 0affa5b2-b029-4329-99f3-8662ec11cde0
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 229 URLs → HTTP 200 (accepted)
+IndexNow: nothing new to submit
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-16T10:29:09.741Z
+Live site marked as built from content up to 2026-11-16T17:17:25.242Z
 
- ⛅️ wrangler 4.158.0 (update available 4.162.0)
+ ⛅️ wrangler 4.158.0 (update available 4.163.0)
 ───────────────────────────────────────────────
 🌀 Creating the secret for the Worker "anime-support"
 Cloudflare timer: on
