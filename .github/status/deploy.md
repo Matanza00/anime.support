@@ -1,34 +1,34 @@
 # Last deploy: success
 
-- When: 2026-11-17T12:26:43Z
-- Commit: 329cd4b
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44081762350
+- When: 2026-11-17T17:08:46Z
+- Commit: 9e0418f
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44133167610
 
 ```
-+ /anime/yao-shen-ji-2/__next._tree.txt
-+ /anime/amayo-no-tsuki/__next._tree.txt
-+ /anime/majo-to-youhei/__next._tree.txt
-+ /anime/ni-tian-zhizun/__next._tree.txt
-+ /anime/ore-to-yuu-nii/__next._tree.txt
-+ /anime/ryoutei-no-aji/__next._tree.txt
-+ /anime/tongling-fei-2/__next._tree.txt
-+ /anime/yani-neko-mini/__next._tree.txt
-+ /anime/yi-jian-du-zun/__next._tree.txt
-+ /anime/yuruyuru-zukan/__next._tree.txt
-+ /anime/awm-jixian-juji/__next._tree.txt
-+ /anime/chibi-maruko-chan/__next._tree.txt
-+ /anime/deng-xia-jiu-fa/__next._tree.txt
++ /anime/the-defective/__next._tree.txt
++ /anime/yao-shen-ji-5/__next._tree.txt
++ /anime/dan-dao-zhizun/__next._tree.txt
++ /anime/medalist-movie/__next._tree.txt
++ /anime/nintama-rantarou/__next._tree.txt
++ /anime/rakshasa-street/__next._tree.txt
++ /anime/the-chosen-one/__next._tree.txt
++ /anime/wo-you-yi-jian/__next._tree.txt
++ /anime/yao-shen-ji-10/__next._tree.txt
++ /anime/youjo-shenki-2/__next._tree.txt
++ /anime/zhen-hun-jie-2/__next._tree.txt
++ /anime/busted-darklord/__next._tree.txt
++ /anime/daihao-kuangxin/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 7884 assets
-Uploaded 2000 of 7884 assets
-Uploaded 3000 of 7884 assets
-Uploaded 4000 of 7884 assets
-Uploaded 5000 of 7884 assets
-Uploaded 6000 of 7884 assets
-Uploaded 6742 of 7884 assets
-Uploaded 7048 of 7884 assets
-Uploaded 7884 of 7884 assets
-✨ Success! Uploaded 7884 files (4455 already uploaded) (20.32 sec)
+Uploaded 1000 of 8056 assets
+Uploaded 2000 of 8056 assets
+Uploaded 3000 of 8056 assets
+Uploaded 4000 of 8056 assets
+Uploaded 5000 of 8056 assets
+Uploaded 6000 of 8056 assets
+Uploaded 6437 of 8056 assets
+Uploaded 7193 of 8056 assets
+Uploaded 8056 of 8056 assets
+✨ Success! Uploaded 8056 files (4542 already uploaded) (49.08 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 2 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (28.40 sec)
-Deployed anime-support triggers (1.36 sec)
+Uploaded anime-support (59.49 sec)
+Deployed anime-support triggers (1.82 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 6ac20fb4-4d5e-49ba-b17a-14098184f32a
+Current Version ID: 11370d22-339d-4434-ad09-9c4fd853bcc7
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 234 URLs → HTTP 200 (accepted)
+IndexNow: submitted 89 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-17T12:24:45.429Z
+Live site marked as built from content up to 2026-11-17T17:06:02.698Z
 
  ⛅️ wrangler 4.158.0 (update available 4.164.0)
 ───────────────────────────────────────────────
