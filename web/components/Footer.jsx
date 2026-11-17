@@ -20,6 +20,7 @@ export default function Footer() {
             <a href="/anime/">Anime database</a>
             <a href="/schedule/">Airing schedule</a>
             <a href="/season/">Seasonal chart</a>
+            <a href="/top/">Top 10 anime</a>
             <a href="/donghua/">Donghua</a>
             <a href="/contests/">Art contests</a>
           </nav>

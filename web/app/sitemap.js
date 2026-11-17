@@ -1,5 +1,6 @@
 import { allArticles } from '@/lib/db';
 import { publishedContests } from '@/lib/contests-db';
+import { rankingPages } from '@/lib/rankings';
 import { animePages, indexable, seasonWindow, seasonId, LETTERS } from '@/lib/catalog';
 import { absUrl, articlePath } from '@/lib/site';
 
@@ -33,5 +34,10 @@ export default async function sitemap() {
   const seasons = seasonWindow().map((s) => ({ url: absUrl(`/season/${seasonId(s)}/`), lastModified: newest, changeFrequency: 'daily', priority: 0.6 }));
   const letters = LETTERS.map((l) => ({ url: absUrl(`/anime/browse/${l}/`), lastModified: newest, changeFrequency: 'weekly', priority: 0.3 }));
   const contests = (await publishedContests()).map((c) => ({ url: absUrl(`/contests/${c.slug}/`), lastModified: c.updated_at || newest, changeFrequency: 'daily', priority: 0.6 }));
-  return [...fixed, ...articles, ...shows, ...seasons, ...letters, ...contests];
+  const today = new Date().toISOString();
+  const tops = [
+    { url: absUrl('/top/'), lastModified: today, changeFrequency: 'daily', priority: 0.7 },
+    ...(await rankingPages()).map((p) => ({ url: absUrl(`/top/${p.id}/`), lastModified: p.kind === 'month' && !p.current ? newest : today, changeFrequency: p.kind === 'month' && !p.current ? 'weekly' : 'daily', priority: 0.7 })),
+  ];
+  return [...fixed, ...articles, ...shows, ...seasons, ...tops, ...letters, ...contests];
 }

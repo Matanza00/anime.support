@@ -6,6 +6,7 @@ const LINKS = [
   ['/news/', 'News'],
   ['/schedule/', 'Schedule'],
   ['/season/', 'Seasons'],
+  ['/top/', 'Top 10'],
   ['/anime/', 'Anime'],
   ['/donghua/', 'Donghua'],
   ['/contests/', 'Contests'],

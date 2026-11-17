@@ -53,6 +53,21 @@ export const SHOWS = [
   base(6, 'Starfall Academy: The Movie', { format: 'MOVIE', status: 'NOT_YET_RELEASED', start_date: d(90), season: 'WINTER', season_year: 2027, episodes: 1, duration: 110, next_episode: null, next_airing_at: null, popularity: 60000 }),
   base(7, 'Clockwork Garden', { popularity: 30000, genres: j(['Mystery', 'Sci-Fi']), next_airing_at: now + 75 * H, next_episode: 4 }),
   base(8, 'Jade Phoenix Chronicles', { country: 'CN', format: 'ONA', popularity: 25000, genres: j(['Fantasy', 'Adventure']), next_airing_at: now + 100 * H, next_episode: 33, episodes: 52 }),
+  // filler shows across 2024–2027 so the Top 10 ranking pages have something to rank in previews
+  ...Array.from({ length: 48 }, (_, i) => {
+    const y = 2024 + (i % 4), m = (i * 5) % 12;
+    const start = `${y}-${String(m + 1).padStart(2, '0')}-05`;
+    const kind = i % 6 === 0 ? { format: 'MOVIE', episodes: 1 } : i % 5 === 0 ? { country: 'CN', format: 'ONA' } : {};
+    const upcoming = y === 2027;
+    return base(100 + i, `Demo Show ${i + 1}`, {
+      ...kind,
+      start_date: start, end_date: upcoming ? null : `${y}-${String(Math.min(12, m + 3)).padStart(2, '0')}-20`,
+      season_year: y, season: ['WINTER', 'SPRING', 'SUMMER', 'FALL'][Math.floor(m / 3)],
+      status: upcoming ? 'NOT_YET_RELEASED' : 'FINISHED', next_episode: null, next_airing_at: null,
+      score: upcoming ? null : 60 + ((i * 37) % 30), popularity: 5000 + ((i * 7919) % 200000),
+      summary: i % 2 ? SUMMARY : null,
+    });
+  }),
 ];
 
 const slot = (id, ep, h) => ({ media_id: id, episode: ep, airing_at: now + h * H });

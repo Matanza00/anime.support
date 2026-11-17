@@ -289,6 +289,8 @@ export async function catalog() {
     { label: 'upcoming', vars: { status: 'NOT_YET_RELEASED', sort: ['POPULARITY_DESC'] }, pages: 8 },
     // everything with an announced premiere date from today on, soonest first (feeds the release calendar)
     { label: 'dated premieres', vars: { status: 'NOT_YET_RELEASED', startAfter: Number(new Date().toISOString().slice(0, 10).replace(/-/g, '')) - 1, sort: ['START_DATE'] }, pages: 6 },
+    // the most popular shows of each recent year, so the Top 10 rankings (/top/) see the whole year
+    ...[0, 1, 2].map((back) => ({ label: `year ${cur.year - back}`, vars: { seasonYear: cur.year - back, sort: ['POPULARITY_DESC'] }, pages: 4 })),
     { label: 'trending', vars: { sort: ['TRENDING_DESC'] }, pages: 2 },
     { label: 'most popular', vars: { sort: ['POPULARITY_DESC'] }, pages: Number(process.env.CATALOG_POPULAR_PAGES || 10) },
     { label: 'donghua', vars: { country: 'CN', sort: ['POPULARITY_DESC'] }, pages: 6 },
