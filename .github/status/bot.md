@@ -1,57 +1,26 @@
 # Last bot run: success
 
-- When: 2026-11-16T22:46:45Z
+- When: 2026-11-17T00:30:32Z
 - Trigger: workflow_dispatch
-- Run: https://github.com/Matanza00/anime.support/actions/runs/43968625324
+- Run: https://github.com/Matanza00/anime.support/actions/runs/43986436685
 
 ```
 Task: collect-and-publish
-[16/11/2026, 22:17:51] Anime News Network: 2 new of 39 recent
-[16/11/2026, 22:17:52] Crunchyroll News: 1 new of 15 recent
-[16/11/2026, 22:17:52] MyAnimeList News: 0 new of 4 recent
-[16/11/2026, 22:17:53] Anime Corner: unchanged
-[16/11/2026, 22:17:53] Anime UK News: unchanged
-[16/11/2026, 22:17:54] Collect done: 3 new headlines
-[16/11/2026, 22:17:56] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
-[16/11/2026, 22:17:56] Free AI models available: inclusionai/ling-3.2-flash:free, thinkingmachines/inkling-2-small:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free
-[16/11/2026, 22:18:31] Skipped "Nintendo’s Shigeru Miyamoto to Receive Inaugural Legend Award at D.I.C.E Awards": Video game industry story: Nintendo designer Shigeru Miyamoto receiving the inaugural D.I.C.E. Legend Award. Not about anime, manga, light novels, or donghua, and not tied to an anime/manga property.
-[16/11/2026, 22:26:16] WARN Free model particle-ai/particle-1:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 22:26:16] WARN Free model baidu/ernie-5.5-flash-preview:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 22:26:17] WARN Free model nvidia/nemotron-3.5-lightning:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 22:26:17] WARN Free model nvidia/nemotron-3-ultra-550b-a55b:free unavailable: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/cred
-[16/11/2026, 22:26:17] WARN Draft failed for "Manga 'Diamond no Kouzai' Gets TV Anime": LLM failed: 429 Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day: https://openrouter.ai/settings/credits?utm_source=api&utm_campaign=free_daily_limit
-[16/11/2026, 22:31:42] WARN Draft failed for "Are You a Landmine, Chihara-san? Anime Unveils Main Visual": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:31:57] Skipped "Ultraman Teo Actress Noa Nekada Dies at 23": Not about anime/manga/light novels/donghua — this concerns a live-action tokusatsu series (Ultraman Teo), which is outside coverage scope.
-[16/11/2026, 22:32:08] Skipped "PAC-MAN Returns for 100th Macy's Thanksgiving Day Parade with Balloon, Pop-Up": Not an anime/manga/light novel/donghua story — PAC-MAN is a video game property, and the piece is about a Macy's parade balloon and pop-up event. Additionally, the source page could not be fetched, leaving only a headline and one-line summary, which is too little factual detail to write an accurate article.
-[16/11/2026, 22:35:48] WARN Draft failed for "Singer Yukio Yamagata Dies at 69": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:40:16] Skipped "Godzilla Minus Zero Earns US$8 Million in 73% Drop at U.S. Box Office, Passes US$100 Million Worldwide": Not about anime/manga/light novels/donghua. The story concerns live-action films (Godzilla Minus Zero and the live-action Street Fighter game adaptation); anime titles like Demon Slayer: Infinity Castle are mentioned only as box office comparisons, not as the subject.
-[16/11/2026, 22:41:16] Skipped "Hello, I Am a Witch and My Crush Wants Me to Make a Love Potion! ‒ Episode 7": The source is a single episode review — a pure opinion piece about Episode 7 with no new announcement, dates, cast, staff or other factual news, only spoilery plot commentary and a streaming note. Not enough factual detail for an original article.
-[16/11/2026, 22:42:49] Skipped "From Far Away ‒ Episode 7": Source is an episode review — a pure opinion piece with no announcement, dates, cast, or concrete factual news to report.
-[16/11/2026, 22:46:21] WARN Draft failed for "LiSA, BABYMETAL Earn Nominations for 2027 Grammy Awards' New Best Asian Pop Music Performance Category": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:31] WARN Free model inclusionai/ling-3.2-flash:free unavailable: 429 Provider returned error
-[16/11/2026, 22:46:31] WARN Draft failed for "A Certain Dark Item ‒ Episode 6": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:32] WARN Draft failed for "It’s Time to Pick Your Favorite Fall Anime Opening of 2026!": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:37] WARN Draft failed for "#I'm Looking For a Zombie ‒ Episode 6": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:38] WARN Draft failed for "French Manga, Comic Creator Frédéric Boilet Dies at 66": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:39] WARN Draft failed for "The Days of Diamond Anime Adaptation Announced": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:39] WARN Draft failed for "Devils' Crest ‒ Episode 3": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:40] WARN Draft failed for "OceanVeil Streams English Dub for Hands Off: Sawaranaide Koteashi-kun Anime": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:40] WARN Draft failed for "Romelia War Chronicle ‒ Episode 7": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:40] WARN Draft failed for "Crunchyroll News Puzzles Vol. 81: Universal Guidance and Messy Members": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:40] WARN Draft failed for "Fool Night Anime Shares Yomiko Horai Character Trailer, Gundam SEED FREEDOM ZERO Collab": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:41] WARN Draft failed for "34% of Developers in 2026 GDC Survey Were Laid Off in Last 2 Years": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:41] WARN Draft failed for "Manta Opens Creator's Alley, a Self-Publishing Space for Independent Creators": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:41] WARN Draft failed for "This Week in Mobile Games - Dragon Quest, Finally an RPG": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:42] WARN Draft failed for "Anime News Network's Shojosei Anime Wishlist": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:42] WARN Draft failed for "Nia Liston: The Merciless Maiden Volumes 1-4 Light Novel Series Review": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:42] WARN Draft failed for "Ranma ½ Season 3 ‒ Episode 7": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:42] WARN Draft failed for "The Summer Hikaru Died Novels End With 3rd Volume": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:42] WARN Draft failed for "Märchen Crown Manga Ends in Next Chapter": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:43] WARN Draft failed for "Interview: SHAFT and Aniplex on Madoka Magica Walpurgisnacht Rising Core Themes and Impact": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:43] WARN Draft failed for "'Wanpaku! Touken Ranbu' Reveals Main Staff, Winter 2027 Premiere": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:43] WARN Draft failed for "Scope Out the New VOTOMS Popcorn Bucket": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:44] WARN Draft failed for "Black Witch Mirror Manga to End in 4th Volume": LLM failed: 403 thinkingmachines/inkling-2-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps
-[16/11/2026, 22:46:44] Draft done: 0 new articles (written with free AI models: credits are empty)
-[16/11/2026, 22:46:45] Articles in the database: 4 draft, 189 published
-[16/11/2026, 22:46:45] Publish: the live site is up to date (built 2026-11-16T20:25:27.284Z)
+[17/11/2026, 00:17:47] Anime News Network: 2 new of 39 recent
+[17/11/2026, 00:17:48] Crunchyroll News: 0 new of 15 recent
+[17/11/2026, 00:17:49] MyAnimeList News: 0 new of 4 recent
+[17/11/2026, 00:17:49] Anime Corner: 2 new of 8 recent
+[17/11/2026, 00:17:50] Anime UK News: unchanged
+[17/11/2026, 00:17:52] Collect done: 4 new headlines
+[17/11/2026, 00:17:52] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
+[17/11/2026, 00:17:53] Free AI models available: inclusionai/ling-3.2-flash:free, thinkingmachines/inkling-2-small:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free
+[17/11/2026, 00:21:04] Official image (poster) used for the-days-of-diamond-manga-gets-tv-anime-at-lapin-track-no-date-yet-5fsr
+[17/11/2026, 00:21:04] Auto-published: The Days of Diamond Manga Gets TV Anime at Lapin Track, No Date Yet
+[17/11/2026, 00:24:07] Official image (poster) used for are-you-a-landmine-chihara-san-anime-reveals-main-visual-ahead-of-january-7-9din
+[17/11/2026, 00:24:08] Auto-published: Are You a Landmine, Chihara-san? Anime Reveals Main Visual Ahead of January 7
+[17/11/2026, 00:30:26] Official image (poster) used for beastars-creator-paru-itagaki-talks-sanda-taika-s-reason-and-her-fears-hhun
+[17/11/2026, 00:30:27] Auto-published: Beastars Creator Paru Itagaki Talks Sanda, Taika's Reason and Her Fears
+[17/11/2026, 00:30:27] Draft done: 3 new articles (written with free AI models: credits are empty)
+[17/11/2026, 00:30:28] Articles in the database: 4 draft, 192 published
+[17/11/2026, 00:30:32] Deploy triggered for 3 new article(s)
 ```
