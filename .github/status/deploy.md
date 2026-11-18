@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-18T04:29:25Z
-- Commit: 4b96951
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44236305984
+- When: 2026-11-18T09:12:53Z
+- Commit: a672f4a
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44273029675
 
 ```
 + /anime/the-one-piece/__next._tree.txt
@@ -17,18 +17,18 @@
 + /anime/yumene-connect/__next._tree.txt
 + /anime/zhu-xian-final/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 9840 assets
-Uploaded 2000 of 9840 assets
-Uploaded 3000 of 9840 assets
-Uploaded 4000 of 9840 assets
-Uploaded 5000 of 9840 assets
-Uploaded 6000 of 9840 assets
-Uploaded 6933 of 9840 assets
-Uploaded 7933 of 9840 assets
-Uploaded 8377 of 9840 assets
-Uploaded 9136 of 9840 assets
-Uploaded 9840 of 9840 assets
-✨ Success! Uploaded 9840 files (5448 already uploaded) (30.39 sec)
+Uploaded 1000 of 9836 assets
+Uploaded 2000 of 9836 assets
+Uploaded 3000 of 9836 assets
+Uploaded 4000 of 9836 assets
+Uploaded 5000 of 9836 assets
+Uploaded 6000 of 9836 assets
+Uploaded 7000 of 9836 assets
+Uploaded 7933 of 9836 assets
+Uploaded 8692 of 9836 assets
+Uploaded 9396 of 9836 assets
+Uploaded 9836 of 9836 assets
+✨ Success! Uploaded 9836 files (5452 already uploaded) (25.07 sec)
 
 Total Upload: 57.00 KiB / gzip: 14.56 KiB
 Worker Startup Time: 2 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (39.42 sec)
-Deployed anime-support triggers (1.29 sec)
+Uploaded anime-support (34.65 sec)
+Deployed anime-support triggers (1.81 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 1cbd9c78-5453-4f47-9f9b-2b493b5af604
+Current Version ID: 95e72e62-a4e0-4cb9-aba8-e44522d90813
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 286 URLs → HTTP 200 (accepted)
+IndexNow: submitted 280 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-18T04:27:24.503Z
+Live site marked as built from content up to 2026-11-18T09:10:52.024Z
 
  ⛅️ wrangler 4.158.0 (update available 4.164.0)
 ───────────────────────────────────────────────
