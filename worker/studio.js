@@ -3,6 +3,7 @@
 import { json, fail, HttpError, assertSameOrigin, ipHash, rateLimit, audit, nowIso, clean } from './lib.js';
 import { currentUser, requireUser, providers } from './auth.js';
 import { storageReady, putFile, getFile, deleteFile, sniff } from './storage.js';
+import { handleArticles } from './articles.js';
 
 const CATEGORIES = {
   '2d-art': { label: '2D artwork', kinds: ['image'] },
@@ -436,11 +437,13 @@ async function follow(request, env, handle) {
 /* ---------------- media ---------------- */
 
 async function serveMedia(request, env, key) {
+  // article pictures (uploaded by admins in the article editor) are always public
+  const article = /^a\/[\w-]+\.(png|jpg|webp)$/.test(key);
   const m = /^e\/(\d+)\/[\w-]+\.(png|jpg|webp|glb|mp4|webm)$/.exec(key);
-  if (!m) fail(404, 'Not found');
-  const e = await env.DB.prepare('SELECT user_id, status FROM entries WHERE id = ?').bind(Number(m[1])).first();
-  if (!e) fail(404, 'Not found');
-  let pub = e.status === 'approved';
+  if (!m && !article) fail(404, 'Not found');
+  const e = article ? null : await env.DB.prepare('SELECT user_id, status FROM entries WHERE id = ?').bind(Number(m[1])).first();
+  if (!article && !e) fail(404, 'Not found');
+  let pub = article || e.status === 'approved';
   if (!pub) {
     const user = await currentUser(request, env);
     if (!user || (user.id !== e.user_id && !isMod(user))) fail(404, 'Not found');
@@ -454,7 +457,7 @@ async function serveMedia(request, env, key) {
       ...extra,
       'Accept-Ranges': f.size != null ? 'bytes' : 'none',
       'Content-Type': f.contentType,
-      'Cache-Control': pub ? 'public, max-age=86400' : 'private, no-store',
+      'Cache-Control': article ? 'public, max-age=31536000, immutable' : pub ? 'public, max-age=86400' : 'private, no-store',
       'X-Content-Type-Options': 'nosniff',
       'Content-Security-Policy': "default-src 'none'; sandbox",
       'Access-Control-Allow-Origin': '*',
@@ -652,6 +655,10 @@ export async function handleStudio(request, env, ctx, path, dispatchDeploy) {
       assertSameOrigin(request, env);
       return deleteMe(request, env);
     }
+  }
+  if (path.startsWith('/api/admin/articles')) {
+    const res = await handleArticles(request, env, ctx, path, dispatchDeploy);
+    if (res) return res;
   }
   if (path === '/api/contests' && M === 'GET') return listContests(request, env);
   if ((m = /^\/api\/contests\/([a-z0-9-]+)$/.exec(path)) && M === 'GET') return getContest(request, env, m[1]);

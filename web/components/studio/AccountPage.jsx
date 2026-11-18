@@ -67,6 +67,7 @@ function Signed({ me }) {
         </div>
         <div className="tabs" style={{ marginTop: 16 }}>
           <a className="chip" href="/contests/">Enter a contest</a>
+          {u.role === 'admin' && <a className="chip" href="/studio-admin/?tab=articles">Write an article</a>}
           {(u.role === 'admin' || u.role === 'moderator') && <a className="chip" href="/studio-admin/">Moderation & admin</a>}
           <button type="button" className="chip" onClick={logout}>Sign out</button>
         </div>

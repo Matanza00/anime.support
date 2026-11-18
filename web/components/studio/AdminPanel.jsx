@@ -1,21 +1,25 @@
 'use client';
 // Moderators: review entries, reports, comments and votes. Admins also: contests, winners, roles, bans.
 import { useEffect, useState } from 'react';
-import { api, useMe, fmtDate, phaseOf, PHASE_LABEL } from '@/lib/studio-client';
+import { api, useMe, fmtDate, phaseOf, PHASE_LABEL, useQueryParam } from '@/lib/studio-client';
+import ArticleEditor from './ArticleEditor';
 
 const toLocal = (iso) => (iso ? new Date(new Date(iso).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '');
 const fromLocal = (v) => new Date(v).toISOString();
 
 export default function AdminPanel() {
   const me = useMe();
+  const wanted = useQueryParam('tab');
   const [tab, setTab] = useState('queue');
+  useEffect(() => { if (wanted) setTab(wanted); }, [wanted]);
   if (!me) return <div className="glass empty">Loading…</div>;
   if (!me.user || !['moderator', 'admin'].includes(me.user.role)) return <div className="glass empty">Moderators and admins only. <a href="/account/">Sign in</a></div>;
   const admin = me.user.role === 'admin';
-  const tabs = [['queue', 'Entries to review'], ['reports', 'Reports'], ['contests', 'Contests'], ['votes', 'Vote check'], ...(admin ? [['users', 'People']] : [])];
+  const tabs = [...(admin ? [['articles', 'Articles']] : []), ['queue', 'Entries to review'], ['reports', 'Reports'], ['contests', 'Contests'], ['votes', 'Vote check'], ...(admin ? [['users', 'People']] : [])];
   return (
     <div className="admin">
       <div className="tabs">{tabs.map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={tab === k} onClick={() => setTab(k)}>{l}</button>)}</div>
+      {tab === 'articles' && admin && <ArticleEditor />}
       {tab === 'queue' && <Queue />}
       {tab === 'reports' && <Reports />}
       {tab === 'contests' && <Contests admin={admin} />}
