@@ -1,0 +1,16 @@
+{
+  "key": "contest-launch-2026-12-2d-dates",
+  "note": "2D contest: entries 1–10 Dec, voting 11–24 Dec, winner 25 Dec (Pakistan time). Applied once.",
+  "publish": [
+    {
+      "slug": "2d-original-anime-hero-dec-2026",
+      "title": "Original Anime Hero: 2D Artwork Contest",
+      "prize": "US$500 in gift cards for the winner + featured on the anime.support home page",
+      "prize_usd": 500,
+      "description": "Create the key art for a brand-new anime protagonist of your own: a character sheet, a key visual or a full illustration. Show us who they are, what world they live in and what makes their story worth watching.\n\nAny 2D medium: digital painting, cel shading, line art, watercolour scans. One image per entrant.\n\nDates: entries open 1 December and close 10 December. Public voting runs 11–24 December, and the winner is announced on 25 December.\n\nPrize: US$500 in gift cards for the winner, plus a feature on the anime.support home page.",
+      "submit_opens_at": "2026-11-30T19:00:00.000Z",
+      "submit_closes_at": "2026-12-10T18:59:00.000Z",
+      "vote_closes_at": "2026-12-24T18:59:00.000Z"
+    }
+  ]
+}
