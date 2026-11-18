@@ -1,0 +1,26 @@
+{
+  "key": "contest-launch-2026-12",
+  "note": "Applied once by setup.mjs (then remembered in bot_state). Times: 10 Dec 00:00, 20 Dec 23:59 and 24 Dec 23:59 Pakistan time (UTC+5); winners announced 25 Dec.",
+  "publish": [
+    {
+      "slug": "2d-original-anime-hero-dec-2026",
+      "title": "Original Anime Hero: 2D Artwork Contest",
+      "prize": "US$500 in gift cards for the winner + featured on the anime.support home page",
+      "prize_usd": 500,
+      "description": "Create the key art for a brand-new anime protagonist of your own: a character sheet, a key visual or a full illustration. Show us who they are, what world they live in and what makes their story worth watching.\n\nAny 2D medium: digital painting, cel shading, line art, watercolour scans. One image per entrant.\n\nDates: entries open 10 December and close 20 December. Public voting runs 21–24 December, and the winner is announced on 25 December.\n\nPrize: US$500 in gift cards for the winner, plus a feature on the anime.support home page.",
+      "submit_opens_at": "2026-12-09T19:00:00.000Z",
+      "submit_closes_at": "2026-12-20T18:59:00.000Z",
+      "vote_closes_at": "2026-12-24T18:59:00.000Z"
+    },
+    {
+      "slug": "3d-character-mecha-or-magic-dec-2026",
+      "title": "Mecha or Magic: 3D Character Contest",
+      "prize": "US$2,000 for the winner: US$1,500 paid by transfer + a US$500 gift card",
+      "prize_usd": 2000,
+      "description": "Sculpt or model an original anime-style character: a mecha pilot, the mecha itself, or a magical fighter in full outfit.\n\nUpload a GLB file (people can spin it in 3D right on the page), or a turntable video or rendered image. Keep it under 25 MB.\n\nDates: entries open 10 December and close 20 December. Public voting runs 21–24 December, and the winner is announced on 25 December.\n\nPrize: US$2,000 for the winner, made up of US$1,500 sent by bank transfer (or Payoneer/Wise) and a US$500 gift card, plus a feature on the anime.support home page.",
+      "submit_opens_at": "2026-12-09T19:00:00.000Z",
+      "submit_closes_at": "2026-12-20T18:59:00.000Z",
+      "vote_closes_at": "2026-12-24T18:59:00.000Z"
+    }
+  ]
+}

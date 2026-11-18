@@ -104,6 +104,24 @@ if (c === 0) {
   console.log(`Added ${seeds.length} draft contests`);
 }
 
+// 4b. One-time contest launches (dates, prizes, publish). Each file applies once, so later edits made in the
+// admin panel are never overwritten.
+for (const file of fs.readdirSync(path.join(here, 'seed')).filter((f) => /^contest-launch-.*\.json$/.test(f))) {
+  const launch = JSON.parse(fs.readFileSync(path.join(here, 'seed', file), 'utf8'));
+  const [{ results: done }] = await query(id, 'SELECT key FROM bot_state WHERE key = ?', [launch.key]);
+  if (done.length) continue;
+  for (const k of launch.publish) {
+    await query(
+      id,
+      `UPDATE contests SET title = ?, prize = ?, prize_usd = ?, description = ?, submit_opens_at = ?, submit_closes_at = ?, vote_closes_at = ?,
+         status = 'published', updated_at = ? WHERE slug = ?`,
+      [k.title, k.prize, k.prize_usd, k.description, k.submit_opens_at, k.submit_closes_at, k.vote_closes_at, new Date().toISOString(), k.slug],
+    );
+  }
+  await query(id, "INSERT INTO bot_state (key, value, updated_at) VALUES (?, 'applied', ?)", [launch.key, new Date().toISOString()]);
+  console.log(`Contest launch ${launch.key}: published ${launch.publish.map((k) => k.slug).join(', ')}`);
+}
+
 // 5. Upload storage for artwork: R2 bucket (10 GB free) if R2 is enabled on the account, else a KV namespace (1 GB free)
 const wranglerPath = path.join(root, 'wrangler.jsonc');
 let wrangler = fs.readFileSync(wranglerPath, 'utf8').replace(/"database_id": "[^"]*"/, `"database_id": "${id}"`);

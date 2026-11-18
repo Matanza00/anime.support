@@ -10,7 +10,7 @@ export const metadata = {
 export default function Rules() {
   return (
     <StaticPage eyebrow="Creator Studio" title="Official contest rules">
-      <p><em>Last updated: November 5, 2026. Each contest page states its own theme, dates and prize; those details form part of these rules.</em></p>
+      <p><em>Last updated: November 18, 2026. Each contest page states its own theme, dates and prize; those details form part of these rules.</em></p>
       <p><strong>No purchase or payment is necessary to enter or win.</strong> Entering and voting are free. Paying does not improve your chances.</p>
 
       <h2>1. Organizer</h2>
@@ -51,6 +51,7 @@ export default function Rules() {
       <h2>7. Prizes</h2>
       <ul>
         <li>The prize for each contest is stated on its contest page. Cash prizes are paid in US dollars (or local equivalent) within 30 days of verification, by bank transfer, Payoneer, Wise or another method we agree with the winner. We cover our own sending fees.</li>
+        <li>Gift-card prizes are sent as digital gift cards of the stated US dollar value (for example Amazon or another major store available in the winner&apos;s country), by email within 30 days of verification.</li>
         <li>Winners are contacted through their account email. If a winner does not reply within 14 days, or cannot legally receive the prize, the prize may go to the next eligible entry.</li>
         <li>Winners are responsible for any taxes on their prize in their country. Prizes cannot be transferred.</li>
         <li>Winners are featured on {SITE.name} with their entry and name or username.</li>
