@@ -7,7 +7,7 @@ import { MostRead, TrendingChart, ComingSoon } from '@/components/Widgets';
 import { allArticles, animeHubs } from '@/lib/db';
 import { ShowGrid } from '@/components/ShowCard';
 import Schedule from '@/components/Schedule';
-import { scheduleData, showsInSeason, seasonOf, seasonId, seasonLabel } from '@/lib/catalog';
+import { scheduleData, showsInSeason, seasonOf, seasonId, seasonLabel, animePages, indexable } from '@/lib/catalog';
 import { CATEGORIES, SITE, articlePath, catLabel, formatDate } from '@/lib/site';
 import { JsonLd, publisher, ogBase } from '@/lib/seo';
 import AdsScript from '@/components/AdsScript';
@@ -26,7 +26,15 @@ export default async function Home() {
   const [lead, ...rest] = all;
   const secondary = rest.slice(0, 3);
   const latest = rest.slice(3, 15);
-  const hubs = (await animeHubs()).slice(0, 16);
+  // "Follow your anime": only shows whose page exists, linked by their main address
+  const animeLinks = await animePages();
+  const hubs = [];
+  for (const h of await animeHubs()) {
+    const pg = animeLinks.get(h.slug);
+    const main = pg && (pg.alias ? animeLinks.get(pg.canonical) : pg);
+    if (main && indexable(main) && !hubs.some((x) => x.slug === pg.canonical)) hubs.push({ slug: pg.canonical, name: main.show?.title || h.name });
+    if (hubs.length === 16) break;
+  }
   const byCat = (c) => all.filter((a) => a.category === c).slice(0, 3);
   const cur = seasonOf();
   const seasonTop = (await showsInSeason(cur)).filter((x) => x.country !== 'CN').slice(0, 12);

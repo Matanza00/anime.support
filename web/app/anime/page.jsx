@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 export default async function AnimeIndex() {
-  const shows = await allShows();
+  const shows = (await allShows()).filter((s) => s.hasPage);
   const airing = shows.filter((s) => s.status === 'RELEASING' && s.country !== 'CN').slice(0, 18);
   const soon = shows.filter((s) => s.status === 'NOT_YET_RELEASED').slice(0, 12);
   const classics = shows.filter((s) => s.status === 'FINISHED').slice(0, 12);

@@ -6,7 +6,7 @@ export const dynamic = 'force-static';
 
 export async function GET() {
   const stories = (await allArticles()).map((a) => ({ s: a.slug, t: a.title, a: a.anime ?? [], e: a.excerpt }));
-  const shows = (await allShows()).map((x) => ({
+  const shows = (await allShows()).filter((x) => x.hasPage).map((x) => ({
     k: 'a',
     s: x.slug,
     t: x.title,

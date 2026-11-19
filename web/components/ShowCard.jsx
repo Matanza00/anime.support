@@ -5,8 +5,9 @@ import NextEpisode from './NextEpisode';
 /** Portrait poster card for one show in the catalog. */
 export default function ShowCard({ show: s, rank, eager = false, detail }) {
   const year = s.season_year || s.start_date?.slice(0, 4);
+  const Tag = s.hasPage === false ? 'div' : 'a'; // shows without their own page aren't links
   return (
-    <a className="show-card" href={`/anime/${s.slug}/`}>
+    <Tag className="show-card" href={s.hasPage === false ? undefined : `/anime/${s.slug}/`}>
       <div className="poster" style={{ '--h': hueFor(s.title), '--c': s.cover_color || undefined }}>
         {s.cover_url ? <img src={s.cover_url} alt={s.title} loading={eager ? 'eager' : 'lazy'} decoding="async" referrerPolicy="no-referrer" /> : <b>{s.title}</b>}
         {rank && <span className="rank">{rank}</span>}
@@ -20,7 +21,7 @@ export default function ShowCard({ show: s, rank, eager = false, detail }) {
           {detail ?? (s.status === 'RELEASING' && s.next_airing_at ? <NextEpisode at={s.next_airing_at} ep={s.next_episode} short /> : <span>{statusLabel(s.status)}</span>)}
         </div>
       </div>
-    </a>
+    </Tag>
   );
 }
 

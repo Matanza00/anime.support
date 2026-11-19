@@ -26,7 +26,7 @@ function parse(r) {
 const useDb = () => d1Configured() && process.env.SAMPLE_DATA !== '1';
 
 /** Every show in the catalog, most popular first. Fetched once per build. */
-export async function allShows() {
+async function loadShows() {
   if (showsCache) return showsCache;
   if (process.env.SAMPLE_DATA === '1') return (showsCache = (await import('./sample-catalog.js')).SHOWS.map(parse));
   if (!useDb()) return (showsCache = []);
@@ -167,10 +167,13 @@ export async function showForName(name) {
 
 /** Link for an anime name used in a news story: its catalog page when we have one. */
 export async function animeHref(name) {
-  const p = (await animePages()).get(slugify(preferredName(name)));
-  if (p) return `/anime/${p.canonical}/`;
+  const pages = await animePages();
+  const p = pages.get(slugify(preferredName(name)));
+  const target = p && (p.alias ? pages.get(p.canonical) : p);
+  if (target && indexable(target)) return `/anime/${p.canonical}/`;
   const s = await showForName(name);
-  return `/anime/${s ? s.slug : slugify(name)}/`;
+  if (s?.hasPage) return `/anime/${s.slug}/`;
+  return `/search/?q=${encodeURIComponent(name)}`;
 }
 
 /** The page (show or news hub) an anime name belongs to. */
@@ -245,10 +248,26 @@ export function groupVariants(slugs) {
   return groups.map((g) => g.slugs);
 }
 
+let linked = false;
+/**
+ * Every catalog show, each marked with hasPage: whether it has its own /anime/ page. Only shows with a
+ * write-up or news coverage get one; the rest appear on charts and schedules without a link, so the site
+ * has no empty, templated pages.
+ */
+export async function allShows() {
+  const shows = await loadShows();
+  if (!linked) {
+    linked = true;
+    await animePages();
+  }
+  return shows;
+}
+
 export async function animePages() {
   if (pagesCache) return pagesCache;
+  linked = true; // shows looked up while building don't need to wait for this
   const pages = new Map();
-  for (const s of await allShows()) pages.set(s.slug, { show: s, hub: null, canonical: s.slug });
+  for (const s of await loadShows()) pages.set(s.slug, { show: s, hub: null, canonical: s.slug });
   const newsOnly = new Map();
   const renamed = new Map(); // old hub slug → the slug of the name it was filed under (NAME_EQUIV)
   const aliasOf = (slug, target) => {
@@ -277,12 +296,14 @@ export async function animePages() {
     for (const r of rest) pages.set(r, { show: null, hub, canonical: main, alias: true });
   }
   for (const [from, to] of renamed) aliasOf(from, to);
+  for (const sh of await loadShows()) sh.hasPage = indexable(pages.get(sh.slug));
   return (pagesCache = pages);
 }
 
 /** Old or duplicate anime URLs → the page they belong to, for permanent (301) redirects. */
 export async function animeRedirects() {
-  return [...(await animePages()).entries()].filter(([, p]) => p.alias).map(([from, p]) => [`/anime/${from}/`, `/anime/${p.canonical}/`]);
+  const pages = await animePages();
+  return [...pages.entries()].filter(([, p]) => p.alias && indexable(pages.get(p.canonical))).map(([from, p]) => [`/anime/${from}/`, `/anime/${p.canonical}/`]);
 }
 function mergeHub(a, b) {
   if (!a) return b;
@@ -309,7 +330,7 @@ export async function scheduleData() {
     t: at,
     e: episode,
     of: s.episodes || undefined,
-    s: s.slug,
+    s: s.hasPage ? s.slug : undefined,
     n: s.title,
     c: s.cover_url || undefined,
     col: s.cover_color || undefined,

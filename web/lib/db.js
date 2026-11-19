@@ -102,3 +102,10 @@ export async function trendingAnime(limit = 10) {
   trendingCache = list;
   return list.slice(0, limit);
 }
+
+/** Articles that were published and later taken down (pruned or unpublished): their URLs redirect. */
+export async function removedArticles() {
+  if (process.env.SAMPLE_DATA === '1' || !d1Configured()) return [];
+  const rows = await query("SELECT slug, anime FROM articles WHERE status = 'rejected' AND published_at IS NOT NULL LIMIT 2000");
+  return rows.map(parseRow);
+}

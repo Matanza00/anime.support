@@ -35,7 +35,7 @@ export async function TrendingChart({ limit = 10 }) {
   for (const t of await trendingAnime(limit * 3)) {
     const page = await pageForName(t.name);
     const show = page?.show ?? (await showForName(t.name));
-    const href = show ? `/anime/${show.slug}/` : page ? `/anime/${page.canonical}/` : `/search/?q=${encodeURIComponent(t.name)}`;
+    const href = show?.hasPage ? `/anime/${show.slug}/` : page && !page.show ? `/anime/${page.canonical}/` : `/search/?q=${encodeURIComponent(t.name)}`;
     if (seen.has(href)) continue;
     seen.add(href);
     const hub = page?.hub ?? t.hub;
@@ -45,7 +45,7 @@ export async function TrendingChart({ limit = 10 }) {
   if (list.length < 5) {
     // no reader data yet: AniList's trending list
     const shows = [...(await allShows())].sort((a, b) => (b.trending || 0) - (a.trending || 0)).slice(0, limit);
-    if (shows.length >= 5) list = shows.map((s) => ({ key: s.slug, name: s.title, href: `/anime/${s.slug}/`, note: s.status === 'RELEASING' ? 'airing' : '' }));
+    if (shows.length >= 5) list = shows.map((s) => ({ key: s.slug, name: s.title, href: s.hasPage ? `/anime/${s.slug}/` : `/search/?q=${encodeURIComponent(s.title)}`, note: s.status === 'RELEASING' ? 'airing' : '' }));
   }
   if (!list.length) return null;
   return (

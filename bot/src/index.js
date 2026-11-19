@@ -15,6 +15,7 @@ import { catalog } from './catalog.js';
 import { remediaExisting } from './official-media.js';
 import { guides, interleaveGuides } from './guides.js';
 import { audit } from './audit.js';
+import { words } from './quality.js';
 import { sql, parseRow } from './d1.js';
 import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
@@ -65,6 +66,18 @@ const jobs = {
     if (await interleaveGuides()) requestDeploy();
   }),
   audit: guarded('audit', audit),
+  // one-off clean-up: take very short news stories off the site (their URLs redirect to the show page)
+  prune: guarded('prune', async () => {
+    const rows = await sql("SELECT id, slug, title, body_md, cluster_key FROM articles WHERE status = 'published'");
+    const guide = /-(watch-order|where-to-watch|beginners-guide|how-long-to-watch|whats-next)$/;
+    const cut = rows.filter((r) => !guide.test(r.slug) && !String(r.cluster_key || '').startsWith('manual:') && words(r.body_md) < 200);
+    for (const r of cut) {
+      await sql("UPDATE articles SET status = 'rejected', updated_at = ? WHERE id = ?", [new Date().toISOString(), r.id]);
+      log(`Unpublished (${words(r.body_md)} words): ${r.title}`);
+    }
+    log(`${cut.length} short stories unpublished`);
+    if (cut.length) requestDeploy();
+  }),
   // swap generated artwork for official images on existing drafts and articles
   media: guarded('media', async () => {
     if (await remediaExisting({ sql, parseRow })) requestDeploy();

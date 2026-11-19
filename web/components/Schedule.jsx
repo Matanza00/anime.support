@@ -72,9 +72,9 @@ export default function Schedule({ slots, builtAt, compact = false, limitDays, m
             {list.map((s) => {
               const left = s.t - now;
               return (
-                <li key={`${s.s}-${s.e}`} className={left <= 0 ? 'aired' : ''}>
+                <li key={`${s.s || s.n}-${s.e}`} className={left <= 0 ? 'aired' : ''}>
                   <time dateTime={new Date(s.t * 1000).toISOString()}>{timeOf(s.t, tz)}</time>
-                  <a href={`/anime/${s.s}/`} className="sched-show">
+                  <a href={s.s ? `/anime/${s.s}/` : undefined} className="sched-show">
                     <span className="thumb" style={{ background: s.col || undefined }}>{s.c && <img src={s.c} alt={`${s.n} cover`} loading="lazy" referrerPolicy="no-referrer" />}</span>
                     <span>
                       <strong>{s.n}</strong>

@@ -22,7 +22,9 @@ async function page(tag) {
 }
 
 export async function generateStaticParams() {
-  const list = [...(await animePages()).keys()].map((tag) => ({ tag }));
+  // only shows with a write-up or news get a page (and their old/alternative URLs, which redirect)
+  const pages = await animePages();
+  const list = [...pages.entries()].filter(([, p]) => indexable(p.alias ? pages.get(p.canonical) : p)).map(([tag]) => ({ tag }));
   return list.length ? list : [{ tag: '__none' }];
 }
 

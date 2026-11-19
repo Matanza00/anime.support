@@ -11,6 +11,7 @@ import { mediaFromPage, buildMedia } from './media.js';
 import { createArtwork } from './artwork.js';
 import { coverFromOfficialMedia, collageCover } from './official-media.js';
 import { allowedByRobots } from './robots.js';
+import { qualityProblem } from './quality.js';
 
 const VALID_CATEGORIES = new Set(['news', 'upcoming', 'release', 'feature']);
 
@@ -70,9 +71,14 @@ export function findDuplicate({ title, anime = [] }, recent) {
  * (confidence >= AUTO_PUBLISH_MIN_CONFIDENCE, default 0.85), and at most AUTO_PUBLISH_MAX_PER_DAY a day.
  * Everything else still waits for you in the dashboard.
  */
-async function shouldAutoPublish(out) {
+async function shouldAutoPublish(out, anime) {
   if (!CONFIG.autoPublish.on) return false;
   if (typeof out.confidence !== 'number' || out.confidence < CONFIG.autoPublish.minConfidence) return false;
+  const problem = await qualityProblem({ title: out.title, body: out.body_markdown, anime });
+  if (problem) {
+    log(`Kept as draft (${problem}): ${out.title}`);
+    return false;
+  }
   const since = new Date(Date.now() - 864e5).toISOString();
   const { n } = (await sql("SELECT COUNT(*) AS n FROM articles WHERE status = 'published' AND published_at >= ? AND cluster_key IS NOT NULL", [since]))[0];
   return n < CONFIG.autoPublish.maxPerDay;
@@ -161,7 +167,7 @@ export async function draft() {
       (!anime.length ? await collageCover({ slug, title: String(out.title), category, sql }) : null) ??
       (await createArtwork({ slug, title: String(out.title), anime, category, imagePrompt: out.image_prompt }));
     if (art.cover_url) Object.assign(mediaInfo, { cover_url: art.cover_url, cover_credit: art.cover_credit });
-    const publishNow = await shouldAutoPublish(out);
+    const publishNow = await shouldAutoPublish(out, anime);
     await insert('articles', {
           slug,
           title: String(out.title).slice(0, 140),

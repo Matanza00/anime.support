@@ -19,11 +19,11 @@ function RankRow({ s, rank, anticipated }) {
   return (
     <li className="rank-row glass" id={`rank-${rank}`}>
       <span className="rank-n">{rank}</span>
-      <a className="rank-poster" href={`/anime/${s.slug}/`} style={{ '--h': hueFor(s.title), '--c': s.cover_color || undefined }}>
+      <a className="rank-poster" href={s.hasPage ? `/anime/${s.slug}/` : undefined} style={{ '--h': hueFor(s.title), '--c': s.cover_color || undefined }}>
         {s.cover_url ? <img src={s.cover_url} alt={`${s.title} poster`} loading={rank <= 3 ? 'eager' : 'lazy'} referrerPolicy="no-referrer" /> : <b>{s.title}</b>}
       </a>
       <div className="rank-body">
-        <h2><a href={`/anime/${s.slug}/`}>{s.title}</a></h2>
+        <h2>{s.hasPage ? <a href={`/anime/${s.slug}/`}>{s.title}</a> : s.title}</h2>
         <p className="meta">{facts.join(' · ')}</p>
         {firstSentence(s.summary) && <p>{firstSentence(s.summary)}</p>}
         <p className="rank-stats">
@@ -37,7 +37,7 @@ function RankRow({ s, rank, anticipated }) {
           )}
           {s.genres?.slice(0, 3).map((g) => <span key={g} className="chip">{g}</span>)}
         </p>
-        {!anticipated && <p className="meta">{watch.length ? <>Watch on {watch.join(', ')} · </> : null}<a href={`/anime/${s.slug}/#watch`}>Where to watch</a></p>}
+        {!anticipated && <p className="meta">{watch.length ? <>Watch on {watch.join(', ')} · </> : null}{s.hasPage ? <a href={`/anime/${s.slug}/#watch`}>Where to watch</a> : 'Availability depends on your country'}</p>}
       </div>
     </li>
   );
@@ -57,7 +57,7 @@ export async function RankingView({ p }) {
       name: p.title,
       numberOfItems: p.items.length,
       itemListOrder: 'https://schema.org/ItemListOrderDescending',
-      itemListElement: p.items.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, url: absUrl(`/anime/${s.slug}/`) })),
+      itemListElement: p.items.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title, ...(s.hasPage ? { url: absUrl(`/anime/${s.slug}/`) } : {}) })),
     },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
   ];

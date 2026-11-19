@@ -8,6 +8,7 @@ import { absolute } from './storage.js';
 import { CONFIG } from './config.js';
 import { facebookEnabled, postToPage } from './facebook.js';
 import { log, warn } from './log.js';
+import { qualityProblem } from './quality.js';
 
 const run = promisify(execFile);
 
@@ -142,13 +143,21 @@ export async function autoApproveWaiting() {
   const [{ n }] = await sql("SELECT COUNT(*) AS n FROM articles WHERE status = 'published' AND published_at >= ? AND cluster_key IS NOT NULL", [since]);
   const room = Math.max(0, CONFIG.autoPublish.maxPerDay - n);
   if (!room) return 0;
-  const rows = await sql(
-    `UPDATE articles SET status = 'published', published_at = ?, updated_at = ?
-      WHERE id IN (SELECT id FROM articles WHERE status = 'draft' AND COALESCE(confidence, 0) >= ? AND created_at >= ?
-                   ORDER BY priority DESC, created_at DESC LIMIT ?)
-      RETURNING title`,
-    [new Date().toISOString(), new Date().toISOString(), CONFIG.autoPublish.minConfidence, new Date(Date.now() - 4 * 864e5).toISOString(), room],
+  const waiting = await sql(
+    `SELECT id, title, body_md, anime FROM articles WHERE status = 'draft' AND COALESCE(confidence, 0) >= ? AND created_at >= ?
+      ORDER BY priority DESC, created_at DESC LIMIT 20`,
+    [CONFIG.autoPublish.minConfidence, new Date(Date.now() - 4 * 864e5).toISOString()],
   );
+  const rows = [];
+  for (const d of waiting) {
+    if (rows.length >= room) break;
+    let anime = [];
+    try { anime = JSON.parse(d.anime) || []; } catch {}
+    if (await qualityProblem({ id: d.id, title: d.title, body: d.body_md, anime })) continue; // stays a draft for the editor
+    const now = new Date().toISOString();
+    await sql("UPDATE articles SET status = 'published', published_at = ?, updated_at = ? WHERE id = ? AND status = 'draft'", [now, now, d.id]);
+    rows.push(d);
+  }
   for (const r of rows) log(`Auto-published waiting draft: ${r.title}`);
   return rows.length;
 }

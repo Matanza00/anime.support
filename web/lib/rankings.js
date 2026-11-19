@@ -77,10 +77,15 @@ export async function rankingPages() {
       });
     }
     const lastMonth = y === n.getUTCFullYear() ? n.getUTCMonth() : 11;
+    let later = null; // the top 10 of the month after this one that we kept
     for (let m = lastMonth; m >= 0; m--) {
       const items = monthSeries(shows, y, m);
       if (items.length < MIN_ITEMS) continue;
       const current = y === n.getUTCFullYear() && m === n.getUTCMonth();
+      // most shows air for ~3 months: skip a month whose top 10 mostly repeats the following month's
+      const top = items.slice(0, SIZE).map((s) => s.id);
+      if (!current && later && top.filter((id) => later.includes(id)).length >= 6) continue;
+      later = top;
       const label = `${monthName(m)} ${y}`;
       pages.push({
         id: `${y}/${MONTHS[m]}`, kind: 'month', year: y, month: m, current,

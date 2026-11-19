@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
 export default async function Browse({ params }) {
   const { letter } = await params;
   if (!LETTERS.includes(letter)) notFound();
-  const shows = (await allShows()).filter((s) => letterOf(s.title) === letter).sort((a, b) => a.title.localeCompare(b.title, 'en'));
+  const shows = (await allShows()).filter((s) => s.hasPage && letterOf(s.title) === letter).sort((a, b) => a.title.localeCompare(b.title, 'en'));
   return (
     <div className="wrap">
       <JsonLd data={breadcrumbs([['Home', '/'], ['Anime', '/anime/'], [letter.toUpperCase(), `/anime/browse/${letter}/`]])} />
