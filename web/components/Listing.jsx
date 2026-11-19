@@ -5,6 +5,7 @@ import { MostRead, TrendingChart } from './Widgets';
 import { allArticles } from '@/lib/db';
 import { CATEGORIES } from '@/lib/site';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const PER_PAGE = 24;
 
@@ -45,6 +46,7 @@ export default async function Listing({ section, page = 1, children, newsTitle }
 
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], [s.label, s.path]])} />
       <header className="page-head">
         <p className="eyebrow">Section</p>

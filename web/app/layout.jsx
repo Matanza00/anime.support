@@ -29,9 +29,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {SITE.adsClient && (
-          <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsClient}`} crossOrigin="anonymous" />
-        )}
         {SITE.gtm && (
           <>
             {/* Google tag (Analytics), loaded through the Tag Manager container Google created */}

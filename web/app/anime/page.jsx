@@ -5,6 +5,7 @@ import Cover from '@/components/Cover';
 import AdSlot from '@/components/AdSlot';
 import { ShowGrid } from '@/components/ShowCard';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const metadata = {
   title: 'Anime database: every show, where to watch and what is airing',
@@ -22,6 +23,7 @@ export default async function AnimeIndex() {
   const cur = seasonOf();
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Anime', '/anime/']])} />
       <header className="page-head">
         <p className="eyebrow">Database</p>

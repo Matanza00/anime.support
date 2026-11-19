@@ -6,6 +6,7 @@ import { hueFor } from '@/lib/site';
 import { SITE, absUrl } from '@/lib/site';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
 import { introFor, faqFor, rankingPages, monthName } from '@/lib/rankings';
+import AdsScript from '@/components/AdsScript';
 
 const firstSentence = (t) => {
   const m = String(t || '').match(/^(.{40,220}?[.!?])(\s|$)/);
@@ -65,6 +66,7 @@ export async function RankingView({ p }) {
   const others = all.filter((x) => x.kind === 'donghua' || x.kind === 'anticipated');
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={jsonLd} />
       <header className="page-head">
         <p className="eyebrow">Top 10 · updated {updated}</p>

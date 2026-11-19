@@ -5,6 +5,7 @@ import { upcomingReleases } from '@/lib/db';
 import { premieres } from '@/lib/catalog';
 import { formatDate } from '@/lib/site';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const metadata = {
   title: 'Anime release calendar: every confirmed premiere date',
@@ -32,6 +33,7 @@ export default async function Calendar() {
 
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Release calendar', '/calendar/']])} />
       <header className="page-head">
         <p className="eyebrow">Countdown</p>

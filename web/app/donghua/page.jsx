@@ -2,6 +2,7 @@ import { allShows } from '@/lib/catalog';
 import { ShowGrid } from '@/components/ShowCard';
 import AdSlot from '@/components/AdSlot';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const metadata = {
   title: 'Donghua: Chinese anime airing now and where to watch',
@@ -16,6 +17,7 @@ export default async function Donghua() {
   const done = cn.filter((s) => s.status === 'FINISHED').slice(0, 36);
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Donghua', '/donghua/']])} />
       <header className="page-head">
         <p className="eyebrow">Chinese anime</p>

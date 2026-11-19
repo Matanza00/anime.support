@@ -10,6 +10,7 @@ import Schedule from '@/components/Schedule';
 import { scheduleData, showsInSeason, seasonOf, seasonId, seasonLabel } from '@/lib/catalog';
 import { CATEGORIES, SITE, articlePath, catLabel, formatDate } from '@/lib/site';
 import { JsonLd, publisher, ogBase } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 const HOME_DESCRIPTION = 'anime.support is an independent anime news site: confirmed announcements, release dates, airing schedules, seasonal charts and where to watch every show legally.';
 
@@ -53,6 +54,7 @@ export default async function Home() {
 
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={jsonLd} />
       <div className="home-hero">
         <SketchFight />

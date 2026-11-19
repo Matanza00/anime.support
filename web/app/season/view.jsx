@@ -3,6 +3,7 @@ import { ShowGrid } from '@/components/ShowCard';
 import AdSlot from '@/components/AdSlot';
 import { showsInSeason, allShows, seasonWindow, seasonId, seasonLabel } from '@/lib/catalog';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export async function SeasonView({ s, isIndex = false }) {
   const list = await showsInSeason(s);
@@ -21,6 +22,7 @@ export async function SeasonView({ s, isIndex = false }) {
   const path = `/season/${seasonId(s)}/`;
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Seasons', '/season/'], ...(isIndex ? [] : [[name, path]])])} />
       <header className="page-head">
         <p className="eyebrow">Seasonal chart</p>

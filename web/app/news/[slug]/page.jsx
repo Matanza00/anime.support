@@ -15,6 +15,7 @@ import { guidesIn, guideType } from '@/lib/guides';
 import { coverAlt } from '@/components/Cover';
 import { CATEGORIES, SITE, absUrl, articlePath, catLabel, formatDate, readingTime, slugify } from '@/lib/site';
 import { JsonLd, breadcrumbs, publisher, ogBase } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const dynamicParams = false;
 const EMPTY = '__none';
@@ -99,6 +100,7 @@ export default async function ArticlePage({ params }) {
 
   return (
     <div className="wrap section">
+      <AdsScript />
       <JsonLd data={jsonLd} />
       <ReaderRevenue />
       <ArticleClient slug={a.slug} scripts={[...scripts]} />

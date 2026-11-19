@@ -2,6 +2,7 @@ import Schedule from '@/components/Schedule';
 import AdSlot from '@/components/AdSlot';
 import { scheduleData } from '@/lib/catalog';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const metadata = {
   title: 'Anime airing schedule this week (in your time zone)',
@@ -13,6 +14,7 @@ export default async function SchedulePage() {
   const slots = await scheduleData();
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Airing schedule', '/schedule/']])} />
       <header className="page-head">
         <p className="eyebrow">This week</p>

@@ -1,7 +1,7 @@
 import StaticPage from '@/components/StaticPage';
 import { SITE } from '@/lib/site';
 
-export const metadata = { title: 'About us and editorial policy', description: `What ${SITE.name} is, how we report, how we use AI, and how we correct mistakes.`, alternates: { canonical: '/about/' } };
+export const metadata = { title: 'About us and editorial policy', description: `What ${SITE.name} is, how articles are made, where our information comes from, and how we correct mistakes.`, alternates: { canonical: '/about/' } };
 
 export default function About() {
   return (
@@ -15,8 +15,9 @@ export default function About() {
         <li>Release dates appear in our calendar only once they are officially confirmed.</li>
         <li>Major spoilers are hidden behind tap-to-reveal spoiler boxes.</li>
       </ul>
-      <h2>How we use AI</h2>
-      <p>We use AI tools to monitor sources, prepare first drafts and create original illustrations. A human editor reviews, fact-checks and approves every article before it is published. Illustrations are original artwork and never copies of studio art; where we use official promotional images, they are credited.</p>
+      <h2>How articles are made</h2>
+      <p>Most news stories are written with the help of AI. Our system watches official studio, publisher and streaming announcements and established anime news outlets, and drafts a story only when an announcement comes from a named source. Each draft is checked automatically before it goes live: it must cite its sources, stick to what they say and pass a confidence check, or it is not published. Our editor also writes articles by hand, reviews published stories and corrects them when needed.</p>
+      <p>Show details (episode counts, studios, air dates and fan scores) come from <a href="https://anilist.co" target="_blank" rel="noopener">AniList</a> and are refreshed daily. Pictures are official promotional images such as key visuals and trailer stills, credited to their owners; we never generate fake &ldquo;official&rdquo; art.</p>
       <h2>Corrections</h2>
       <p>If we get something wrong, we fix it and update the article. Send corrections to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
       <h2>Independence</h2>

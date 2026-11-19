@@ -1,5 +1,6 @@
 // One page per anime: catalog facts (AniList), where to watch it legally, the next episode, our own
 // overview and every news story we wrote about it. News-only hubs (no catalog match) still work.
+import AdsScript from '@/components/AdsScript';
 import { notFound } from 'next/navigation';
 import Card from '@/components/Card';
 import Cover from '@/components/Cover';
@@ -64,7 +65,13 @@ export async function generateMetadata({ params }) {
 export default async function AnimePage({ params }) {
   const p = await page((await params).tag);
   if (!p) notFound();
-  return p.show ? <ShowPage p={p} /> : <HubPage h={p.hub} />;
+  // ads only where there's a real write-up or news to read (thin database pages stay ad-free)
+  return (
+    <>
+      {indexable(p) && <AdsScript />}
+      {p.show ? <ShowPage p={p} /> : <HubPage h={p.hub} />}
+    </>
+  );
 }
 
 /* ---------------- catalog show ---------------- */

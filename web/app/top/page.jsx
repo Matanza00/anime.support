@@ -1,5 +1,6 @@
 import { rankingPages, monthName, thisYear } from '@/lib/rankings';
 import { JsonLd, breadcrumbs } from '@/lib/seo';
+import AdsScript from '@/components/AdsScript';
 
 export const metadata = {
   title: 'Top 10 anime rankings: best anime of the year and month',
@@ -21,6 +22,7 @@ export default async function TopIndex() {
   );
   return (
     <div className="wrap">
+      <AdsScript />
       <JsonLd data={breadcrumbs([['Home', '/'], ['Top 10', '/top/']])} />
       <header className="page-head">
         <p className="eyebrow">Rankings</p>
