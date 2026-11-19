@@ -14,6 +14,7 @@ import { seed } from './seed.js';
 import { catalog } from './catalog.js';
 import { remediaExisting } from './official-media.js';
 import { guides, interleaveGuides } from './guides.js';
+import { audit } from './audit.js';
 import { sql, parseRow } from './d1.js';
 import { requestDeploy } from './publish.js';
 import { startReviewServer } from './review-server.js';
@@ -63,6 +64,7 @@ const jobs = {
   'mix-guides': guarded('mix-guides', async () => {
     if (await interleaveGuides()) requestDeploy();
   }),
+  audit: guarded('audit', audit),
   // swap generated artwork for official images on existing drafts and articles
   media: guarded('media', async () => {
     if (await remediaExisting({ sql, parseRow })) requestDeploy();

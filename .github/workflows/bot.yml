@@ -21,7 +21,7 @@ on:
       task:
         description: 'Task to run'
         type: choice
-        options: [collect-and-publish, collect, publish, optimize, catalog, guides, mix-guides, media, approve-drafts, seed]
+        options: [collect-and-publish, collect, publish, optimize, catalog, guides, mix-guides, media, approve-drafts, seed, audit]
         default: collect-and-publish
 
 permissions:
@@ -120,6 +120,11 @@ jobs:
         if: env.TASK == 'mix-guides'
         run: node src/index.js mix-guides 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
         working-directory: bot
+
+      - name: Content audit (read-only)
+        if: env.TASK == 'audit'
+        working-directory: bot
+        run: node src/index.js audit 2>&1 | tee -a "$RUNNER_TEMP/report.txt"
 
       - name: Official images for existing articles
         id: media
