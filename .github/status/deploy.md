@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-19T19:14:15Z
-- Commit: 0ca717d
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44595876514
+- When: 2026-11-20T01:47:05Z
+- Commit: 6912112
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44655409406
 
 ```
 + /anime/precure/__next._tree.txt
@@ -25,10 +25,10 @@
 + /anime/full-clearing-another-world-under-a-goddess-with-zero-believers/__next._tree.txt
 + /anime/love-live-hasu-no-sora-jogakuin-school-idol-club/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 802 of 2406 assets
-Uploaded 1604 of 2406 assets
-Uploaded 2406 of 2406 assets
-✨ Success! Uploaded 2406 files (1756 already uploaded) (14.01 sec)
+Uploaded 812 of 2435 assets
+Uploaded 1624 of 2435 assets
+Uploaded 2435 of 2435 assets
+✨ Success! Uploaded 2435 files (1769 already uploaded) (6.29 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Worker Startup Time: 1 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (20.06 sec)
-Deployed anime-support triggers (2.12 sec)
+Uploaded anime-support (10.69 sec)
+Deployed anime-support triggers (1.12 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: a5952aaf-cd38-49fe-be7f-30b4f911e2a0
+Current Version ID: 580db933-d1f7-40aa-ad3c-08e73e63a093
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 9 URLs → HTTP 200 (accepted)
+IndexNow: submitted 213 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-19T19:12:33.208Z
+Live site marked as built from content up to 2026-11-20T01:45:45.238Z
 
  ⛅️ wrangler 4.158.0 (update available 4.165.0)
 ───────────────────────────────────────────────
