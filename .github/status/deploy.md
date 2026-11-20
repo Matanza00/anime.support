@@ -1,16 +1,17 @@
 # Last deploy: success
 
-- When: 2026-11-20T01:47:05Z
-- Commit: 6912112
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44655409406
+- When: 2026-11-20T04:24:06Z
+- Commit: 7ae1e48
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44673421948
 
 ```
-+ /anime/precure/__next._tree.txt
-+ /anime/millennium-family/__next._tree.txt
-+ /anime/godzilla-minus-zero/__next._tree.txt
-+ /anime/the-detective-is-already-dead-season-2/__next._tree.txt
-+ /anime/not-sew-wicked-stepmom/__next._tree.txt
-+ /anime/exorcist-o-otosenai/__next._tree.txt
++ /anime/magical-girl-raising-project-restart/__next._tree.txt
++ /anime/tsugumi-project/__next._tree.txt
++ /anime/dan-katsu/__next._tree.txt
++ /anime/nippon-anime-awards/__next._tree.txt
++ /anime/ace-of-the-diamond-act-ii-second-season/__next._tree.txt
++ /news/anime-seasons-explained-winter-spring-summer-fall/__next._tree.txt
++ /anime/paradox-live-the-movie/__next._tree.txt
 + /anime/world-trigger/__next._tree.txt
 + /anime/cardfight-vanguard-divinez-parallactic-fate/__next._tree.txt
 + /anime/paradox-live-the-animation/__next._tree.txt
@@ -23,12 +24,11 @@
 + /anime/magical-sisters-lulutto-lilly/__next._tree.txt
 + /anime/fatal-fury-city-of-the-wolves/__next._tree.txt
 + /anime/full-clearing-another-world-under-a-goddess-with-zero-believers/__next._tree.txt
-+ /anime/love-live-hasu-no-sora-jogakuin-school-idol-club/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 812 of 2435 assets
-Uploaded 1624 of 2435 assets
-Uploaded 2435 of 2435 assets
-✨ Success! Uploaded 2435 files (1769 already uploaded) (6.29 sec)
+Uploaded 821 of 2465 assets
+Uploaded 1643 of 2465 assets
+Uploaded 2465 of 2465 assets
+✨ Success! Uploaded 2465 files (1787 already uploaded) (6.18 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Worker Startup Time: 1 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (10.69 sec)
-Deployed anime-support triggers (1.12 sec)
+Uploaded anime-support (10.07 sec)
+Deployed anime-support triggers (1.00 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 580db933-d1f7-40aa-ad3c-08e73e63a093
+Current Version ID: b842e4ad-461f-434b-9514-ab3c4c0abbc9
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 213 URLs → HTTP 200 (accepted)
+IndexNow: submitted 275 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-20T01:45:45.238Z
+Live site marked as built from content up to 2026-11-20T04:22:44.730Z
 
  ⛅️ wrangler 4.158.0 (update available 4.165.0)
 ───────────────────────────────────────────────
