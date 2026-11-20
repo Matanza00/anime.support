@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-20T06:20:19Z
-- Commit: a5f98b6
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44686763835
+- When: 2026-11-20T09:15:17Z
+- Commit: b2764d5
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44708541106
 
 ```
 + /anime/yuri-is-my-job/__next._tree.txt
@@ -25,32 +25,32 @@
 + /anime/magical-sisters-lulutto-lilly/__next._tree.txt
 + /anime/fatal-fury-city-of-the-wolves/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 826 of 2479 assets
-Uploaded 1653 of 2479 assets
-Uploaded 2479 of 2479 assets
-✨ Success! Uploaded 2479 files (1809 already uploaded) (8.89 sec)
+Uploaded 825 of 2476 assets
+Uploaded 1651 of 2476 assets
+Uploaded 2476 of 2476 assets
+✨ Success! Uploaded 2476 files (1818 already uploaded) (6.24 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 3 ms
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (13.49 sec)
-Deployed anime-support triggers (1.68 sec)
+Uploaded anime-support (12.92 sec)
+Deployed anime-support triggers (2.23 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 59cbe8d0-6fc0-4699-be99-14c7064f90d5
+Current Version ID: 4fc2b956-aac2-4e5a-a0ab-32ecf869c209
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 280 URLs → HTTP 200 (accepted)
+IndexNow: submitted 279 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-20T06:19:04.317Z
+Live site marked as built from content up to 2026-11-20T09:14:08.475Z
 
  ⛅️ wrangler 4.158.0 (update available 4.165.0)
 ───────────────────────────────────────────────
