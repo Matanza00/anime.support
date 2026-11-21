@@ -1,38 +1,32 @@
 # Last bot run: success
 
-- When: 2026-11-21T06:22:42Z
+- When: 2026-11-21T08:20:23Z
 - Trigger: workflow_dispatch
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44874841568
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44884188238
 
 ```
 Task: collect-and-publish
-[21/11/2026, 06:17:53] Anime News Network: 1 new of 48 recent
-[21/11/2026, 06:17:54] Crunchyroll News: 0 new of 22 recent
-[21/11/2026, 06:17:55] MyAnimeList News: 0 new of 12 recent
-[21/11/2026, 06:17:55] Anime Corner: unchanged
-[21/11/2026, 06:17:56] Anime UK News: unchanged
-[21/11/2026, 06:17:58] Collect done: 1 new headlines
-[21/11/2026, 06:17:59] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
-[21/11/2026, 06:17:59] Free AI models available: inclusionai/ling-3.2-flash:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free, liquid/lfm-3-1.7b:free
-[21/11/2026, 06:19:32] Skipped "What Sailor Moon Fans Can Buy (& Eat) at Universal Studios Japan": The story is a merchandise-and-food shopping guide for a Universal Studios Japan tie-in (prices, menu items, churro flavors), not news about an anime or manga property itself; the CG anime short is only mentioned as one part of the park event.
-[21/11/2026, 06:19:35] WARN Free model inclusionai/ling-3.2-flash:free unavailable: 429 Provider returned error
-[21/11/2026, 06:19:37] WARN Free model particle-ai/particle-1:free unavailable: 429 Provider returned error
-[21/11/2026, 06:20:47] Official image (poster) used for mexican-street-artist-ekns-blends-anime-and-graffiti-in-vibrant-murals-rfkw
-[21/11/2026, 06:20:48] Auto-published: Mexican Street Artist Ekns Blends Anime and Graffiti in Vibrant Murals
-[21/11/2026, 06:20:51] Skipped "North American Anime, Manga Releases, November 15-21": too little factual detail
-[21/11/2026, 06:20:56] Skipped "This Week in Games - Cleaning Bots, Ocarina Thoughts, and Sonic's 35th Anniversary": Not about anime/manga/light novel/donghua; primarily a video game anniversary and Western animated short.
-[21/11/2026, 06:20:58] WARN Free model baidu/ernie-5.5-flash-preview:free unavailable: 429 Provider returned error
-[21/11/2026, 06:21:54] Official image (poster) used for yen-press-licenses-oshi-no-ko-spinoff-and-bungo-stray-dogs-prequel-novel-svos
-[21/11/2026, 06:21:54] Kept as draft (only 252 words (needs 300)): Yen Press Licenses Oshi no Ko Spinoff and Bungo Stray Dogs Prequel Novel
-[21/11/2026, 06:21:54] Drafted: Yen Press Licenses Oshi no Ko Spinoff and Bungo Stray Dogs Prequel Novel
-[21/11/2026, 06:22:37] Official image (poster) used for chiruran-manga-gets-new-all-female-stage-play-for-early-summer-2027-ttr8
-[21/11/2026, 06:22:37] Kept as draft (only 242 words (needs 300)): Chiruran Manga Gets New All-Female Stage Play for Early Summer 2027
-[21/11/2026, 06:22:38] Drafted: Chiruran Manga Gets New All-Female Stage Play for Early Summer 2027
-[21/11/2026, 06:22:38] Draft done: 3 new articles (written with free AI models: credits are empty)
-[21/11/2026, 06:22:40] Auto-published waiting draft: Total Fantasy Knockout Manga Ends With Volume 20, Wrapping the Isekai Bromance
-[21/11/2026, 06:22:40] Auto-published waiting draft: Duel Masters LOST Anime Green-Lights Fifth Part, Shitsuraku no Duel
-[21/11/2026, 06:22:40] Auto-published waiting draft: Doraemon: Nobita's Steam-Powered Time Machine Reveals 5 Guest Cast
-[21/11/2026, 06:22:40] Auto-published waiting draft: Mercedes and the Waning Moon Anime Sets January 10 Premiere and New Cast
-[21/11/2026, 06:22:40] Articles in the database: 19 draft, 232 published
-[21/11/2026, 06:22:42] Deploy triggered for 5 new article(s)
+[21/11/2026, 08:17:57] Anime News Network: 1 new of 49 recent
+[21/11/2026, 08:17:59] Crunchyroll News: 0 new of 22 recent
+[21/11/2026, 08:17:59] MyAnimeList News: 1 new of 13 recent
+[21/11/2026, 08:18:00] Anime Corner: unchanged
+[21/11/2026, 08:18:00] Anime UK News: unchanged
+[21/11/2026, 08:18:02] Collect done: 2 new headlines
+[21/11/2026, 08:18:03] WARN AI credits are empty (openai/gpt-4o-mini); switching to free models for this run. Top up at https://openrouter.ai/settings/credits
+[21/11/2026, 08:18:03] Free AI models available: inclusionai/ling-3.2-flash:free, particle-ai/particle-1:free, baidu/ernie-5.5-flash-preview:free, nvidia/nemotron-3.5-lightning:free, nvidia/nemotron-3-ultra-550b-a55b:free, liquid/lfm-3-1.7b:free
+[21/11/2026, 08:18:04] WARN Free model inclusionai/ling-3.2-flash:free unavailable: 429 Provider returned error
+[21/11/2026, 08:18:25] Official image (poster) used for a-sign-of-affection-manga-ends-in-3-chapters-final-volume-due-december-11-yopd
+[21/11/2026, 08:18:26] Drafted: A Sign of Affection Manga Ends in 3 Chapters, Final Volume Due December 11
+[21/11/2026, 08:18:27] WARN Free model particle-ai/particle-1:free unavailable: 429 Provider returned error
+[21/11/2026, 08:18:33] Skipped "Manga 'Yubisaki to Renren' Ends in Three Chapters": duplicate
+[21/11/2026, 08:19:41] Official image (poster) used for tougen-anki-season-2-adds-two-new-cast-members-for-nikko-kegon-falls-arc-0d2f
+[21/11/2026, 08:19:41] Kept as draft (only 295 words (needs 300)): Tougen Anki Season 2 Adds Two New Cast Members for Nikko Kegon Falls Arc
+[21/11/2026, 08:19:41] Drafted: Tougen Anki Season 2 Adds Two New Cast Members for Nikko Kegon Falls Arc
+[21/11/2026, 08:19:50] WARN Free model baidu/ernie-5.5-flash-preview:free unavailable: 429 Provider returned error
+[21/11/2026, 08:20:22] Official image (poster) used for please-put-them-on-takamine-san-manga-ends-after-nearly-8-years-18ng
+[21/11/2026, 08:20:22] Kept as draft (only 221 words (needs 300)): Please Put Them On, Takamine-san Manga Ends After Nearly 8 Years
+[21/11/2026, 08:20:22] Drafted: Please Put Them On, Takamine-san Manga Ends After Nearly 8 Years
+[21/11/2026, 08:20:22] Draft done: 3 new articles (written with free AI models: credits are empty)
+[21/11/2026, 08:20:23] Articles in the database: 22 draft, 232 published
+[21/11/2026, 08:20:23] Publish: the live site is up to date (built 2026-11-21T06:23:10.901Z)
 ```
