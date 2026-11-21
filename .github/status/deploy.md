@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-21T00:20:19Z
-- Commit: affc203
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44842835925
+- When: 2026-11-21T01:45:45Z
+- Commit: 5f029e7
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44851622268
 
 ```
 + /anime/dragon-s-dogma/__next._tree.txt
@@ -25,32 +25,32 @@
 + /anime/kuku-loop-the-100th-time-s-the-charm/__next._tree.txt
 + /anime/mamahaha-dakedo-musume-ga-kawaisugiru/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 834 of 2504 assets
-Uploaded 1669 of 2504 assets
-Uploaded 2504 of 2504 assets
-✨ Success! Uploaded 2504 files (1832 already uploaded) (9.49 sec)
+Uploaded 840 of 2521 assets
+Uploaded 1681 of 2521 assets
+Uploaded 2521 of 2521 assets
+✨ Success! Uploaded 2521 files (1851 already uploaded) (9.42 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 7 ms
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (14.92 sec)
-Deployed anime-support triggers (1.63 sec)
+Uploaded anime-support (13.26 sec)
+Deployed anime-support triggers (1.33 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: b73d57a9-8711-4db8-ae41-c3f913a26151
+Current Version ID: 0d5ecd35-ae3f-41e4-a7d7-35ad6aa7422b
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 71 URLs → HTTP 200 (accepted)
+IndexNow: submitted 279 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-21T00:19:06.626Z
+Live site marked as built from content up to 2026-11-21T01:44:41.969Z
 
  ⛅️ wrangler 4.158.0 (update available 4.166.0)
 ───────────────────────────────────────────────
