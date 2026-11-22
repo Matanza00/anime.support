@@ -1,56 +1,56 @@
 # Last deploy: success
 
-- When: 2026-11-22T08:20:56Z
-- Commit: 2e1c6e4
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45002119971
+- When: 2026-11-22T08:55:55Z
+- Commit: f60d1d7
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45004628925
 
 ```
-+ /anime/please-excuse-my-younger-brothers/__next._tree.txt
-+ /anime/predator-witches/__next._tree.txt
-+ /anime/dragon-s-dogma/__next._tree.txt
-+ /anime/east-of-eden/__next._tree.txt
-+ /anime/precure/__next._tree.txt
-+ /anime/dan-katsu/__next._tree.txt
-+ /anime/godzilla-minus-zero/__next._tree.txt
-+ /anime/the-detective-is-already-dead-season-2/__next._tree.txt
-+ /anime/not-sew-wicked-stepmom/__next._tree.txt
-+ /anime/exorcist-o-otosenai/__next._tree.txt
-+ /anime/tsuyo-girl-taking-charge/__next._tree.txt
-+ /anime/uma-musume-pretty-derby/__next._tree.txt
-+ /anime/the-seven-knights-of-the-marronnier-kingdom/__next._tree.txt
-+ /anime/girls-und-panzer-motto-love-love-sakusen-desu/__next._tree.txt
-+ /anime/orochi-seventh-echoes/__next._tree.txt
-+ /anime/i-am-blue-in-pain-and-fragile/__next._tree.txt
-+ /anime/pen-to-wappa-to-jijitsu-kon/__next._tree.txt
-+ /anime/this-world-is-worth-fighting-for/__next._tree.txt
-+ /anime/duel-masters-lost-shitsuraku-no-duel/__next._tree.txt
++ /anime/wound-bandage/__next._tree.txt
++ /anime/tora-tsugumi/__next._tree.txt
++ /anime/soul-land-2-the-peerless-tang-clan/__next._tree.txt
++ /anime/watame-did-borderline-nothing-wrong/__next._tree.txt
++ /anime/magical-girl-raising-project-restart/__next._tree.txt
++ /anime/tsugumi-project/__next._tree.txt
++ /anime/millennium-family/__next._tree.txt
++ /anime/nippon-anime-awards/__next._tree.txt
++ /anime/ace-of-the-diamond-act-ii-second-season/__next._tree.txt
++ /news/anime-seasons-explained-winter-spring-summer-fall/__next._tree.txt
++ /anime/paradox-live-the-movie/__next._tree.txt
++ /anime/world-trigger/__next._tree.txt
++ /anime/uzono-shiniko-report/__next._tree.txt
++ /anime/vampire-knight/__next._tree.txt
++ /anime/matsuken-anime-kore-seibaishite-mo-ii-desu-ka/__next._tree.txt
++ /anime/sugar-sugar-rune/__next._tree.txt
++ /anime/living-it-up-in-another-world-until-i-get-bored/__next._tree.txt
++ /anime/putting-a-price-on-world-peace/__next._tree.txt
++ /news/yukiko-s-spinach-creator-frederic-boilet-dies-at-66-pmaj/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 892 of 2675 assets
-Uploaded 1784 of 2675 assets
-Uploaded 2675 of 2675 assets
-✨ Success! Uploaded 2675 files (1949 already uploaded) (7.00 sec)
+Uploaded 891 of 2672 assets
+Uploaded 1781 of 2672 assets
+Uploaded 2672 of 2672 assets
+✨ Success! Uploaded 2672 files (1982 already uploaded) (6.28 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 4 ms
+Worker Startup Time: 3 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (12.19 sec)
-Deployed anime-support triggers (1.60 sec)
+Uploaded anime-support (10.24 sec)
+Deployed anime-support triggers (1.13 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 0f0992b4-8144-43be-834d-22b6f5f86cf8
+Current Version ID: e881d8a7-f031-4735-9bce-8168ff62a96c
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 74 URLs → HTTP 200 (accepted)
+IndexNow: submitted 292 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-22T08:19:46.108Z
+Live site marked as built from content up to 2026-11-22T08:54:47.387Z
 
  ⛅️ wrangler 4.158.0 (update available 4.166.0)
 ───────────────────────────────────────────────
