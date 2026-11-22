@@ -1,56 +1,56 @@
 # Last deploy: success
 
-- When: 2026-11-21T08:50:55Z
-- Commit: f11d271
-- Run: https://github.com/Matanza00/anime.support/actions/runs/44886409385
+- When: 2026-11-22T00:20:31Z
+- Commit: 6f4f302
+- Run: https://github.com/Matanza00/anime.support/actions/runs/44965899611
 
 ```
-+ /anime/predator-witches/__next._tree.txt
-+ /anime/dragon-s-dogma/__next._tree.txt
-+ /anime/east-of-eden/__next._tree.txt
-+ /anime/precure/__next._tree.txt
-+ /anime/dan-katsu/__next._tree.txt
-+ /anime/godzilla-minus-zero/__next._tree.txt
-+ /anime/the-detective-is-already-dead-season-2/__next._tree.txt
-+ /anime/not-sew-wicked-stepmom/__next._tree.txt
-+ /anime/exorcist-o-otosenai/__next._tree.txt
-+ /anime/tsuyo-girl-taking-charge/__next._tree.txt
-+ /anime/uma-musume-pretty-derby/__next._tree.txt
-+ /anime/the-seven-knights-of-the-marronnier-kingdom/__next._tree.txt
-+ /anime/girls-und-panzer-motto-love-love-sakusen-desu/__next._tree.txt
-+ /anime/sugar-sugar-rune/__next._tree.txt
-+ /anime/living-it-up-in-another-world-until-i-get-bored/__next._tree.txt
-+ /anime/so-what-s-wrong-with-getting-reborn-as-a-goblin/__next._tree.txt
-+ /anime/dragon-quest-the-mark-of-erdrick/__next._tree.txt
-+ /anime/make-the-exorcist-fall-in-love/__next._tree.txt
-+ /anime/demon-slayer-kimetsu-no-yaiba-infinity-castle-part-2/__next._tree.txt
++ /anime/yu-gi-oh-card-game-the-chronicles/__next._tree.txt
++ /anime/you-re-so-sloppy-hotta-sensei/__next._tree.txt
++ /anime/yuri-is-my-job/__next._tree.txt
++ /anime/mobile-suit-gundam-seed-freedom-zero/__next._tree.txt
++ /anime/animation-paralympic-who-is-your-hero/__next._tree.txt
++ /anime/genocyber/__next._tree.txt
++ /anime/rascal-does-not-dream-of-a-dear-friend/__next._tree.txt
++ /anime/bang-dream-mygo/__next._tree.txt
++ /anime/comic-market-comiket/__next._tree.txt
++ /anime/pretty-cure/__next._tree.txt
++ /anime/five-star-stories/__next._tree.txt
++ /anime/cardfight-vanguard-divinez-parallactic-fate/__next._tree.txt
++ /anime/paradox-live-the-animation/__next._tree.txt
++ /anime/orochi-seventh-echoes/__next._tree.txt
++ /anime/i-am-blue-in-pain-and-fragile/__next._tree.txt
++ /anime/pen-to-wappa-to-jijitsu-kon/__next._tree.txt
++ /anime/this-world-is-worth-fighting-for/__next._tree.txt
++ /anime/duel-masters-lost-shitsuraku-no-duel/__next._tree.txt
++ /anime/the-lucky-egg-game-cai-dan-you-xi/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 864 of 2591 assets
-Uploaded 1727 of 2591 assets
-Uploaded 2591 of 2591 assets
-✨ Success! Uploaded 2591 files (1901 already uploaded) (8.51 sec)
+Uploaded 872 of 2616 assets
+Uploaded 1744 of 2616 assets
+Uploaded 2616 of 2616 assets
+✨ Success! Uploaded 2616 files (1918 already uploaded) (7.64 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 2 ms
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (13.06 sec)
-Deployed anime-support triggers (1.26 sec)
+Uploaded anime-support (18.98 sec)
+Deployed anime-support triggers (3.95 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 4c121086-77fd-4004-8333-01a89b463a5f
+Current Version ID: 63ff1c57-4550-423f-9b0a-1fe134903c53
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 288 URLs → HTTP 200 (accepted)
+IndexNow: submitted 70 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-21T08:49:47.218Z
+Live site marked as built from content up to 2026-11-22T00:19:10.063Z
 
  ⛅️ wrangler 4.158.0 (update available 4.166.0)
 ───────────────────────────────────────────────
