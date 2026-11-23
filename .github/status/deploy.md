@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-23T03:19:26Z
-- Commit: c846ce4
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45103760297
+- When: 2026-11-23T09:50:49Z
+- Commit: 4453b63
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45150080915
 
 ```
 + /anime/wo-cong-zhu-tian-wan-jie-guilai/__next._tree.txt
@@ -16,41 +16,41 @@
 + /anime/genocyber/__next._tree.txt
 + /anime/rascal-does-not-dream-of-a-dear-friend/__next._tree.txt
 + /anime/bang-dream-mygo/__next._tree.txt
-+ /anime/comic-market-comiket/__next._tree.txt
-+ /anime/pretty-cure/__next._tree.txt
-+ /anime/five-star-stories/__next._tree.txt
-+ /anime/cardfight-vanguard-divinez-parallactic-fate/__next._tree.txt
-+ /anime/paradox-live-the-animation/__next._tree.txt
-+ /anime/monster-in-sheep-s-clothing/__next._tree.txt
-+ /anime/the-iceblade-sorcerer-shall-rule-the-world-ii/__next._tree.txt
-+ /anime/nabe-ni-tama-wo-ukenagara/__next._tree.txt
++ /anime/exorcist-o-otosenai/__next._tree.txt
++ /anime/tsuyo-girl-taking-charge/__next._tree.txt
++ /anime/uma-musume-pretty-derby/__next._tree.txt
++ /anime/the-seven-knights-of-the-marronnier-kingdom/__next._tree.txt
++ /anime/girls-und-panzer-motto-love-love-sakusen-desu/__next._tree.txt
++ /anime/orochi-seventh-echoes/__next._tree.txt
++ /anime/i-am-blue-in-pain-and-fragile/__next._tree.txt
++ /anime/pen-to-wappa-to-jijitsu-kon/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 909 of 2726 assets
-Uploaded 1818 of 2726 assets
-Uploaded 2726 of 2726 assets
-✨ Success! Uploaded 2726 files (2016 already uploaded) (11.67 sec)
+Uploaded 903 of 2709 assets
+Uploaded 1806 of 2709 assets
+Uploaded 2709 of 2709 assets
+✨ Success! Uploaded 2709 files (2021 already uploaded) (5.01 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 8 ms
+Worker Startup Time: 4 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (16.13 sec)
-Deployed anime-support triggers (1.41 sec)
+Uploaded anime-support (9.52 sec)
+Deployed anime-support triggers (1.02 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 01254a25-7d60-412e-b638-61bec3ee23e2
+Current Version ID: 682d1a58-d800-4822-a895-625a04201229
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 300 URLs → HTTP 200 (accepted)
+IndexNow: submitted 234 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-23T03:18:06.056Z
+Live site marked as built from content up to 2026-11-23T09:49:33.825Z
 
  ⛅️ wrangler 4.158.0 (update available 4.166.0)
 ───────────────────────────────────────────────
