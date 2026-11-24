@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-23T10:19:26Z
-- Commit: 2f34a1f
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45154750379
+- When: 2026-11-24T00:24:35Z
+- Commit: 7a7eb95
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45295967469
 
 ```
 + /news/how-manga-becomes-anime-adaptation-explained/__next._tree.txt
@@ -25,10 +25,10 @@
 + /anime/monster-in-sheep-s-clothing/__next._tree.txt
 + /anime/the-iceblade-sorcerer-shall-rule-the-world-ii/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 915 of 2746 assets
-Uploaded 1831 of 2746 assets
-Uploaded 2746 of 2746 assets
-✨ Success! Uploaded 2746 files (2038 already uploaded) (7.92 sec)
+Uploaded 922 of 2766 assets
+Uploaded 1844 of 2766 assets
+Uploaded 2766 of 2766 assets
+✨ Success! Uploaded 2766 files (2048 already uploaded) (7.15 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Worker Startup Time: 3 ms
@@ -38,21 +38,21 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (11.99 sec)
-Deployed anime-support triggers (1.64 sec)
+Uploaded anime-support (12.13 sec)
+Deployed anime-support triggers (1.14 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 3e8beeb4-c971-448d-8bb1-439365cef293
+Current Version ID: e7f92b38-1714-46ce-8928-4ac4fa423385
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 299 URLs → HTTP 200 (accepted)
+IndexNow: submitted 70 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-23T10:18:15.015Z
+Live site marked as built from content up to 2026-11-24T00:22:54.283Z
 
- ⛅️ wrangler 4.158.0 (update available 4.166.0)
+ ⛅️ wrangler 4.158.0 (update available 4.167.0)
 ───────────────────────────────────────────────
 🌀 Creating the secret for the Worker "anime-support"
 Cloudflare timer: on
