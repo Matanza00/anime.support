@@ -1,12 +1,13 @@
 # Last deploy: success
 
-- When: 2026-11-24T01:45:47Z
-- Commit: 219dcac
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45306863103
+- When: 2026-11-24T10:20:02Z
+- Commit: 9ee70c9
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45373379569
 
 ```
-+ /anime/oyatsushiba/__next._tree.txt
-+ /anime/the-eternal-supreme-li-yunxiao/__next._tree.txt
++ /anime/leviathan/__next._tree.txt
++ /anime/the-detective-is-already-dead/__next._tree.txt
++ /anime/made-in-abyss-awakening-mystery/__next._tree.txt
 + /news/anime-announcement-terms-key-visual-pv-teaser/__next._tree.txt
 + /anime/pie-no-mi-oshi-no-mori-e-youkoso/__next._tree.txt
 + /anime/please-excuse-my-younger-brothers/__next._tree.txt
@@ -23,34 +24,33 @@
 + /anime/five-star-stories/__next._tree.txt
 + /anime/cardfight-vanguard-divinez-parallactic-fate/__next._tree.txt
 + /anime/paradox-live-the-animation/__next._tree.txt
-+ /anime/monster-in-sheep-s-clothing/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 927 of 2780 assets
-Uploaded 1854 of 2780 assets
-Uploaded 2780 of 2780 assets
-✨ Success! Uploaded 2780 files (2064 already uploaded) (10.51 sec)
+Uploaded 948 of 2843 assets
+Uploaded 1896 of 2843 assets
+Uploaded 2843 of 2843 assets
+✨ Success! Uploaded 2843 files (2083 already uploaded) (17.52 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
-Worker Startup Time: 5 ms
+Worker Startup Time: 1 ms
 Your Worker has access to the following bindings:
 Binding                                  Resource         
 env.DB (anime-support)                   D1 Database      
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (15.61 sec)
-Deployed anime-support triggers (1.46 sec)
+Uploaded anime-support (22.57 sec)
+Deployed anime-support triggers (1.17 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 32124abd-e354-4c81-8a2c-286e1310aa50
+Current Version ID: 432542aa-cdd3-40e9-b852-23846af66a06
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 301 URLs → HTTP 200 (accepted)
+IndexNow: submitted 75 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-24T01:44:34.248Z
+Live site marked as built from content up to 2026-11-24T10:18:20.752Z
 
  ⛅️ wrangler 4.158.0 (update available 4.167.0)
 ───────────────────────────────────────────────
