@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-24T10:20:02Z
-- Commit: 9ee70c9
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45373379569
+- When: 2026-11-24T11:41:03Z
+- Commit: 27d4812
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45385773208
 
 ```
 + /anime/leviathan/__next._tree.txt
@@ -25,10 +25,10 @@
 + /anime/cardfight-vanguard-divinez-parallactic-fate/__next._tree.txt
 + /anime/paradox-live-the-animation/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 948 of 2843 assets
-Uploaded 1896 of 2843 assets
-Uploaded 2843 of 2843 assets
-✨ Success! Uploaded 2843 files (2083 already uploaded) (17.52 sec)
+Uploaded 940 of 2820 assets
+Uploaded 1880 of 2820 assets
+Uploaded 2820 of 2820 assets
+✨ Success! Uploaded 2820 files (2106 already uploaded) (10.27 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Worker Startup Time: 1 ms
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (22.57 sec)
-Deployed anime-support triggers (1.17 sec)
+Uploaded anime-support (14.53 sec)
+Deployed anime-support triggers (1.65 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 432542aa-cdd3-40e9-b852-23846af66a06
+Current Version ID: 1de29da0-cfc4-47e4-aebd-41c67ab1ad23
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 75 URLs → HTTP 200 (accepted)
+IndexNow: submitted 304 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-24T10:18:20.752Z
+Live site marked as built from content up to 2026-11-24T11:39:35.692Z
 
  ⛅️ wrangler 4.158.0 (update available 4.167.0)
 ───────────────────────────────────────────────
