@@ -1,12 +1,13 @@
 # Last deploy: success
 
-- When: 2026-11-25T00:27:26Z
-- Commit: 4cff5b8
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45516939689
+- When: 2026-11-25T01:45:52Z
+- Commit: 92cfe4f
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45527551669
 
 ```
-+ /anime/the-one-later-on/__next._tree.txt
-+ /anime/leviathan/__next._tree.txt
++ /anime/ocha-ken-chobitto-monogatari/__next._tree.txt
++ /anime/hatsune-miku/__next._tree.txt
++ /anime/made-in-abyss-mezameru-shinpi/__next._tree.txt
 + /anime/the-detective-is-already-dead/__next._tree.txt
 + /anime/made-in-abyss-awakening-mystery/__next._tree.txt
 + /news/anime-announcement-terms-key-visual-pv-teaser/__next._tree.txt
@@ -24,12 +25,11 @@
 + /anime/paradox-live-the-movie/__next._tree.txt
 + /anime/world-trigger/__next._tree.txt
 + /anime/uzono-shiniko-report/__next._tree.txt
-+ /anime/vampire-knight/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 948 of 2844 assets
-Uploaded 1896 of 2844 assets
-Uploaded 2844 of 2844 assets
-✨ Success! Uploaded 2844 files (2112 already uploaded) (8.07 sec)
+Uploaded 954 of 2860 assets
+Uploaded 1907 of 2860 assets
+Uploaded 2860 of 2860 assets
+✨ Success! Uploaded 2860 files (2132 already uploaded) (10.48 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Your Worker has access to the following bindings:
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (12.19 sec)
-Deployed anime-support triggers (1.03 sec)
+Uploaded anime-support (15.66 sec)
+Deployed anime-support triggers (1.49 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: d9d93e13-e323-4dc9-99ba-9ff3b6b62815
+Current Version ID: 76c5503c-2653-4863-a299-b3f1e416b3c3
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 70 URLs → HTTP 200 (accepted)
+IndexNow: submitted 307 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-25T00:25:59.903Z
+Live site marked as built from content up to 2026-11-25T01:44:17.499Z
 
  ⛅️ wrangler 4.158.0 (update available 4.168.0)
 ───────────────────────────────────────────────
