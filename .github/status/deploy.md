@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-25T10:33:11Z
-- Commit: 3a84fa2
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45595419255
+- When: 2026-11-26T01:45:59Z
+- Commit: 142b9af
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45737419326
 
 ```
 + /anime/galactic-gale-baxinger/__next._tree.txt
@@ -12,24 +12,24 @@
 + /anime/the-detective-is-already-dead/__next._tree.txt
 + /anime/made-in-abyss-awakening-mystery/__next._tree.txt
 + /news/anime-announcement-terms-key-visual-pv-teaser/__next._tree.txt
-+ /anime/jk-dark-summoner-to-deki-dei-nai/__next._tree.txt
-+ /anime/my-girlfriend-s-friend-mini-anime/__next._tree.txt
-+ /anime/yu-gi-oh-card-game-the-chronicles/__next._tree.txt
-+ /anime/soul-land-2-the-peerless-tang-clan/__next._tree.txt
-+ /anime/watame-did-borderline-nothing-wrong/__next._tree.txt
-+ /anime/magical-girl-raising-project-restart/__next._tree.txt
-+ /anime/tsugumi-project/__next._tree.txt
-+ /anime/millennium-family/__next._tree.txt
-+ /anime/godzilla-minus-zero/__next._tree.txt
-+ /anime/the-detective-is-already-dead-season-2/__next._tree.txt
-+ /news/anime-seasons-explained-winter-spring-summer-fall/__next._tree.txt
-+ /anime/paradox-live-the-movie/__next._tree.txt
-+ /anime/world-trigger/__next._tree.txt
++ /anime/duel-masters-pure-play-s/__next._tree.txt
++ /anime/wound-bandage/__next._tree.txt
++ /anime/please-excuse-my-younger-brothers/__next._tree.txt
++ /anime/mawaru-penguindrum/__next._tree.txt
++ /anime/you-re-so-sloppy-hotta-sensei/__next._tree.txt
++ /anime/yuri-is-my-job/__next._tree.txt
++ /anime/mobile-suit-gundam-seed-freedom-zero/__next._tree.txt
++ /anime/animation-paralympic-who-is-your-hero/__next._tree.txt
++ /anime/dan-katsu/__next._tree.txt
++ /anime/nippon-anime-awards/__next._tree.txt
++ /anime/ace-of-the-diamond-act-ii-second-season/__next._tree.txt
++ /anime/comic-market-comiket/__next._tree.txt
++ /anime/pretty-cure/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 965 of 2896 assets
-Uploaded 1930 of 2896 assets
-Uploaded 2896 of 2896 assets
-✨ Success! Uploaded 2896 files (2156 already uploaded) (10.67 sec)
+Uploaded 974 of 2922 assets
+Uploaded 1948 of 2922 assets
+Uploaded 2922 of 2922 assets
+✨ Success! Uploaded 2922 files (2166 already uploaded) (9.64 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Your Worker has access to the following bindings:
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (15.37 sec)
-Deployed anime-support triggers (1.57 sec)
+Uploaded anime-support (15.12 sec)
+Deployed anime-support triggers (1.30 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: f4a85ed6-ee54-4045-add2-c6bcefcfa5e5
+Current Version ID: 0c5afefb-6555-4ef8-8c75-345242394e5c
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 312 URLs → HTTP 200 (accepted)
+IndexNow: submitted 252 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-25T10:31:55.746Z
+Live site marked as built from content up to 2026-11-26T01:44:44.380Z
 
  ⛅️ wrangler 4.158.0 (update available 4.168.0)
 ───────────────────────────────────────────────
