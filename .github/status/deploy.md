@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-26T02:20:36Z
-- Commit: 2552886
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45741433512
+- When: 2026-11-26T10:06:06Z
+- Commit: c519428
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45797508825
 
 ```
 + /anime/code-geass-star-chaser-aspal/__next._tree.txt
@@ -26,10 +26,10 @@
 + /news/anime-seasons-explained-winter-spring-summer-fall/__next._tree.txt
 + /anime/paradox-live-the-movie/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 980 of 2940 assets
-Uploaded 1960 of 2940 assets
-Uploaded 2940 of 2940 assets
-✨ Success! Uploaded 2940 files (2178 already uploaded) (7.80 sec)
+Uploaded 984 of 2951 assets
+Uploaded 1967 of 2951 assets
+Uploaded 2951 of 2951 assets
+✨ Success! Uploaded 2951 files (2187 already uploaded) (7.64 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Your Worker has access to the following bindings:
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (12.70 sec)
-Deployed anime-support triggers (1.60 sec)
+Uploaded anime-support (12.36 sec)
+Deployed anime-support triggers (1.34 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: d8aed1e7-30ed-47e5-924d-2de25c9a766e
+Current Version ID: 4abf5a45-0e08-4a6f-a89d-25e56d486395
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 311 URLs → HTTP 200 (accepted)
+IndexNow: submitted 253 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-26T02:19:18.558Z
+Live site marked as built from content up to 2026-11-26T10:04:54.681Z
 
  ⛅️ wrangler 4.158.0 (update available 4.168.0)
 ───────────────────────────────────────────────
