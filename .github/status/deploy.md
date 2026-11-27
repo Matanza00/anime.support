@@ -1,11 +1,10 @@
 # Last deploy: success
 
-- When: 2026-11-27T01:46:00Z
-- Commit: 44e0e89
-- Run: https://github.com/Matanza00/anime.support/actions/runs/45923970091
+- When: 2026-11-27T04:21:59Z
+- Commit: 0041b46
+- Run: https://github.com/Matanza00/anime.support/actions/runs/45939085797
 
 ```
-+ /anime/origami-ninja-koyan-kintele/__next._tree.txt
 + /anime/stay-low-profile-sect-chief/__next._tree.txt
 + /anime/code-geass-star-chaser-aspal/__next._tree.txt
 + /anime/oishinbo/__next._tree.txt
@@ -26,10 +25,11 @@
 + /anime/godzilla-minus-zero/__next._tree.txt
 + /anime/the-detective-is-already-dead-season-2/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 997 of 2993 assets
-Uploaded 1995 of 2993 assets
-Uploaded 2993 of 2993 assets
-✨ Success! Uploaded 2993 files (2235 already uploaded) (5.62 sec)
+Uploaded 1000 of 3017 assets
+Uploaded 2000 of 3017 assets
+Uploaded 3000 of 3017 assets
+Uploaded 3017 of 3017 assets
+✨ Success! Uploaded 3017 files (2247 already uploaded) (6.89 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Your Worker has access to the following bindings:
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (9.53 sec)
-Deployed anime-support triggers (1.11 sec)
+Uploaded anime-support (11.38 sec)
+Deployed anime-support triggers (1.23 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: 97f0f145-3a5e-4e85-a4fd-b9f44549f57a
+Current Version ID: e01b3be6-5681-41b0-940b-a365bfbbd56d
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 258 URLs → HTTP 200 (accepted)
+IndexNow: submitted 318 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-27T01:44:37.573Z
+Live site marked as built from content up to 2026-11-27T04:20:48.465Z
 
  ⛅️ wrangler 4.158.0 (update available 4.168.0)
 ───────────────────────────────────────────────
