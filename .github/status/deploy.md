@@ -1,8 +1,8 @@
 # Last deploy: success
 
-- When: 2026-11-28T01:46:16Z
-- Commit: e4f4e1f
-- Run: https://github.com/Matanza00/anime.support/actions/runs/46094347114
+- When: 2026-11-28T04:21:09Z
+- Commit: ebd1dd3
+- Run: https://github.com/Matanza00/anime.support/actions/runs/46106851823
 
 ```
 + /anime/origami-ninja-koyan-kintele/__next._tree.txt
@@ -25,11 +25,11 @@
 + /anime/mobile-suit-gundam-seed-freedom-zero/__next._tree.txt
 + /anime/animation-paralympic-who-is-your-hero/__next._tree.txt
    (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
-Uploaded 1000 of 3095 assets
-Uploaded 2000 of 3095 assets
-Uploaded 3000 of 3095 assets
-Uploaded 3095 of 3095 assets
-✨ Success! Uploaded 3095 files (2323 already uploaded) (8.96 sec)
+Uploaded 1000 of 3104 assets
+Uploaded 2000 of 3104 assets
+Uploaded 3000 of 3104 assets
+Uploaded 3104 of 3104 assets
+✨ Success! Uploaded 3104 files (2344 already uploaded) (9.38 sec)
 
 Total Upload: 65.49 KiB / gzip: 16.74 KiB
 Your Worker has access to the following bindings:
@@ -38,19 +38,19 @@ env.DB (anime-support)                   D1 Database
 env.UPLOADS (anime-support-uploads)      R2 Bucket        
 env.ASSETS                               Assets           
 
-Uploaded anime-support (14.55 sec)
-Deployed anime-support triggers (2.23 sec)
+Uploaded anime-support (14.33 sec)
+Deployed anime-support triggers (1.01 sec)
   anime.support (custom domain)
   www.anime.support (custom domain)
   schedule: 17 */2 * * *
   schedule: 41 1 * * *
   schedule: 23 22 * * SUN
-Current Version ID: ee351d11-2190-403f-be20-a502f32008e4
+Current Version ID: cbd4bfad-a46d-476e-98bc-67b8c239b0c7
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
-IndexNow: submitted 266 URLs → HTTP 200 (accepted)
+IndexNow: submitted 325 URLs → HTTP 200 (accepted)
 D1 database: anime-support (51283e38-d145-4798-9098-45f14db21b9b)
-Live site marked as built from content up to 2026-11-28T01:44:23.840Z
+Live site marked as built from content up to 2026-11-28T04:19:44.606Z
 
  ⛅️ wrangler 4.158.0 (update available 4.169.0)
 ───────────────────────────────────────────────
